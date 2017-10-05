@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "io.mironov.smuggler"
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "cafe.adriel.bitchecker"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "WALLET_API_BASE_URL", '"https://api.blockcypher.com/v1/"'
+    }
+    buildTypes {
+        debug {
+            buildConfigField "Boolean", "RELEASE", "false"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "Boolean", "RELEASE", "true"
+        }
+    }
+}
+
+dependencies {
+    // Support
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:cardview-v7:$support_version"
+    implementation "com.android.support:recyclerview-v7:$support_version"
+    implementation "com.android.support:design:$support_version"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.github.hotchemi:khronos:0.9.0'
+
+    // Rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.4'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Data
+    implementation 'io.paperdb:paperdb:2.5'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+
+    // View
+    kapt "com.evernote:android-state-processor:$android_state_version"
+    implementation "com.evernote:android-state:$android_state_version"
+    implementation("com.mikepenz:fastadapter:$fastadapter_version@aar") { transitive true }
+    implementation "com.mikepenz:fastadapter-commons:$fastadapter_version@aar"
+    implementation "com.mikepenz:fastadapter-extensions:$fastadapter_version@aar"
+    implementation 'com.tubb.smrv:swipemenu-recyclerview:5.4.0'
+
+    // Test
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">BitChecker</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="total_balance">Total balance</string>
+</resources>
