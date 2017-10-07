@@ -5,16 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
     app:cardBackgroundColor="@android:color/white"
     app:cardUseCompatPadding="false"
     app:cardElevation="1dp"
-    app:cardCornerRadius="1dp">
+    app:cardCornerRadius="0dp">
 
     <com.tubb.smrv.SwipeHorizontalMenuLayout
         android:id="@+id/vSwipeMenu"
         android:layout_width="match_parent"
-        android:layout_height="90dp">
+        android:layout_height="80dp">
 
         <RelativeLayout
             android:id="@id/smContentView"
@@ -23,56 +23,83 @@
 
             <FrameLayout
                 android:id="@+id/vCoinLayout"
-                android:layout_width="75dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:padding="10dp"
-                tools:background="@color/silver">
+                android:background="@drawable/rounded_end"
+                tools:backgroundTint="@color/silver">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vCoin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/vCoinLogo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    tools:text="BTC"/>
+                    android:scaleType="center"
+                    android:backgroundTint="@color/coin_logo_tint"
+                    tools:srcCompat="@drawable/logo_bitcoin"/>
 
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/vName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:layout_above="@id/vBalance"
                 android:layout_toEndOf="@id/vCoinLayout"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginBottom="-3dp"
+                android:gravity="bottom"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textAllCaps="true"
+                android:fontFamily="sans-serif-light"
                 app:autoSizeTextType="uniform"
-                tools:text="14bSgbk7n59DZ8xK6zZcg6MDQR8c9tAoJj"/>
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="12sp"
+                tools:text="My BTC Wallet"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/vBalance"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/vCoinLayout"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAllCaps="true"
+                android:fontFamily="sans-serif-medium"
                 app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="24sp"
+                app:autoSizeMinTextSize="16sp"
                 tools:text="0.00000001"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/vCoinName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/vBalance"
+                android:layout_alignBottom="@id/vBalance"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="4dp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textAllCaps="true"
+                android:fontFamily="sans-serif-condensed"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="12sp"
+                app:autoSizeMinTextSize="10sp"
+                tools:text="BTC"/>
 
         </RelativeLayout>
 
@@ -87,6 +114,7 @@
             tools:background="@color/silver">
             
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/vSeeAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
@@ -95,6 +123,7 @@
                 android:background="?selectableItemBackgroundBorderless"/>
 
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/vEditName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
@@ -103,6 +132,7 @@
                 android:background="?selectableItemBackgroundBorderless"/>
 
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/vDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"

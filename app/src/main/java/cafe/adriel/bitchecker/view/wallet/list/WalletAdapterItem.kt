@@ -1,18 +1,13 @@
 package cafe.adriel.bitchecker.view.wallet.list
 
-import com.mikepenz.fastadapter.items.AbstractItem
-import android.widget.TextView
+import android.content.res.ColorStateList
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import cafe.adriel.bitchecker.App
 import cafe.adriel.bitchecker.R
 import cafe.adriel.bitchecker.getColor
-import cafe.adriel.bitchecker.model.entity.Coin
 import cafe.adriel.bitchecker.model.entity.Wallet
 import com.mikepenz.fastadapter.IDraggable
-import com.mikepenz.fastadapter.IItem
-import kotlinx.android.synthetic.main.activity_wallet_list.view.*
-import kotlinx.android.synthetic.main.list_item_wallet.*
+import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 
 class WalletAdapterItem(private val wallet: Wallet) :
@@ -32,10 +27,11 @@ class WalletAdapterItem(private val wallet: Wallet) :
     override fun bindView(holder: ViewHolder?, payloads: MutableList<Any>?) {
         super.bindView(holder, payloads)
         holder?.itemView?.apply {
-            vCoin.text = wallet.coin.name
             vName.text = wallet.name
-            vBalance.text = if(wallet.balance < 0) "-" else "${wallet.balance}"
-            vCoinLayout.setBackgroundColor(wallet.coin.color)
+            vBalance.text = if(wallet.balance < 0) "-" else wallet.prettyBalance
+            vCoinName.text = wallet.coin.name
+            vCoinLogo.background = wallet.coin.logo
+            vCoinLayout.backgroundTintList = ColorStateList.valueOf(wallet.coin.color)
             smMenuViewLeft.setBackgroundColor(wallet.coin.color)
         }
     }
@@ -43,10 +39,11 @@ class WalletAdapterItem(private val wallet: Wallet) :
     override fun unbindView(holder: ViewHolder?) {
         super.unbindView(holder)
         holder?.itemView?.apply {
-            vCoin.text = ""
             vName.text = ""
             vBalance.text = ""
-            vCoinLayout.setBackgroundColor(getColor(R.color.silver))
+            vCoinName.text = ""
+            vCoinLogo.background = null
+            vCoinLayout.backgroundTintList = ColorStateList.valueOf(getColor(R.color.silver))
             smMenuViewLeft.setBackgroundColor(getColor(R.color.silver))
         }
     }

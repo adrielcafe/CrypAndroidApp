@@ -1,6 +1,7 @@
 package cafe.adriel.bitchecker.model.entity
 
 import android.annotation.SuppressLint
+import cafe.adriel.bitchecker.formatBalance
 import io.mironov.smuggler.AutoParcelable
 import khronos.Dates
 import java.util.*
@@ -15,5 +16,6 @@ data class Wallet(
 
     // Compound Key
     val id = "$coin:$address"
-
+    var prettyBalance = formatBalance()
+        get() = formatBalance()
 }

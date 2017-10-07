@@ -13,20 +13,19 @@ enum class Coin {
     DOGE;
 
     val color: Int
-        get() = when(this){
-            BTC -> getColor(R.color.buttercup)
-            LTC -> getColor(R.color.concrete)
-            ETH -> getColor(R.color.wet_asphalt)
-            DASH -> getColor(R.color.summer_sky)
-            DOGE -> getColor(R.color.sandstorm)
-        }
-    // TODO missing logos
-    val icon: Drawable
-        get() = when(this){
-            BTC -> getDrawable(R.drawable.ic_add)
-            LTC -> getDrawable(R.drawable.ic_add)
-            ETH -> getDrawable(R.drawable.ic_add)
-            DASH -> getDrawable(R.drawable.ic_add)
-            DOGE -> getDrawable(R.drawable.ic_add)
-        }
+        get() = getColor(when(this){
+            BTC -> R.color.buttercup
+            LTC -> R.color.concrete
+            ETH -> R.color.wet_asphalt
+            DASH -> R.color.summer_sky
+            DOGE -> R.color.sandstorm
+        })
+    val logo: Drawable
+        get() = getDrawable(when(this){
+            BTC -> R.drawable.logo_bitcoin
+            LTC -> R.drawable.logo_litecoin
+            ETH -> R.drawable.logo_ether
+            DASH -> R.drawable.logo_dash
+            DOGE -> R.drawable.logo_dogecoin
+        })
 }

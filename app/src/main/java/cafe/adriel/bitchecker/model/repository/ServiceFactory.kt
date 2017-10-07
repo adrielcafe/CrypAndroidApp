@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 
 object ServiceFactory {
 
-    fun <T: Any> newInstance(baseUrl: String, serviceClass: KClass<T>) =
+    fun <T: Any> newInstance(baseUrl: String, serviceClass: KClass<T>): T =
             Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(getClient())

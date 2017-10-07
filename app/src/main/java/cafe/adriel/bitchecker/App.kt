@@ -13,6 +13,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         CONTEXT = this
+
         Paper.init(this)
         Paper.setLogLevel(if(BuildConfig.RELEASE) Log.LEVEL_NONE else Log.LEVEL_ERROR)
     }

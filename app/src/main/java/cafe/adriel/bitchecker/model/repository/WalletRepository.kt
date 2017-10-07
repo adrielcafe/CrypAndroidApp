@@ -9,8 +9,6 @@ import io.reactivex.rxkotlin.toObservable
 import khronos.Dates
 import retrofit2.http.GET
 import retrofit2.http.Path
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 object WalletRepository {
     private val walletsDb by lazy {
