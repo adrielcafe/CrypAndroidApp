@@ -1,7 +1,12 @@
 package cafe.adriel.bitchecker.view.wallet.list
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import cafe.adriel.bitchecker.R
 import cafe.adriel.bitchecker.getColor
@@ -9,6 +14,7 @@ import cafe.adriel.bitchecker.model.entity.Wallet
 import com.mikepenz.fastadapter.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
+
 
 class WalletAdapterItem(val wallet: Wallet) :
         AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>(),
@@ -27,11 +33,14 @@ class WalletAdapterItem(val wallet: Wallet) :
     override fun bindView(holder: ViewHolder?, payloads: MutableList<Any>?) {
         super.bindView(holder, payloads)
         holder?.itemView?.apply {
+            val balance = formatBalance(if(wallet.balance < 0) "-" else wallet.prettyBalance)
+
             vName.text = wallet.name
-            vBalance.text = if(wallet.balance < 0) "-" else wallet.prettyBalance
+            vBalance.text = balance
             vCoinName.text = wallet.coin.name
             vCoinLogo.background = wallet.coin.logo
-            vCoinLayout.backgroundTintList = ColorStateList.valueOf(wallet.coin.color)
+            vCoinLayout.setBackgroundColor(wallet.coin.color)
+            vCircle.backgroundTintList = ColorStateList.valueOf(wallet.coin.color)
             smMenuViewLeft.setBackgroundColor(wallet.coin.color)
         }
     }
@@ -43,7 +52,8 @@ class WalletAdapterItem(val wallet: Wallet) :
             vBalance.text = ""
             vCoinName.text = ""
             vCoinLogo.background = null
-            vCoinLayout.backgroundTintList = ColorStateList.valueOf(getColor(R.color.silver))
+            vCoinLayout.setBackgroundColor(getColor(R.color.silver))
+            vCircle.backgroundTintList = ColorStateList.valueOf(getColor(R.color.silver))
             smMenuViewLeft.setBackgroundColor(getColor(R.color.silver))
         }
     }
@@ -54,6 +64,18 @@ class WalletAdapterItem(val wallet: Wallet) :
     }
 
     override fun isDraggable() = draggable
+
+    private fun formatBalance(balance: String): Spannable {
+        return if(balance.length >= 8){
+            val span1 = SpannableString(balance.substring(0, balance.length - 5))
+            val span2 = SpannableString(balance.substring(balance.length - 5, balance.length - 1))
+            span1.setSpan(ForegroundColorSpan(Color.BLACK), 0, span1.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            span2.setSpan(ForegroundColorSpan(getColor(R.color.grey_dark)), 0, span2.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            SpannableString(TextUtils.concat(span1, span2))
+        } else {
+            SpannableString(balance)
+        }
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 

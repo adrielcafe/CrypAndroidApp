@@ -1,6 +1,7 @@
 package cafe.adriel.bitchecker.model.repository
 
 import cafe.adriel.bitchecker.BuildConfig
+import cafe.adriel.bitchecker.Const
 import cafe.adriel.bitchecker.model.entity.Wallet
 import cafe.adriel.bitchecker.model.entity.response.BalanceResponse
 import io.paperdb.Paper
@@ -12,7 +13,10 @@ import retrofit2.http.Path
 
 object WalletRepository {
     private val walletsDb by lazy {
-        Paper.book("wallets")
+        Paper.book(Const.DB_WALLETS)
+    }
+    private val prefDb by lazy {
+        Paper.book(Const.DB_PREFERENCES)
     }
     private val service by lazy {
         ServiceFactory.newInstance(
@@ -47,6 +51,13 @@ object WalletRepository {
                         walletsDb.write(wallet.id, wallet)
                         wallet
                     }
+
+    fun getOrder() =
+            prefDb.read<Array<String>>(Const.PREF_ORDER, arrayOf())
+
+    fun setOrder(order: Array<String>) =
+            prefDb.write(Const.PREF_ORDER, order)
+                    .exist(Const.PREF_ORDER)
 
     interface WalletService {
         @GET("{coin}/main/addrs/{address}/balance")

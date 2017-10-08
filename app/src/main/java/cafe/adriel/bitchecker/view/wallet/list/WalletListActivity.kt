@@ -98,7 +98,13 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        // TODO save the new order
+        val walletIds = mutableListOf<String>()
+        (0 until adapter.adapterItemCount)
+                .forEach {
+                    val holder = adapter.getItem(it)
+                    walletIds.add(holder.wallet.id)
+                }
+        presenter.saveOrder(walletIds)
     }
 
     override fun showAddActivity() {

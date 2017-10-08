@@ -21,21 +21,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/vCircle"
+                android:layout_width="70dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginBottom="-10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/circle"
+                tools:backgroundTint="@color/silver"/>
+
             <FrameLayout
                 android:id="@+id/vCoinLayout"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/rounded_end"
-                tools:backgroundTint="@color/silver">
+                tools:background="@color/silver">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/vCoinLogo"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="5dp"
                     android:scaleType="center"
                     android:backgroundTint="@color/coin_logo_tint"
                     tools:srcCompat="@drawable/logo_bitcoin"/>
@@ -48,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_above="@id/vBalance"
-                android:layout_toEndOf="@id/vCoinLayout"
+                android:layout_toEndOf="@id/vCircle"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="-3dp"
@@ -68,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/vCoinLayout"
+                android:layout_toEndOf="@id/vCircle"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="10dp"
                 android:maxLines="1"
@@ -92,7 +103,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="4dp"
                 android:maxLines="1"
-                android:textColor="@android:color/black"
+                android:textColor="@color/grey_dark"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textAllCaps="true"
                 android:fontFamily="sans-serif-condensed"

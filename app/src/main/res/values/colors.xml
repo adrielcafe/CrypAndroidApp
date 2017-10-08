@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#656D78</color>
-    <color name="colorPrimaryDark">#434A54</color>
-    <color name="colorAccent">#48CFAD</color>
+    <color name="colorPrimary">#656d78</color>
+    <color name="colorPrimaryDark">#434a54</color>
+    <color name="colorAccent">#48cfad</color>
 
     <color name="content_bg">#ecf0f1</color>
     <color name="coin_logo_tint">#fff</color>
+
+    <color name="grey_dark">#424242</color>
 
     <color name="silver">#bdc3c7</color>
     <color name="concrete">#95a5a6</color>
