@@ -52,6 +52,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    // MVP
+    kapt "com.arello-mobile:moxy-compiler:$moxy_version"
+    implementation "com.arello-mobile:moxy:$moxy_version"
+    implementation "com.arello-mobile:moxy-app-compat:$moxy_version"
+    implementation "com.arello-mobile:moxy-android:$moxy_version"
+
     // Data
     implementation 'io.paperdb:paperdb:2.5'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -62,12 +68,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     // View
-    kapt "com.evernote:android-state-processor:$android_state_version"
-    implementation "com.evernote:android-state:$android_state_version"
     implementation("com.mikepenz:fastadapter:$fastadapter_version@aar") { transitive true }
     implementation "com.mikepenz:fastadapter-commons:$fastadapter_version@aar"
     implementation "com.mikepenz:fastadapter-extensions:$fastadapter_version@aar"
     implementation 'com.tubb.smrv:swipemenu-recyclerview:5.4.0'
+    implementation 'com.github.GrenderG:Toasty:1.2.5'
+
+    // Util
+    kapt "com.evernote:android-state-processor:$android_state_version"
+    implementation "com.evernote:android-state:$android_state_version"
+    implementation 'com.github.ajalt:timberkt:1.3.0'
 
     // Test
     testImplementation 'junit:junit:4.12'

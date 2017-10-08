@@ -1,6 +1,7 @@
 buildscript {
     ext.support_version = '26.1.0'
     ext.kotlin_version = '1.1.51'
+    ext.moxy_version = '1.5.3'
     ext.retrofit_version = '2.3.0'
     ext.moshi_version = '1.5.0'
     ext.android_state_version = '1.1.5'
@@ -24,6 +25,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 

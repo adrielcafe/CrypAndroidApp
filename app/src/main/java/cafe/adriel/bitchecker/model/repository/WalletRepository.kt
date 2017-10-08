@@ -24,12 +24,13 @@ object WalletRepository {
                 walletsDb.allKeys.map { walletsDb.read<Wallet>(it) }
             }
 
-    fun add(wallet: Wallet) =
+    fun addOrUpdate(wallet: Wallet) =
             walletsDb.write(wallet.id, wallet)
                     .exist(wallet.id)
 
     fun remove(wallet: Wallet) =
             walletsDb.delete(wallet.id)
+                    .let { !walletsDb.exist(wallet.id) }
 
     fun updateAll(wallets: List<Wallet>) =
             wallets.toObservable()

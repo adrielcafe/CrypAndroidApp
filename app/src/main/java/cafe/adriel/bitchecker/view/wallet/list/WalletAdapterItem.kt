@@ -10,7 +10,7 @@ import com.mikepenz.fastadapter.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 
-class WalletAdapterItem(private val wallet: Wallet) :
+class WalletAdapterItem(val wallet: Wallet) :
         AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>(),
         IDraggable<WalletAdapterItem, WalletAdapterItem> {
 
