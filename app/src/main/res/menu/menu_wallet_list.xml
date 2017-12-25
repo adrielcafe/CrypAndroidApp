@@ -2,13 +2,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cafe.adriel.bitchecker.view.wallet.list.WalletListActivity">
+    tools:context="cafe.adriel.cryp.view.wallet.list.WalletListActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_settings"
+        android:id="@+id/action_coin_formats"
+        android:title="@string/coin_formats"
+        android:background="@android:color/transparent"
+        app:actionViewClass="android.support.v7.widget.AppCompatSpinner"
         app:showAsAction="always" />
+
+    <!--<item-->
+        <!--android:id="@+id/action_settings"-->
+        <!--android:title="@string/action_settings"-->
+        <!--android:icon="@drawable/ic_settings"-->
+        <!--app:showAsAction="always" />-->
 
 </menu>

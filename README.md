@@ -1,1 +1,1 @@
-BitChecker
+Cryp Android App (WIP)
