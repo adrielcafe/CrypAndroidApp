@@ -7,4 +7,4 @@ import io.mironov.smuggler.AutoParcelable
 @SuppressLint("ParcelCreator")
 data class BalanceResponse(
         @Json(name = "balance")
-        var balance: Long) : AutoParcelable
+        var balance: Double = 0.0) : AutoParcelable

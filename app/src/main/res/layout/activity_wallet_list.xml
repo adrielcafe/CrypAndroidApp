@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/porcelain"
+    android:background="@color/grey_light"
     tools:context="cafe.adriel.cryp.view.wallet.list.WalletListActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -17,7 +17,6 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             app:titleEnabled="false"
             app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -27,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="30dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:gravity="center_horizontal"
                 app:layout_collapseMode="parallax">
 
@@ -39,18 +38,40 @@
                     android:text="@string/total_balance"
                     android:textColor="@android:color/white"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textAllCaps="true"
-                    android:fontFamily="sans-serif-light"/>
+                    android:fontFamily="sans-serif-light"
+                    app:textAllCaps="true"/>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vTotalBalance"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textColor="@android:color/white"
-                    android:fontFamily="sans-serif-medium"
-                    tools:text="$ 1,234.56"/>
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/vTotalBalanceCurrency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="5dp"
+                        android:maxLines="1"
+                        android:text="$"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-medium"/>
+
+                    <cafe.adriel.cryp.view.custom.CounterTextView
+                        android:id="@+id/vTotalBalance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="0"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-medium"/>
+
+                </android.support.v7.widget.LinearLayoutCompat>
 
             </android.support.v7.widget.LinearLayoutCompat>
 
@@ -66,7 +87,7 @@
                     android:layout_width="50dp"
                     android:layout_height="40dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/logo_cryp"
+                    app:srcCompat="@drawable/cryp"
                     app:tint="@android:color/white"/>
 
             </android.support.v7.widget.Toolbar>

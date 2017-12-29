@@ -15,6 +15,7 @@ import cafe.adriel.cryp.model.entity.CoinFormat
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
+import cafe.adriel.cryp.view.custom.SeparatorDecoration
 import cafe.adriel.cryp.view.qrcode.show.ShowQrCodeActivity
 import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
 import cafe.adriel.kbus.KBus
@@ -28,6 +29,7 @@ import com.mikepenz.fastadapter_extensions.drag.ItemTouchCallback
 import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback
 import com.tubb.smrv.SwipeHorizontalMenuLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
@@ -38,6 +40,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     lateinit var presenter: WalletListPresenter
 
     private val adapter = FastItemAdapter<WalletAdapterItem>()
+    private var currentTotalBalance = 0F
     private var currentOpenedMenuPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +61,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                         viewHolder.itemView.vDelete
                     )
             override fun onClick(v: View?, position: Int, fastAdapter: FastAdapter<WalletAdapterItem>?, item: WalletAdapterItem?) {
-                v?.parent?.parent?.let {
+                v?.parent?.parent?.parent?.let {
                     if(it is SwipeHorizontalMenuLayout){
                         closeSwipeMenu(it)
                         it.postDelayed({
@@ -68,7 +71,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                                     R.id.vDelete -> showDeleteDialog(it)
                                 }
                             }
-                        }, 75)
+                        }, 100)
                     }
                 }
             }
@@ -77,16 +80,13 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         ItemTouchHelper(SimpleDragCallback(this))
                 .attachToRecyclerView(vWallets)
         vWallets.setHasFixedSize(true)
+        vWallets.addItemDecoration(SeparatorDecoration(10))
         vWallets.layoutManager = LinearLayoutManager(this)
         vWallets.adapter = adapter
-
-        // TODO temp
-        vTotalBalance.text = "\$ 1,234.56"
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        refresh()
         KBus.subscribe<OpenedSwipeMenuEvent>(this, {
             currentOpenedMenuPosition = adapter.getPosition(it.itemId)
             closeSwipeMenus(false)
@@ -94,6 +94,15 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         KBus.subscribe<RefreshWalletListEvent>(this, {
             refresh()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refresh()
+        // Fix missing logo of selected item
+        if(currentOpenedMenuPosition >= 0){
+            adapter.notifyAdapterItemChanged(currentOpenedMenuPosition)
+        }
     }
 
     override fun onDestroy() {
@@ -111,7 +120,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     // TODO temp
-//    override fun onOptionsItemSelected(item: MenuItem) =
+//    override fun onOptionsItemSelected(item: MenuItem?) =
 //            when (item.itemId) {
 //                R.id.action_settings -> {
 //                    showSettingsActivity()
@@ -135,11 +144,41 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         presenter.saveOrder(walletIds)
     }
 
+    override fun addAll(wallets: List<Wallet>) {
+        wallets.toObservable()
+                .map { WalletAdapterItem(it) }
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    adapter.clear()
+                    adapter.add(it)
+                    updateTotalBalance()
+                    closeSwipeMenus(true)
+                    setRefreshing(false)
+                }, {
+                    it.printStackTrace()
+                })
+    }
+
+    override fun addOrUpdate(wallet: Wallet) {
+        val position = getItemPosition(wallet)
+        if(position < 0) {
+            if(presenter.exists(wallet)) {
+                adapter.add(WalletAdapterItem(wallet))
+            }
+        } else {
+            adapter.getAdapterItem(position).wallet = wallet
+            adapter.notifyAdapterItemChanged(position)
+        }
+    }
+
     override fun remove(wallet: Wallet) {
         val position = getItemPosition(wallet)
         if(position >= 0) {
             adapter.remove(position)
         }
+        updateTotalBalance()
     }
 
     private fun initCoinFormatSpinner(vSpinner: AppCompatSpinner){
@@ -176,7 +215,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         AwesomeSuccessDialog(this)
                 .setTitle(wallet.coin.toString())
                 .setMessage(R.string.are_you_sure_remove_wallet)
-                .setColoredCircle(R.color.monza)
+                .setColoredCircle(R.color.red)
                 .setDialogIconAndColor(R.drawable.ic_delete, R.color.white)
                 .setCancelable(true)
                 .setNegativeButtonText(getString(R.string.nevermind))
@@ -184,32 +223,19 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 .setNegativeButtonbackgroundColor(android.R.color.white)
                 .setNegativeButtonClick {  }
                 .setPositiveButtonText(getString(R.string.yes_please))
-                .setPositiveButtonbackgroundColor(R.color.monza)
+                .setPositiveButtonbackgroundColor(R.color.red)
                 .setPositiveButtonClick { presenter.delete(wallet) }
                 .show()
-    }
-
-    private fun addOrUpdate(wallet: Wallet) {
-        val position = getItemPosition(wallet)
-        if(position < 0) {
-            adapter.add(WalletAdapterItem(wallet))
-        } else {
-            adapter.set(position, WalletAdapterItem(wallet))
-        }
     }
 
     private fun refresh() {
         setRefreshing(true)
         presenter.loadAll()
-                .flatMapIterable { it }
-                .map { WalletAdapterItem(it) }
-                .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    adapter.clear()
-                    adapter.add(it)
-                    closeSwipeMenus(true)
+                    it.forEach { addOrUpdate(it) }
+                    updateTotalBalance()
                     setRefreshing(false)
                 }, {
                     e(it)
@@ -221,6 +247,21 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
 
     private fun setRefreshing(refreshing: Boolean) {
         vRefresh.isRefreshing = refreshing
+    }
+
+    private fun updateTotalBalance() {
+        var totalBalance = 0F
+        adapter.adapterItems.forEach {
+            totalBalance += it.wallet.getBalanceCurrency().toInt()
+        }
+        if(totalBalance < 0){
+            totalBalance = 0F
+        }
+        vTotalBalance.postDelayed({
+            vTotalBalance.setDecimalFormat(currencyFormat)
+                    .startAnimation(currentTotalBalance, totalBalance)
+            currentTotalBalance = totalBalance
+        }, 500)
     }
 
     private fun closeSwipeMenus(closeCurrentOpenedMenu: Boolean){

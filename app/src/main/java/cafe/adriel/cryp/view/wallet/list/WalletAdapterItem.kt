@@ -1,5 +1,6 @@
 package cafe.adriel.cryp.view.wallet.list
 
+import android.content.res.ColorStateList
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import cafe.adriel.cryp.*
@@ -12,7 +13,7 @@ import com.tubb.smrv.SwipeMenuLayout
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 
-class WalletAdapterItem(val wallet: Wallet) :
+class WalletAdapterItem(var wallet: Wallet) :
         AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>() {
 
     override fun getIdentifier() = wallet.id.hashCode().toLong()
@@ -33,32 +34,29 @@ class WalletAdapterItem(val wallet: Wallet) :
                     balance = wallet.getFormattedBalanceMBtc()
                     coinFormat = "m${wallet.coin.name}"
                 }
-                CoinFormat.U_BTC -> {
-                    balance = wallet.getFormattedBalanceUBtc()
-                    coinFormat = "μ${wallet.coin.name}"
+                CoinFormat.BITS -> {
+                    balance = wallet.getFormattedBalanceBits()
+                    coinFormat = CoinFormat.BITS.name
                 }
                 CoinFormat.SATOSHI -> {
                     balance = wallet.getFormattedBalanceSatoshi()
-                    coinFormat = CoinFormat.SATOSHI.fullName.toUpperCase()
+                    coinFormat = CoinFormat.SATOSHI.name
                 }
             }
 
-            if(wallet.balance > 0){
-                // TODO temp
-                vConvertedBalance.text = "\$ 1.345,20"
+            if(wallet.balance >= 0){
+                vConvertedBalance.text = "$ ${wallet.getFormattedBalanceCurrency()}"
                 vBalance.text = balance
                 vCoinFormat.text = coinFormat
             } else {
-                // TODO temp
                 vConvertedBalance.text = "-"
                 vBalance.text = "-"
                 vCoinFormat.text = ""
             }
 
-            vName.text = wallet.coin.fullName
-            vCoinLogo.background = wallet.coin.logo
-            vCircle.setBackgroundColor(wallet.coin.color)
-            smMenuViewLeft.setBackgroundColor(wallet.coin.color)
+            vCoinName.text = wallet.coin.fullName
+            vCoinLogo.setImageDrawable(wallet.coin.logo)
+            vCoinLogo.imageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
             vSwipeMenu.setSwipeListener(object : SimpleSwipeSwitchListener(){
                 override fun beginMenuOpened(swipeMenuLayout: SwipeMenuLayout?) {
                     KBus.post(OpenedSwipeMenuEvent(identifier))
@@ -70,13 +68,12 @@ class WalletAdapterItem(val wallet: Wallet) :
     override fun unbindView(holder: ViewHolder?) {
         super.unbindView(holder)
         holder?.itemView?.apply {
-            vName.text = ""
-            vConvertedBalance.text = ""
-            vBalance.text = ""
+            vCoinName.text = ""
+            vConvertedBalance.text = "-"
+            vBalance.text = "-"
             vCoinFormat.text = ""
-            vCoinLogo.background = null
-            vCircle.setBackgroundColor(colorFrom(R.color.silver_sand))
-            smMenuViewLeft.setBackgroundColor(colorFrom(R.color.silver_sand))
+            vCoinLogo.setImageDrawable(null)
+            vSwipeMenu.smoothCloseMenu(0)
             vSwipeMenu.setSwipeListener(null)
         }
     }

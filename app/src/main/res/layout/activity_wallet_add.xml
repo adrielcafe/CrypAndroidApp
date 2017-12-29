@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,21 +9,27 @@
     android:background="@color/colorAccent"
     tools:context="cafe.adriel.cryp.view.wallet.add.AddWalletActivity">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/vClose"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="start|top"
-        android:layout_margin="10dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_close"/>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/vToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
         android:id="@+id/vQrCodeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="?actionBarSize"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true">
@@ -35,7 +41,7 @@
             android:layout_centerHorizontal="true"
             android:padding="20dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_qrcode"/>
+            app:srcCompat="@drawable/ic_scan_qrcode"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/vTapToScan"
@@ -45,10 +51,10 @@
             android:layout_below="@id/vQrCode"
             android:layout_marginTop="20dp"
             android:text="@string/tap_to_scan"
-            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-light"/>
+            android:fontFamily="sans-serif-light"
+            app:textAllCaps="true"/>
 
     </RelativeLayout>
 
@@ -92,24 +98,18 @@
             android:spinnerMode="dialog"
             app:backgroundTint="@android:color/white"/>
 
-        <FrameLayout
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/vAddWallet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccentDark">
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/vAddWallet"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:text="@string/add_wallet"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/white"
-                android:fontFamily="sans-serif-medium"
-                android:background="?selectableItemBackgroundBorderless"/>
-
-        </FrameLayout>
+            android:layout_height="?actionBarSize"
+            android:text="@string/add_wallet"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-medium"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:background="@color/colorAccentDark"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

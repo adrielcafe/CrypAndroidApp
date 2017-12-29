@@ -2,6 +2,7 @@ package cafe.adriel.cryp.view.wallet.add
 
 import android.Manifest
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
@@ -25,6 +26,11 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet_add)
+
+        setSupportActionBar(vToolbar)
+        vToolbar.setNavigationIcon(R.drawable.ic_close)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         window.statusBarColor = colorFrom(R.color.colorAccentDark)
         window.navigationBarColor = colorFrom(R.color.colorAccentDark).darken
 
@@ -42,7 +48,6 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             }
         }
 
-        vClose.setOnClickListener { finish() }
         vQrCodeLayout.setOnClickListener { scanQrCode() }
         vAddWallet.setOnClickListener { addWallet() }
 
@@ -73,6 +78,15 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         KBus.unsubscribe(this)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?) =
+            when (item?.itemId) {
+                android.R.id.home -> {
+                    finish()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+
     override fun close() {
         finish()
     }
@@ -101,7 +115,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             vQrCode.setImageBitmap(text.getQrCode(R.color.colorAccentDark))
             vQrCode.setPadding(0, 0, 0, 0)
         } else {
-            vQrCode.setImageResource(R.drawable.ic_qrcode)
+            vQrCode.setImageResource(R.drawable.ic_scan_qrcode)
             vQrCode.setPadding(20.px, 20.px, 20.px, 20.px)
         }
     }
