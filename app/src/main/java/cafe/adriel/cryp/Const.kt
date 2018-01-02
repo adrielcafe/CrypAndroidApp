@@ -1,6 +1,9 @@
 package cafe.adriel.cryp
 
 object Const {
+    const val WALLET_API_BASE_URL = "https://multiexplorer.com/api/"
+    const val PRICE_API_BASE_URL = "https://min-api.cryptocompare.com/data/"
+
     const val DB_WALLETS = "wallets"
     const val DB_PREFERENCES = "preferences"
 

@@ -1,141 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<com.tubb.smrv.SwipeHorizontalMenuLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vSwipeMenu"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="2.5dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardUseCompatPadding="false"
-    app:cardElevation="1dp"
-    app:cardCornerRadius="0dp">
+    android:layout_height="110dp"
+    android:elevation="1dp">
 
-    <com.tubb.smrv.SwipeHorizontalMenuLayout
-        android:id="@+id/vSwipeMenu"
+    <android.support.v7.widget.CardView
+        android:id="@id/smContentView"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="10dp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/vCoinLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="start|center_vertical"
+            android:scaleType="fitCenter"
+            app:tint="@color/colorPrimaryDark"
+            tools:srcCompat="@drawable/logo_btc"/>
 
         <RelativeLayout
-            android:id="@id/smContentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="20dp">
 
-            <View
-                android:id="@+id/vCircle"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="-20dp"
-                android:layout_marginBottom="-20dp"
-                android:layout_marginStart="-10dp"
-                android:rotation="15"
-                android:elevation="2dp"
-                tools:background="@color/buttercup"/>
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/vCoinLogo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:scaleType="fitCenter"
-                android:backgroundTint="@android:color/white"
-                android:elevation="2dp"
-                tools:srcCompat="@drawable/logo_bitcoin"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/vCoinName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/vCircle"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp">
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="3dp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:fontFamily="sans-serif-light"
+                app:textAllCaps="true"
+                tools:text="Bitcoin"/>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:maxLines="1"
-                    android:textColor="@android:color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textAllCaps="true"
-                    android:fontFamily="sans-serif-light"
-                    tools:text="Bitcoin"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/vConvertedBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vCoinName"
+                android:layout_marginBottom="3dp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="$ 1.392,04"/>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vConvertedBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/vName"
-                    android:maxLines="1"
-                    android:textColor="@android:color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    tools:text="$ 1.392,04"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/vBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vConvertedBalance"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="123456789.00000001"/>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/vConvertedBalance"
-                    android:maxLines="1"
-                    android:textColor="@android:color/black"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    tools:text="123456789.00000001"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vCoinFormat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/vBalance"
-                    android:layout_alignBottom="@id/vBalance"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="2dp"
-                    android:maxLines="1"
-                    android:textColor="@color/grey_dark"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:fontFamily="sans-serif-condensed"
-                    tools:text="BTC"/>
-
-            </RelativeLayout>
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/vCoinFormat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/vBalance"
+                android:layout_alignBottom="@id/vBalance"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="1.5dp"
+                android:maxLines="1"
+                android:textColor="@color/grey_extra_dark"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:fontFamily="sans-serif-condensed"
+                tools:text="BTC"/>
 
         </RelativeLayout>
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@id/smMenuViewLeft"
-            android:layout_width="wrap_content"
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@id/smMenuViewLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:paddingStart="10dp"
-            android:paddingEnd="5dp"
-            android:gravity="start|center_vertical"
-            android:orientation="horizontal"
-            tools:background="@color/silver_sand">
-            
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="10dp">
+
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/vSeeAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:padding="10dp"
-                android:src="@drawable/ic_see"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_qrcode"
                 android:background="?selectableItemBackgroundBorderless"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/red"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="10dp">
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/vDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_delete"
                 android:background="?selectableItemBackgroundBorderless"/>
-            
-        </android.support.v7.widget.LinearLayoutCompat>
 
-    </com.tubb.smrv.SwipeHorizontalMenuLayout>
+        </android.support.v7.widget.CardView>
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+</com.tubb.smrv.SwipeHorizontalMenuLayout>

@@ -1,32 +1,38 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.BuildConfig
+import cafe.adriel.cryp.model.repository.adapter.BigDecimalAdapter
+import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import kotlin.reflect.KClass
 
 object ServiceFactory {
 
-    fun <T: Any> newInstance(baseUrl: String, serviceClass: KClass<T>): T =
+    inline fun <reified T : Any> newInstance(baseUrl: String): T =
             Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(getClient())
-                    .addConverterFactory(MoshiConverterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create(getJsonConverter()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-                    .create(serviceClass.java)
+                    .create(T::class.java)
 
-    private fun getClient() =
+    fun getClient() =
             OkHttpClient.Builder()
                     .addInterceptor(getLogging())
+                    .build()
+
+    fun getJsonConverter() =
+            Moshi.Builder()
+                    .add(BigDecimalAdapter())
                     .build()
 
     private fun getLogging() =
             HttpLoggingInterceptor().setLevel(
                     if(BuildConfig.RELEASE) HttpLoggingInterceptor.Level.NONE
-                    else HttpLoggingInterceptor.Level.BASIC)
+                    else HttpLoggingInterceptor.Level.BODY)
 
 }

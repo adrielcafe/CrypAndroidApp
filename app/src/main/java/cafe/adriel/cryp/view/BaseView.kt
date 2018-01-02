@@ -5,6 +5,6 @@ import cafe.adriel.cryp.model.entity.MessageType
 import com.arellomobile.mvp.MvpView
 
 interface BaseView : MvpView {
-    fun showMessage(@StringRes messageRes: Int, type: MessageType)
-    fun showMessage(message: String, type: MessageType)
+    fun showMessage(@StringRes messageRes: Int, type: MessageType = MessageType.DEFAULT)
+    fun showMessage(message: String, type: MessageType = MessageType.DEFAULT)
 }

@@ -1,17 +1,44 @@
 package cafe.adriel.cryp.view.wallet.list
 
 import cafe.adriel.cryp.R
-import cafe.adriel.cryp.model.entity.CoinFormat
-import cafe.adriel.cryp.model.entity.MessageType
-import cafe.adriel.cryp.model.entity.Wallet
+import cafe.adriel.cryp.model.entity.*
+import cafe.adriel.cryp.model.entity.Currency
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.model.repository.WalletRepository
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.toObservable
+import java.math.BigDecimal
 import java.util.*
 
 @InjectViewState
 class WalletListPresenter: MvpPresenter<WalletListView>() {
+
+    fun loadAll() = WalletRepository.getAll()
+            .toObservable()
+            .sorted(getSortComparator())
+            .toList()
+            .flatMap {
+                viewState.addAll(it)
+                WalletRepository.updateBalances(it)
+            }
+            .zipWith(WalletRepository.updatePrices(WalletRepository.getAll()).singleOrError(),
+                    BiFunction { wallets: List<Wallet>, prices: Map<String, Map<String, BigDecimal>> ->
+                        wallets.forEach {
+                            if(prices.containsKey(it.coin.name)){
+                                it.priceBtc = prices[it.coin.name]?.get(Coin.BTC.name) ?: BigDecimal.ZERO
+                                it.priceCurrency = prices[it.coin.name]?.get(Currency.USD.name) ?: BigDecimal.ZERO
+                            }
+                            WalletRepository.addOrUpdate(it)
+                        }
+                        wallets
+                    }
+            )
+            .toObservable()
+
+    fun exists(wallet: Wallet) =
+            WalletRepository.contains(wallet)
 
     fun delete(wallet: Wallet) {
         if(WalletRepository.remove(wallet)){
@@ -28,16 +55,6 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
 
     fun getCoinFormat() =
         PreferenceRepository.getCoinFormat()
-
-    fun loadAll() =
-            WalletRepository.getAll()
-                    .flatMapIterable { it }
-                    .sorted(getSortComparator())
-                    .toList()
-                    .toObservable()
-                // TODO don't need to update the wallets on pre-alpha phase
-//                .map { WalletRepository.updateAll(it) }
-//                .flatMap { it.toObservable() }
 
     private fun getSortComparator() = object : Comparator<Wallet> {
         private val order = PreferenceRepository.getWalletOrder()

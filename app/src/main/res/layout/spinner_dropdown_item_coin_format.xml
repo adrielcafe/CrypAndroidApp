@@ -12,4 +12,4 @@
     android:background="@color/colorPrimaryDark"
     android:textColor="@android:color/white"
     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-    tools:text="μBTC"/>
+    tools:text="BTC"/>

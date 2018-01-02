@@ -1,10 +1,9 @@
 package cafe.adriel.cryp.view.qrcode.show
 
 import android.os.Bundle
-import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.R
-import cafe.adriel.cryp.copyToClipboard
-import cafe.adriel.cryp.getQrCode
+import android.view.Menu
+import android.view.MenuItem
+import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
@@ -19,26 +18,51 @@ class ShowQrCodeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_qrcode)
 
+        setSupportActionBar(vToolbar)
+        vToolbar.setNavigationIcon(R.drawable.ic_close)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         if(intent.hasExtra(Const.EXTRA_WALLET)) {
             wallet = intent.getParcelableExtra(Const.EXTRA_WALLET)
         } else {
+            showMessage(R.string.wallet_not_found, MessageType.ERROR)
             finish()
         }
 
-        vCoin.text = wallet.coin.toString()
+        vCoinLogo.setImageDrawable(wallet.coin.logo)
+        vCoinName.text = wallet.coin.toString()
         vPublicKey.text = wallet.address
         vQrCode.setImageBitmap(wallet.address.getQrCode(R.color.colorPrimaryDark))
 
-        vClose.setOnClickListener { finish() }
-        vQrCode.setOnClickListener { copyPublicKeyToClipboard() }
-        vPublicKey.setOnClickListener { copyPublicKeyToClipboard() }
-        vTapToCopy.setOnClickListener { copyPublicKeyToClipboard() }
+        vQrCodeLayout.setOnClickListener { copyPublicKeyToClipboard() }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_share, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?) =
+            when (item?.itemId) {
+                android.R.id.home -> {
+                    finish()
+                    true
+                }
+                R.id.action_share -> {
+                    shareWallet()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
 
     private fun copyPublicKeyToClipboard(){
         val label = getString(R.string.coin_public_key, wallet.coin.fullName)
         wallet.address.copyToClipboard(label)
         showMessage(R.string.copied, MessageType.SUCCESS)
+    }
+
+    private fun shareWallet(){
+        wallet.share(this)
     }
 
 }

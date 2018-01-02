@@ -2,6 +2,7 @@ package cafe.adriel.cryp.view.wallet.add
 
 import android.Manifest
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Coin
 import cafe.adriel.cryp.model.entity.MessageType
+import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.qrcode.scan.ScanQrCodeActivity
 import cafe.adriel.kbus.KBus
@@ -25,6 +27,11 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet_add)
+
+        setSupportActionBar(vToolbar)
+        vToolbar.setNavigationIcon(R.drawable.ic_close)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         window.statusBarColor = colorFrom(R.color.colorAccentDark)
         window.navigationBarColor = colorFrom(R.color.colorAccentDark).darken
 
@@ -42,7 +49,6 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             }
         }
 
-        vClose.setOnClickListener { finish() }
         vQrCodeLayout.setOnClickListener { scanQrCode() }
         vAddWallet.setOnClickListener { addWallet() }
 
@@ -73,6 +79,23 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         KBus.unsubscribe(this)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?) =
+            when (item?.itemId) {
+                android.R.id.home -> {
+                    finish()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+
+    override fun showValidatingDialog(wallet: Wallet) {
+        showProgressDialog(wallet.coin.toString(), stringFrom(R.string.validating_public_key))
+    }
+
+    override fun hideValidatingDialog() {
+        hideProgressDialog()
+    }
+
     override fun close() {
         finish()
     }
@@ -101,7 +124,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             vQrCode.setImageBitmap(text.getQrCode(R.color.colorAccentDark))
             vQrCode.setPadding(0, 0, 0, 0)
         } else {
-            vQrCode.setImageResource(R.drawable.ic_qrcode)
+            vQrCode.setImageResource(R.drawable.ic_scan_qrcode)
             vQrCode.setPadding(20.px, 20.px, 20.px, 20.px)
         }
     }
@@ -109,8 +132,12 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     private fun addWallet(){
         val publicKey = vPublicKey.text.toString()
         val coin = Coin.values()[vCoins.selectedItemPosition]
-        if(publicKey.isNotEmpty()){
-            presenter.saveWallet(coin, publicKey)
+        if (publicKey.isNotEmpty()) {
+            if(isConnected()) {
+                presenter.saveWallet(coin, publicKey)
+            } else {
+                showMessage(R.string.connect_internet, MessageType.INFO)
+            }
         } else {
             showMessage(R.string.type_or_scan_public_key, MessageType.WARN)
         }

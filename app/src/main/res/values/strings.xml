@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Cryp</string>
 
-    <string name="action_settings">Settings</string>
-
     <string name="coin_formats">Coin formats</string>
     <string name="total_balance">Total balance</string>
     <string name="add_wallet">Add wallet</string>
@@ -15,10 +13,18 @@
     <string name="wallet_saved">Wallet saved</string>
     <string name="wallet_already_saved">Wallet already saved</string>
     <string name="invalid_public_key">Invalid %s Public Key</string>
-    <string name="are_you_sure_remove_wallet">Are you sure you want to remove this wallet?</string>
+    <string name="server_unavailable_try_later">Server unavailable, try again later</string>
+    <string name="are_you_sure_remove_wallet">Are you sure you want to remove this wallet from app?</string>
     <string name="wallet_removed">Wallet removed</string>
+    <string name="wallet_not_found">Wallet not found</string>
     <string name="yes_please">Yes, please</string>
     <string name="nevermind">Nevermind</string>
     <string name="point_camera_qrcode">Point the camera at the QR Code</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="connect_internet">Connect to the internet</string>
+    <string name="no_wallet_yet">No wallet, yet</string>
+    <string name="tap_plus_to_add">Tap on \"+\" to add one!</string>
+    <string name="validating_public_key">Validating Public Key…</string>
 
 </resources>
