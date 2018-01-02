@@ -1,12 +1,14 @@
 package cafe.adriel.cryp.view
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import cafe.adriel.cryp.R
 import cafe.adriel.cryp.colorFrom
 import cafe.adriel.cryp.darken
 import cafe.adriel.cryp.model.entity.MessageType
 import com.arellomobile.mvp.MvpAppCompatActivity
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeProgressDialog
 import com.evernote.android.state.StateSaver
 import com.tbruyelle.rxpermissions2.RxPermissions
 import es.dmoral.toasty.Toasty
@@ -15,6 +17,7 @@ import es.dmoral.toasty.Toasty
 open class BaseActivity : MvpAppCompatActivity(), BaseView {
 
     protected val rxPermissions by lazy { RxPermissions(this) }
+    private var progressDialog : Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,5 +42,18 @@ open class BaseActivity : MvpAppCompatActivity(), BaseView {
                 MessageType.WARN -> Toasty.warning(this, message).show()
                 MessageType.ERROR -> Toasty.error(this, message).show()
             }
+
+    protected fun showProgressDialog(title: String, message: String){
+        progressDialog = AwesomeProgressDialog(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setColoredCircle(R.color.colorAccent)
+                .setCancelable(false)
+                .show()
+    }
+
+    protected fun hideProgressDialog(){
+        progressDialog?.dismiss()
+    }
 
 }

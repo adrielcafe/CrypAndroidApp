@@ -80,7 +80,6 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
-            app:textAllCaps="true"
             tools:text="14bSgbk7n59DZ8xK6zZcg6MDQR8c9tAoJj"/>
 
         <android.support.v7.widget.AppCompatTextView

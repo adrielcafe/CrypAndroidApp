@@ -12,6 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import com.tubb.smrv.SwipeMenuLayout
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
+import java.math.BigDecimal
 
 class WalletAdapterItem(var wallet: Wallet) :
         AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>() {
@@ -24,11 +25,11 @@ class WalletAdapterItem(var wallet: Wallet) :
 
     override fun getViewHolder(v: View?) = ViewHolder(v!!)
 
-    override fun bindView(holder: ViewHolder?, payloads: MutableList<Any>?) {
+    override fun bindView(holder: ViewHolder, payloads: MutableList<Any>) {
         super.bindView(holder, payloads)
-        holder?.itemView?.apply {
-            var balance = wallet.getFormattedBalanceBtc()
-            var coinFormat = wallet.coin.name
+        holder.itemView?.apply {
+            var balance: String
+            var coinFormat: String
             when(PreferenceRepository.getCoinFormat()){
                 CoinFormat.M_BTC -> {
                     balance = wallet.getFormattedBalanceMBtc()
@@ -42,9 +43,13 @@ class WalletAdapterItem(var wallet: Wallet) :
                     balance = wallet.getFormattedBalanceSatoshi()
                     coinFormat = CoinFormat.SATOSHI.name
                 }
+                else -> {
+                    balance = wallet.getFormattedBalanceBtc()
+                    coinFormat = wallet.coin.name
+                }
             }
 
-            if(wallet.balance >= 0){
+            if(wallet.balance >= BigDecimal.ZERO){
                 vConvertedBalance.text = "$ ${wallet.getFormattedBalanceCurrency()}"
                 vBalance.text = balance
                 vCoinFormat.text = coinFormat
@@ -65,9 +70,9 @@ class WalletAdapterItem(var wallet: Wallet) :
         }
     }
 
-    override fun unbindView(holder: ViewHolder?) {
+    override fun unbindView(holder: ViewHolder) {
         super.unbindView(holder)
-        holder?.itemView?.apply {
+        holder.itemView?.apply {
             vCoinName.text = ""
             vConvertedBalance.text = "-"
             vBalance.text = "-"

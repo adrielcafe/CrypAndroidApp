@@ -9,6 +9,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.toObservable
+import java.math.BigDecimal
 import java.util.*
 
 @InjectViewState
@@ -23,11 +24,11 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
                 WalletRepository.updateBalances(it)
             }
             .zipWith(WalletRepository.updatePrices(WalletRepository.getAll()).singleOrError(),
-                    BiFunction { wallets: List<Wallet>, prices: Map<String, Map<String, Double>> ->
+                    BiFunction { wallets: List<Wallet>, prices: Map<String, Map<String, BigDecimal>> ->
                         wallets.forEach {
                             if(prices.containsKey(it.coin.name)){
-                                it.priceBtc = prices[it.coin.name]?.get(Coin.BTC.name) ?: 0.0
-                                it.priceCurrency = prices[it.coin.name]?.get(Currency.USD.name) ?: 0.0
+                                it.priceBtc = prices[it.coin.name]?.get(Coin.BTC.name) ?: BigDecimal.ZERO
+                                it.priceCurrency = prices[it.coin.name]?.get(Currency.USD.name) ?: BigDecimal.ZERO
                             }
                             WalletRepository.addOrUpdate(it)
                         }

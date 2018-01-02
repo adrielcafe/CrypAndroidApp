@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_light"
+    android:background="@color/grey_extra_light"
     tools:context="cafe.adriel.cryp.view.wallet.list.WalletListActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -102,11 +102,21 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/vWallets"
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/vState"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"/>
+            app:msv_emptyView="@layout/state_empty"
+            app:msv_viewState="empty"
+            app:msv_animateViewChanges="false">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/vWallets"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"/>
+
+        </com.kennyc.view.MultiStateView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -118,8 +128,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_add"
-        app:layout_anchor="@id/vWallets"
-        app:layout_anchorGravity="bottom|end"
         app:layout_behavior="cafe.adriel.cryp.view.custom.ScrollAwareFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

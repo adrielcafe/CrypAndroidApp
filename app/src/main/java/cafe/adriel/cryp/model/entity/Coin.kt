@@ -70,8 +70,9 @@ enum class Coin(val fullName: String,
     VTC("Vertcoin",
             drawableFrom(R.drawable.logo_vtc)),
 
-    XMR("Monero",
-            drawableFrom(R.drawable.logo_xmr)),
+    // TODO not working
+//    XMR("Monero",
+//            drawableFrom(R.drawable.logo_xmr)),
 
     XVG("Verge",
             drawableFrom(R.drawable.logo_xvg)),

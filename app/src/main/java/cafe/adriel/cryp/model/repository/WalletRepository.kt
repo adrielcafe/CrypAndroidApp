@@ -15,6 +15,7 @@ import khronos.minute
 import khronos.seconds
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.math.BigDecimal
 
 object WalletRepository {
     private val walletsDb by lazy {
@@ -29,6 +30,9 @@ object WalletRepository {
 
     fun getAll() =
             walletsDb.allKeys.map { walletsDb.read<Wallet>(it) }
+
+    fun getById(id: String) =
+        getAll().firstOrNull { it.id == id }
 
     fun addOrUpdate(wallet: Wallet) =
             walletsDb.write(wallet.id, wallet)
@@ -46,7 +50,9 @@ object WalletRepository {
                     wallets.forEach {
                         // 30 sec interval before update prices
                         // to avoid API rate limits and socket timeout
-                        val canUpdate = it.updatedAt == null || it.updatedAt?.before(Dates.now() - 30.seconds) == true
+                        val canUpdate = it.priceBtc == BigDecimal.ZERO
+                                        || it.priceCurrency == BigDecimal.ZERO
+                                        || it.updatedAt?.before(Dates.now() - 30.seconds) == true
                         if(canUpdate) {
                             coins.add(it.coin.name)
                         }
@@ -56,15 +62,16 @@ object WalletRepository {
                                 coins.joinToString(","),
                                 currencies.joinToString(","))
                     } else {
-                        Observable.fromCallable { emptyMap<String, Map<String, Double>>() }
+                        Observable.fromCallable { emptyMap<String, Map<String, BigDecimal>>() }
                     }
                 }
             } else {
-                Observable.fromCallable { emptyMap<String, Map<String, Double>>() }
+                Observable.fromCallable { emptyMap<String, Map<String, BigDecimal>>() }
             }
 
     fun updateBalances(wallets: List<Wallet>) =
             wallets.toObservable()
+                    .onExceptionResumeNext {  }
                     .flatMap {
                         // 1 min interval before update balances
                         // to avoid API rate limits and socket timeout
@@ -79,12 +86,10 @@ object WalletRepository {
 
     fun update(wallet: Wallet) =
             walletService.getBalance(wallet.coin.name.toLowerCase(), wallet.address)
-                    .onExceptionResumeNext {  }
                     .map {
                         wallet.apply {
                             balance = it.balance
                             updatedAt = Dates.now()
-                            walletsDb.write(id, wallet)
                         }
                     }
 
@@ -104,6 +109,6 @@ object WalletRepository {
         fun getPrices(
                 @Query("fsyms") coins: String,
                 @Query("tsyms") currencies: String):
-                Observable<Map<String, Map<String, Double>>>
+                Observable<Map<String, Map<String, BigDecimal>>>
     }
 }

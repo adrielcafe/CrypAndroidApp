@@ -25,6 +25,7 @@ class ShowQrCodeActivity : BaseActivity() {
         if(intent.hasExtra(Const.EXTRA_WALLET)) {
             wallet = intent.getParcelableExtra(Const.EXTRA_WALLET)
         } else {
+            showMessage(R.string.wallet_not_found, MessageType.ERROR)
             finish()
         }
 

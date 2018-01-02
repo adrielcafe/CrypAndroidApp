@@ -21,7 +21,7 @@ import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
 import cafe.adriel.kbus.KBus
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog
-import com.github.ajalt.timberkt.e
+import com.kennyc.view.MultiStateView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
@@ -33,6 +33,7 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
+import java.math.BigDecimal
 import java.util.*
 
 class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
@@ -40,7 +41,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     lateinit var presenter: WalletListPresenter
 
     private val adapter = FastItemAdapter<WalletAdapterItem>()
-    private var currentTotalBalance = 0F
+    private var currentTotalBalance = BigDecimal.ZERO
     private var currentOpenedMenuPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +100,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     override fun onResume() {
         super.onResume()
         refresh()
+        // Re-enable add wallet button
+        vAddWallet.isEnabled = true
         // Fix missing logo of selected item
         if(currentOpenedMenuPosition >= 0){
             adapter.notifyAdapterItemChanged(currentOpenedMenuPosition)
@@ -152,7 +155,10 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     adapter.clear()
-                    adapter.add(it)
+                    if(it.isNotEmpty()) {
+                        adapter.add(it)
+                    }
+                    updateState()
                     updateTotalBalance()
                     closeSwipeMenus(true)
                     setRefreshing(false)
@@ -178,6 +184,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         if(position >= 0) {
             adapter.remove(position)
         }
+        updateState()
         updateTotalBalance()
     }
 
@@ -199,6 +206,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showAddWalletActivity() {
+        vAddWallet.isEnabled = false
         startActivity<AddWalletActivity>()
     }
 
@@ -229,37 +237,50 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun refresh() {
-        setRefreshing(true)
-        presenter.loadAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    it.forEach { addOrUpdate(it) }
-                    updateTotalBalance()
-                    setRefreshing(false)
-                }, {
-                    e(it)
-                    showMessage(it.localizedMessage, MessageType.ERROR)
-                    closeSwipeMenus(true)
-                    setRefreshing(false)
-                })
+        if(isConnected()) {
+            setRefreshing(true)
+            presenter.loadAll()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        it.forEach { addOrUpdate(it) }
+                        updateState()
+                        updateTotalBalance()
+                        setRefreshing(false)
+                    }, {
+                        it.printStackTrace()
+                        closeSwipeMenus(true)
+                        setRefreshing(false)
+                    })
+        } else {
+            setRefreshing(false)
+            showMessage(R.string.connect_internet, MessageType.INFO)
+        }
     }
 
     private fun setRefreshing(refreshing: Boolean) {
         vRefresh.isRefreshing = refreshing
     }
 
-    private fun updateTotalBalance() {
-        var totalBalance = 0F
-        adapter.adapterItems.forEach {
-            totalBalance += it.wallet.getBalanceCurrency().toInt()
+    private fun updateState(){
+        vState.viewState = if(adapter.adapterItemCount == 0) {
+            MultiStateView.VIEW_STATE_EMPTY
+        } else {
+            MultiStateView.VIEW_STATE_CONTENT
         }
-        if(totalBalance < 0){
-            totalBalance = 0F
+    }
+
+    private fun updateTotalBalance() {
+        var totalBalance = BigDecimal.ZERO
+        adapter.adapterItems.forEach {
+            totalBalance += it.wallet.getBalanceCurrency()
+        }
+        if(totalBalance < BigDecimal.ZERO){
+            totalBalance = BigDecimal.ZERO
         }
         vTotalBalance.postDelayed({
             vTotalBalance.setDecimalFormat(currencyFormat)
-                    .startAnimation(currentTotalBalance, totalBalance)
+                    .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
             currentTotalBalance = totalBalance
         }, 500)
     }

@@ -49,9 +49,10 @@ class CounterTextView(context: Context,
     fun startAnimation(from: Float, to: Float) {
         if (isAnimating) {
             animator.cancel()
+            animator.setFloatValues(animator.animatedValue.toString().toFloat(), to)
+        } else {
+            animator.setFloatValues(from, to)
         }
-
-        animator.setFloatValues(from, to)
         animator.start()
     }
 

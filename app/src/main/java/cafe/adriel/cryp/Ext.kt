@@ -7,12 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Parcelable
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
 import android.support.annotation.IntegerRes
 import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.ContextCompat
 import cafe.adriel.cryp.model.entity.Wallet
@@ -26,8 +26,8 @@ import java.util.*
 
 
 // Resources
-fun stringFrom(@StringRes stringRes: Int, vararg params : String? = emptyArray()) =
-        App.CONTEXT.getString(stringRes, params)
+fun stringFrom(@StringRes stringRes: Int, param : String? = null) =
+        App.CONTEXT.getString(stringRes, param)
 
 fun intFrom(@IntegerRes intRes: Int) =
         App.CONTEXT.resources.getInteger(intRes)
@@ -47,16 +47,16 @@ inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<Stri
             is Serializable -> intent.putExtra(it.first, it.second as Serializable)
             is String -> intent.putExtra(it.first, it.second as String)
             is Int -> intent.putExtra(it.first, it.second as Int)
+            is Long -> intent.putExtra(it.first, it.second as Long)
             else -> throw Exception("${it.second::class.java} not implemented")
         }
     }
     startActivity(intent)
 }
 
-inline fun <reified T : Activity> Fragment.startActivity(vararg extras: Pair<String, Parcelable>) {
-    val intent = Intent(context, T::class.java)
-    extras.forEach { intent.putExtra(it.first, it.second) }
-    startActivity(intent)
+fun Context.isConnected(): Boolean {
+    val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
 
 // String

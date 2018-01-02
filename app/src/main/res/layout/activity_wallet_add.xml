@@ -67,7 +67,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/grey_light"
+            android:textColorHint="@color/grey_extra_light"
             app:hintTextAppearance="@style/FloatingLabelTextAppearance">
 
             <android.support.v7.widget.AppCompatEditText
@@ -84,6 +84,7 @@
                 android:hint="@string/public_key"
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:inputType="textNoSuggestions"
                 tools:text="14bSgbk7n59DZ8xK6zZcg6MDQR8c9tAoJj"/>
 
         </android.support.design.widget.TextInputLayout>
