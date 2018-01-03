@@ -1,4 +1,4 @@
-package cafe.adriel.cryp.view.qrcode.scan
+package cafe.adriel.cryp.view.wallet.scan
 
 import android.graphics.PointF
 import android.os.Bundle
@@ -7,13 +7,13 @@ import cafe.adriel.cryp.R
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.kbus.KBus
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView
-import kotlinx.android.synthetic.main.activity_scan_qrcode.*
+import kotlinx.android.synthetic.main.activity_scan_wallet.*
 
-class ScanQrCodeActivity : BaseActivity(), QRCodeReaderView.OnQRCodeReadListener {
+class ScanWalletActivity : BaseActivity(), QRCodeReaderView.OnQRCodeReadListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scan_qrcode)
+        setContentView(R.layout.activity_scan_wallet)
 
         vReader.setOnQRCodeReadListener(this)
         vReader.forceAutoFocus()
@@ -25,7 +25,7 @@ class ScanQrCodeActivity : BaseActivity(), QRCodeReaderView.OnQRCodeReadListener
             vReader.postDelayed({
                 KBus.post(QrCodeScannedEvent(it))
                 finish()
-            }, 1000)
+            }, 500)
         }
     }
 

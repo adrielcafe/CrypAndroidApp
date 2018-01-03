@@ -28,11 +28,9 @@ object WalletRepository {
         ServiceFactory.newInstance<PriceService>(Const.PRICE_API_BASE_URL)
     }
 
-    fun getAll() =
-            walletsDb.allKeys.map { walletsDb.read<Wallet>(it) }
+    fun getAll() = walletsDb.allKeys.map { walletsDb.read<Wallet>(it) }
 
-    fun getById(id: String) =
-        getAll().firstOrNull { it.id == id }
+    fun getById(id: String) = walletsDb.read<Wallet>(id)
 
     fun addOrUpdate(wallet: Wallet) =
             walletsDb.write(wallet.id, wallet)
@@ -48,7 +46,7 @@ object WalletRepository {
                     val currencies = listOf(Coin.BTC.name, Currency.USD.name)
                     val coins = mutableListOf<String>()
                     wallets.forEach {
-                        // 30 sec interval before update prices
+                        // 30 sec interval before updateBalance prices
                         // to avoid API rate limits and socket timeout
                         val canUpdate = it.priceBtc == BigDecimal.ZERO
                                         || it.priceCurrency == BigDecimal.ZERO
@@ -73,18 +71,18 @@ object WalletRepository {
             wallets.toObservable()
                     .onExceptionResumeNext {  }
                     .flatMap {
-                        // 1 min interval before update balances
+                        // 1 min interval before updateBalance balances
                         // to avoid API rate limits and socket timeout
                         val canUpdate = it.updatedAt == null || it.updatedAt?.before(Dates.now() - 1.minute) == true
                         if(canUpdate){
-                            update(it)
+                            updateBalance(it)
                         } else {
                             Observable.fromCallable { it }
                         }
                     }
                     .toList()
 
-    fun update(wallet: Wallet) =
+    fun updateBalance(wallet: Wallet) =
             walletService.getBalance(wallet.coin.name.toLowerCase(), wallet.address)
                     .map {
                         wallet.apply {
@@ -93,8 +91,7 @@ object WalletRepository {
                         }
                     }
 
-    fun contains(wallet: Wallet) =
-            walletsDb.contains(wallet.id)
+    fun contains(wallet: Wallet) = walletsDb.contains(wallet.id)
 
     interface WalletService {
         @GET("address_balance/fallback/")

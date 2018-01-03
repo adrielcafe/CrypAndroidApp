@@ -1,4 +1,4 @@
-package cafe.adriel.cryp.view.qrcode.show
+package cafe.adriel.cryp.view.wallet.show
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,15 +8,15 @@ import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import com.evernote.android.state.State
-import kotlinx.android.synthetic.main.activity_show_qrcode.*
+import kotlinx.android.synthetic.main.activity_show_wallet.*
 
-class ShowQrCodeActivity : BaseActivity() {
+class ShowWalletActivity : BaseActivity() {
     @State
     lateinit var wallet: Wallet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_qrcode)
+        setContentView(R.layout.activity_show_wallet)
 
         setSupportActionBar(vToolbar)
         vToolbar.setNavigationIcon(R.drawable.ic_close)

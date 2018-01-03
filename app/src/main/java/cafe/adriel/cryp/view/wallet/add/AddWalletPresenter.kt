@@ -19,12 +19,12 @@ class AddWalletPresenter : MvpPresenter<AddWalletView>() {
 
     fun saveWallet(coin: Coin, publicKey: String){
         val wallet = Wallet(coin, publicKey)
-        viewState.showValidatingDialog(wallet)
-        WalletRepository.update(wallet)
+        viewState.showProgressDialog(wallet.coin.toString(), stringFrom(R.string.validating_public_key))
+        WalletRepository.updateBalance(wallet)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    viewState.hideValidatingDialog()
+                    viewState.hideProgressDialog()
                     when {
                         WalletRepository.contains(wallet) ->
                             viewState.showMessage(R.string.wallet_already_saved, MessageType.ERROR)
@@ -38,7 +38,7 @@ class AddWalletPresenter : MvpPresenter<AddWalletView>() {
                     }
                 }, {
                     it.printStackTrace()
-                    viewState.hideValidatingDialog()
+                    viewState.hideProgressDialog()
                     when (it) {
                         is SocketTimeoutException ->
                             viewState.showMessage(stringFrom(R.string.server_unavailable_try_later), MessageType.ERROR)

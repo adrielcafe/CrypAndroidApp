@@ -58,9 +58,9 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
 
     private fun getSortComparator() = object : Comparator<Wallet> {
         private val order = PreferenceRepository.getWalletOrder()
-        override fun compare(w1: Wallet?, w2: Wallet?) =
-                order.indexOf(w1?.id)
-                    .compareTo(order.indexOf(w2?.id))
+
+        override fun compare(w1: Wallet, w2: Wallet) =
+                order.indexOf(w1.id).compareTo(order.indexOf(w2.id))
     }
 
 }

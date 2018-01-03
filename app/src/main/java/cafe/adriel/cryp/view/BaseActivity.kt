@@ -1,6 +1,5 @@
 package cafe.adriel.cryp.view
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import cafe.adriel.cryp.R
@@ -13,11 +12,11 @@ import com.evernote.android.state.StateSaver
 import com.tbruyelle.rxpermissions2.RxPermissions
 import es.dmoral.toasty.Toasty
 
-@SuppressLint("Registered")
-open class BaseActivity : MvpAppCompatActivity(), BaseView {
+abstract class BaseActivity : MvpAppCompatActivity(), IView {
+
+    private var progressDialog : Dialog? = null
 
     protected val rxPermissions by lazy { RxPermissions(this) }
-    private var progressDialog : Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +42,7 @@ open class BaseActivity : MvpAppCompatActivity(), BaseView {
                 MessageType.ERROR -> Toasty.error(this, message).show()
             }
 
-    protected fun showProgressDialog(title: String, message: String){
+    override fun showProgressDialog(title: String, message: String){
         progressDialog = AwesomeProgressDialog(this)
                 .setTitle(title)
                 .setMessage(message)
@@ -52,7 +51,7 @@ open class BaseActivity : MvpAppCompatActivity(), BaseView {
                 .show()
     }
 
-    protected fun hideProgressDialog(){
+    override fun hideProgressDialog(){
         progressDialog?.dismiss()
     }
 

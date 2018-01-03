@@ -10,7 +10,7 @@ object PreferenceRepository {
     }
 
     fun getWalletOrder() =
-            prefDb.read<Array<String>>(Const.PREF_WALLET_ORDER, arrayOf())
+            prefDb.read<Array<String>>(Const.PREF_WALLET_ORDER, emptyArray())
 
     fun setWalletOrder(order: Array<String>) =
             prefDb.write(Const.PREF_WALLET_ORDER, order)

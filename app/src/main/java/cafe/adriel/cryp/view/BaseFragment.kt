@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.evernote.android.state.StateSaver
 
-open class BaseFragment : MvpAppCompatFragment(){
+abstract class BaseFragment : MvpAppCompatFragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

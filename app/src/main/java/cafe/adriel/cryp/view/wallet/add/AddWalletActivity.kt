@@ -10,14 +10,13 @@ import android.widget.ArrayAdapter
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Coin
 import cafe.adriel.cryp.model.entity.MessageType
-import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
-import cafe.adriel.cryp.view.qrcode.scan.ScanQrCodeActivity
+import cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity
 import cafe.adriel.kbus.KBus
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_wallet_add.*
+import kotlinx.android.synthetic.main.activity_add_wallet.*
 import java.util.concurrent.TimeUnit
 
 class AddWalletActivity : BaseActivity(), AddWalletView {
@@ -26,7 +25,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wallet_add)
+        setContentView(R.layout.activity_add_wallet)
 
         setSupportActionBar(vToolbar)
         vToolbar.setNavigationIcon(R.drawable.ic_close)
@@ -88,14 +87,6 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
                 else -> super.onOptionsItemSelected(item)
             }
 
-    override fun showValidatingDialog(wallet: Wallet) {
-        showProgressDialog(wallet.coin.toString(), stringFrom(R.string.validating_public_key))
-    }
-
-    override fun hideValidatingDialog() {
-        hideProgressDialog()
-    }
-
     override fun close() {
         finish()
     }
@@ -104,7 +95,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         rxPermissions.request(Manifest.permission.CAMERA)
                 .subscribe { granted ->
                     if (granted) {
-                        startActivity<ScanQrCodeActivity>()
+                        start<ScanWalletActivity>()
                     } else {
                         setQrCode("")
                     }

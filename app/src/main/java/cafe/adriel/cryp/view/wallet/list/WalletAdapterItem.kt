@@ -9,13 +9,17 @@ import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.kbus.KBus
 import com.mikepenz.fastadapter.items.AbstractItem
+import com.mikepenz.fastadapter_extensions.drag.IDraggable
 import com.tubb.smrv.SwipeMenuLayout
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 import java.math.BigDecimal
 
 class WalletAdapterItem(var wallet: Wallet) :
-        AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>() {
+        AbstractItem<WalletAdapterItem, WalletAdapterItem.ViewHolder>(),
+        IDraggable<WalletAdapterItem, WalletAdapterItem> {
+
+    private var draggable = true
 
     override fun getIdentifier() = wallet.id.hashCode().toLong()
 
@@ -81,6 +85,13 @@ class WalletAdapterItem(var wallet: Wallet) :
             vSwipeMenu.smoothCloseMenu(0)
             vSwipeMenu.setSwipeListener(null)
         }
+    }
+
+    override fun isDraggable() = draggable
+
+    override fun withIsDraggable(draggable: Boolean): WalletAdapterItem {
+        this.draggable = draggable
+        return this
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

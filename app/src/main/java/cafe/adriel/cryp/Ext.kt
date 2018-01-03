@@ -1,6 +1,7 @@
 package cafe.adriel.cryp
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -24,22 +25,21 @@ import java.io.Serializable
 import java.text.DecimalFormat
 import java.util.*
 
-
 // Resources
 fun stringFrom(@StringRes stringRes: Int, param : String? = null) =
-        App.CONTEXT.getString(stringRes, param)
+        App.context.getString(stringRes, param)
 
 fun intFrom(@IntegerRes intRes: Int) =
-        App.CONTEXT.resources.getInteger(intRes)
+        App.context.resources.getInteger(intRes)
 
 fun colorFrom(@ColorRes colorRes: Int) =
-        ContextCompat.getColor(App.CONTEXT, colorRes)
+        ContextCompat.getColor(App.context, colorRes)
 
 fun drawableFrom(@DrawableRes drawableRes: Int) =
-        ContextCompat.getDrawable(App.CONTEXT, drawableRes)!!
+        ContextCompat.getDrawable(App.context, drawableRes)!!
 
 // Context
-inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<String, Any> = emptyArray()) {
+inline fun <reified T : Activity> Context.start(vararg extras: Pair<String, Any> = emptyArray()) {
     val intent = Intent(this, T::class.java)
     extras.forEach {
         when(it.second){
@@ -54,13 +54,17 @@ inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<Stri
     startActivity(intent)
 }
 
+inline fun <reified T : Activity> Fragment.start(vararg extras: Pair<String, Any> = emptyArray()) {
+    activity.start<T>(*extras)
+}
+
 fun Context.isConnected(): Boolean {
     val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
 
 // String
-fun String.getQrCode(@ColorRes colorRes: Int = Color.BLACK) =
+fun String.getQrCode(@ColorRes colorRes: Int = android.R.color.black) =
         QRCode.from(this)
             .to(ImageType.PNG)
             .withColor(colorFrom(colorRes), Color.WHITE)
@@ -69,7 +73,7 @@ fun String.getQrCode(@ColorRes colorRes: Int = Color.BLACK) =
             .bitmap()
 
 fun String.copyToClipboard(label: String) {
-    val clipboardManager = App.CONTEXT.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clipboardManager = App.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboardManager.primaryClip = ClipData.newPlainText(label, this)
 }
 

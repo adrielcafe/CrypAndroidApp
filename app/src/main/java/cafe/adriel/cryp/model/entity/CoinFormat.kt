@@ -7,7 +7,7 @@ enum class CoinFormat(val fullName: String) {
     SATOSHI("Satoshi");
 
     companion object {
-        fun getByName(fullName: String) : CoinFormat {
+        fun getByFullName(fullName: String) : CoinFormat {
             return values().firstOrNull { it.fullName == fullName }
                     ?: BTC
         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context="cafe.adriel.cryp.view.qrcode.scan.ScanQrCodeActivity">
+    tools:context="cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity">
 
     <com.dlazaro66.qrcodereaderview.QRCodeReaderView
         android:id="@+id/vReader"

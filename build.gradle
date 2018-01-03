@@ -1,5 +1,5 @@
 buildscript {
-    ext.support_version = '26.1.0'
+    ext.support_version = '27.0.2'
     ext.play_services_version = '11.6.2'
     ext.kotlin_version = '1.2.10'
     ext.moxy_version = '1.5.3'
@@ -7,10 +7,10 @@ buildscript {
     ext.moshi_version = '1.5.0'
     ext.android_state_version = '1.1.6'
     ext.permissions_dispatcher_version = '3.1.0'
-    ext.fastadapter_version = '3.0.4'
+    ext.fastadapter_version = '3.0.5'
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha06'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "io.mironov.smuggler:smuggler-plugin:0.12.18"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'

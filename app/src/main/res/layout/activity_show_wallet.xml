@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="cafe.adriel.cryp.view.qrcode.show.ShowQrCodeActivity">
+    tools:context="cafe.adriel.cryp.view.wallet.show.ShowWalletActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:background="@android:color/transparent"
         app:elevation="0dp">
 
@@ -19,7 +19,7 @@
             android:id="@+id/vToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 

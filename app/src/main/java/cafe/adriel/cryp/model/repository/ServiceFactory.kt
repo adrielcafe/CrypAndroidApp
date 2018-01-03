@@ -11,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ServiceFactory {
 
-    inline fun <reified T : Any> newInstance(baseUrl: String): T =
+    inline fun <reified T> newInstance(baseUrl: String) : T =
             Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(getClient())
@@ -20,12 +20,12 @@ object ServiceFactory {
                     .build()
                     .create(T::class.java)
 
-    fun getClient() =
+    fun getClient() : OkHttpClient =
             OkHttpClient.Builder()
                     .addInterceptor(getLogging())
                     .build()
 
-    fun getJsonConverter() =
+    fun getJsonConverter() : Moshi =
             Moshi.Builder()
                     .add(BigDecimalAdapter())
                     .build()

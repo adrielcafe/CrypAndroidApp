@@ -1,23 +1,19 @@
 package cafe.adriel.cryp.view.wallet.list
 
 import android.os.Bundle
-import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
 import cafe.adriel.cryp.*
-import cafe.adriel.cryp.model.entity.CoinFormat
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.custom.SeparatorDecoration
-import cafe.adriel.cryp.view.qrcode.show.ShowQrCodeActivity
 import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
+import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import cafe.adriel.kbus.KBus
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog
@@ -27,6 +23,7 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter_extensions.drag.ItemTouchCallback
 import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback
+import com.mikepenz.fastadapter_extensions.utilities.DragDropUtil
 import com.tubb.smrv.SwipeHorizontalMenuLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
@@ -34,7 +31,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 import java.math.BigDecimal
-import java.util.*
 
 class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     @InjectPresenter
@@ -68,7 +64,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                         it.postDelayed({
                             item?.wallet?.let {
                                 when(v.id){
-                                    R.id.vSeeAddress -> showPublicKey(it)
+                                    R.id.vSeeAddress -> showWalletActivity(it)
                                     R.id.vDelete -> showDeleteDialog(it)
                                 }
                             }
@@ -114,27 +110,21 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_wallet_list, menu)
-
-        val vCoinFormats = menu.findItem(R.id.action_coin_formats).actionView as AppCompatSpinner
-        initCoinFormatSpinner(vCoinFormats)
-
+        menuInflater.inflate(R.menu.menu_settings, menu)
         return true
     }
 
-    // TODO temp
-//    override fun onOptionsItemSelected(item: MenuItem?) =
-//            when (item.itemId) {
-//                R.id.action_settings -> {
-//                    showSettingsActivity()
-//                    true
-//                }
-//                else -> super.onOptionsItemSelected(item)
-//            }
+    override fun onOptionsItemSelected(item: MenuItem) =
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    showSettingsActivity()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        Collections.swap(adapter.adapterItems, oldPosition, newPosition)
-        adapter.notifyAdapterItemMoved(oldPosition, newPosition)
+        DragDropUtil.onMove(adapter.itemAdapter, oldPosition, newPosition)
         return true
     }
 
@@ -188,35 +178,38 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         updateTotalBalance()
     }
 
-    private fun initCoinFormatSpinner(vSpinner: AppCompatSpinner){
-        val currentCoinFormat = presenter.getCoinFormat().fullName
-        val currentPosition = CoinFormat.values().indexOf(CoinFormat.getByName(currentCoinFormat))
-        val formatsAdapter = ArrayAdapter(this, R.layout.spinner_item_coin_format, CoinFormat.values())
-        formatsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_coin_format)
-        vSpinner.adapter = formatsAdapter
-        vSpinner.setSelection(currentPosition)
-        vSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCoinFormat = CoinFormat.values()[position]
-                presenter.saveCoinFormat(selectedCoinFormat)
-                adapter.notifyAdapterDataSetChanged()
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-        }
+    // TODO move to settings screen
+//    private fun initCoinFormatSpinner(vSpinner: AppCompatSpinner){
+//        val currentCoinFormat = presenter.getCoinFormat().fullName
+//        val currentPosition = CoinFormat.values().indexOf(CoinFormat.getByFullName(currentCoinFormat))
+//        val formatsAdapter = ArrayAdapter(this, R.layout.spinner_item_coin_format, CoinFormat.values())
+//        formatsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_coin_format)
+//        vSpinner.adapter = formatsAdapter
+//        vSpinner.setSelection(currentPosition)
+//        vSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                val selectedCoinFormat = CoinFormat.values()[position]
+//                presenter.saveCoinFormat(selectedCoinFormat)
+//                adapter.notifyAdapterDataSetChanged()
+//            }
+//            override fun onNothingSelected(parent: AdapterView<*>?) { }
+//        }
+//    }
+
+    private fun showWalletActivity(wallet: Wallet) {
+        start<ShowWalletActivity>(
+                Const.EXTRA_WALLET to wallet)
     }
 
     private fun showAddWalletActivity() {
+        // Disable button to avoid be clicked multiple times
         vAddWallet.isEnabled = false
-        startActivity<AddWalletActivity>()
+        start<AddWalletActivity>()
     }
 
+    // TODO
     private fun showSettingsActivity() {
-        // TODO
-    }
-
-    private fun showPublicKey(wallet: Wallet) {
-        startActivity<ShowQrCodeActivity>(
-                Const.EXTRA_WALLET to wallet)
+//        start<SettingsActivity>()
     }
 
     private fun showDeleteDialog(wallet: Wallet) {

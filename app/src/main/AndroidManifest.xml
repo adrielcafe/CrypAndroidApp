@@ -24,8 +24,8 @@
         <activity
             android:name="cafe.adriel.cryp.view.wallet.add.AddWalletActivity"
             android:theme="@style/AppTheme.NoActionBar.Transparent"/>
-        <activity android:name="cafe.adriel.cryp.view.qrcode.show.ShowQrCodeActivity"/>
-        <activity android:name="cafe.adriel.cryp.view.qrcode.scan.ScanQrCodeActivity"/>
+        <activity android:name="cafe.adriel.cryp.view.wallet.show.ShowWalletActivity"/>
+        <activity android:name="cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity"/>
     </application>
 
 </manifest>

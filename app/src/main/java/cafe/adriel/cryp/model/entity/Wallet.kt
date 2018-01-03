@@ -1,6 +1,7 @@
 package cafe.adriel.cryp.model.entity
 
 import android.annotation.SuppressLint
+import cafe.adriel.cryp.Const
 import io.mironov.smuggler.AutoParcelable
 import java.math.BigDecimal
 import java.util.*
@@ -14,18 +15,14 @@ data class Wallet(
         var priceCurrency: BigDecimal = BigDecimal.ZERO,
         var updatedAt: Date? = null) : AutoParcelable {
 
-    private val BTC_TO_MBTC_MULTIPLIER = 1_000.toBigDecimal()
-    private val BTC_TO_BITS_MULTIPLIER = 1_000_000.toBigDecimal()
-    private val BTC_TO_SATOSHI_MULTIPLIER = 100_000_000.toBigDecimal()
-
     // Compound Key
     val id = "${coin.name}:$address"
 
-    fun getBalanceMBtc() = balance * BTC_TO_MBTC_MULTIPLIER
+    fun getBalanceMBtc() = balance * Const.BTC_TO_MBTC.toBigDecimal()
 
-    fun getBalanceBits() = balance * BTC_TO_BITS_MULTIPLIER
+    fun getBalanceBits() = balance * Const.BTC_TO_BITS.toBigDecimal()
 
-    fun getBalanceSatoshi() = (balance * BTC_TO_SATOSHI_MULTIPLIER).toLong()
+    fun getBalanceSatoshi() = (balance * Const.BTC_TO_SATOSHI.toBigDecimal()).toLong()
 
     fun getBalanceCurrency() = balance * priceCurrency
 
