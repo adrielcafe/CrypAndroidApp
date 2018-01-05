@@ -1,6 +1,7 @@
 package cafe.adriel.cryp
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -16,6 +17,7 @@ import android.support.annotation.StringRes
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.ContextCompat
 import cafe.adriel.cryp.model.entity.Wallet
+import cafe.adriel.cryp.model.repository.PreferenceRepository
 import com.google.zxing.EncodeHintType
 import khronos.Dates
 import net.glxn.qrgen.android.QRCode
@@ -24,22 +26,21 @@ import java.io.Serializable
 import java.text.DecimalFormat
 import java.util.*
 
-
 // Resources
 fun stringFrom(@StringRes stringRes: Int, param : String? = null) =
-        App.CONTEXT.getString(stringRes, param)
+        App.context.getString(stringRes, param)
 
 fun intFrom(@IntegerRes intRes: Int) =
-        App.CONTEXT.resources.getInteger(intRes)
+        App.context.resources.getInteger(intRes)
 
 fun colorFrom(@ColorRes colorRes: Int) =
-        ContextCompat.getColor(App.CONTEXT, colorRes)
+        ContextCompat.getColor(App.context, colorRes)
 
 fun drawableFrom(@DrawableRes drawableRes: Int) =
-        ContextCompat.getDrawable(App.CONTEXT, drawableRes)!!
+        ContextCompat.getDrawable(App.context, drawableRes)!!
 
 // Context
-inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<String, Any> = emptyArray()) {
+inline fun <reified T : Activity> Context.start(vararg extras: Pair<String, Any> = emptyArray()) {
     val intent = Intent(this, T::class.java)
     extras.forEach {
         when(it.second){
@@ -54,13 +55,17 @@ inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<Stri
     startActivity(intent)
 }
 
+inline fun <reified T : Activity> Fragment.start(vararg extras: Pair<String, Any> = emptyArray()) {
+    activity.start<T>(*extras)
+}
+
 fun Context.isConnected(): Boolean {
     val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
 
 // String
-fun String.getQrCode(@ColorRes colorRes: Int = Color.BLACK) =
+fun String.getQrCode(@ColorRes colorRes: Int = android.R.color.black) =
         QRCode.from(this)
             .to(ImageType.PNG)
             .withColor(colorFrom(colorRes), Color.WHITE)
@@ -69,9 +74,16 @@ fun String.getQrCode(@ColorRes colorRes: Int = Color.BLACK) =
             .bitmap()
 
 fun String.copyToClipboard(label: String) {
-    val clipboardManager = App.CONTEXT.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clipboardManager = App.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     clipboardManager.primaryClip = ClipData.newPlainText(label, this)
 }
+
+fun String.share(activity: Activity) =
+        ShareCompat.IntentBuilder
+                .from(activity)
+                .setType("text/plain")
+                .setText(this)
+                .startChooser()
 
 // Int
 val Int.dp: Int
@@ -93,7 +105,7 @@ fun Dates.now() =
         Calendar.getInstance().time
 
 // Wallet
-val coinFormat = DecimalFormat().apply {
+private val cryptocurrencyFormat = DecimalFormat().apply {
     maximumFractionDigits = 8
     groupingSize = 3
     isGroupingUsed = true
@@ -103,25 +115,22 @@ val coinFormat = DecimalFormat().apply {
         decimalFormatSymbols = this
     }
 }
-val currencyFormat = DecimalFormat().apply {
-    minimumFractionDigits = 2
-    maximumFractionDigits = 2
-    currency = Currency.getInstance(Locale.US)
-}
+fun getCurrencyFormat() =
+        DecimalFormat().apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+            currency = PreferenceRepository.getCurrency()
+        }
 
-fun Wallet.getFormattedBalanceBtc() = coinFormat.format(balance)
+fun Wallet.getFormattedBalanceBtc() = cryptocurrencyFormat.format(balance)
 
-fun Wallet.getFormattedBalanceMBtc() = coinFormat.format(getBalanceMBtc())
+fun Wallet.getFormattedBalanceMBtc() = cryptocurrencyFormat.format(getBalanceMBtc())
 
-fun Wallet.getFormattedBalanceBits() = coinFormat.format(getBalanceBits())
+fun Wallet.getFormattedBalanceBits() = cryptocurrencyFormat.format(getBalanceBits())
 
-fun Wallet.getFormattedBalanceSatoshi() = coinFormat.format(getBalanceSatoshi())
+fun Wallet.getFormattedBalanceSatoshi() = cryptocurrencyFormat.format(getBalanceSatoshi())
 
-fun Wallet.getFormattedBalanceCurrency() = currencyFormat.format(getBalanceCurrency())
+fun Wallet.getFormattedBalanceCurrency() = getCurrencyFormat().format(getBalanceCurrency())
 
 fun Wallet.share(activity: Activity) =
-        ShareCompat.IntentBuilder
-            .from(activity)
-            .setType("text/plain")
-            .setText("$coin\n$address")
-            .startChooser()
+        "$cryptocurrency\n$address".share(activity)

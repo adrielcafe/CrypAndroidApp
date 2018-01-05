@@ -1,26 +1,46 @@
 package cafe.adriel.cryp.model.repository
 
+import android.preference.PreferenceManager
+import cafe.adriel.cryp.App
 import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.model.entity.CoinFormat
-import io.paperdb.Paper
+import cafe.adriel.cryp.R
+import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
+import java.util.*
 
 object PreferenceRepository {
+
     private val prefDb by lazy {
-        Paper.book(Const.DB_PREFERENCES)
+        PreferenceManager.getDefaultSharedPreferences(App.context)
     }
 
-    fun getWalletOrder() =
-            prefDb.read<Array<String>>(Const.PREF_WALLET_ORDER, arrayOf())
+    fun isFirstOpen() =
+            prefDb.getBoolean(Const.PREF_FIRST_OPEN, true)
 
-    fun setWalletOrder(order: Array<String>) =
-            prefDb.write(Const.PREF_WALLET_ORDER, order)
-                    .contains(Const.PREF_WALLET_ORDER)
+    fun setFirstOpen(firstOpen: Boolean) =
+            prefDb.edit()
+                    .putBoolean(Const.PREF_FIRST_OPEN, firstOpen)
+                    .apply()
 
-    fun getCoinFormat() =
-            prefDb.read<CoinFormat>(Const.PREF_COIN_FORMAT, CoinFormat.BTC)
+    fun getSupportedLanguages() =
+            App.context.resources.getStringArray(R.array.language_values)
 
-    fun setCoinFormat(coinFormat: CoinFormat) =
-            prefDb.write(Const.PREF_COIN_FORMAT, coinFormat)
-                    .contains(Const.PREF_COIN_FORMAT)
+    fun getLanguage() =
+            Locale.forLanguageTag(
+                    prefDb.getString(Const.PREF_LANGUAGE, Locale.ENGLISH.language))
+
+    fun setLanguage(language: String) =
+            prefDb.edit()
+                    .putString(Const.PREF_LANGUAGE, language)
+                    .apply()
+
+    fun getSupportedCurrencies() =
+            App.context.resources.getStringArray(R.array.supported_currencies)
+
+    fun getCurrency() =
+            Currency.getInstance(prefDb.getString(Const.PREF_CURRENCY, Const.DEFAULT_CURRENCY))
+
+    fun getCryptocurrencyUnit() =
+            CryptocurrencyUnit.valueOf(
+                    prefDb.getString(Const.PREF_CRYPTOCURRENCY_UNIT, CryptocurrencyUnit.BTC.name))
 
 }

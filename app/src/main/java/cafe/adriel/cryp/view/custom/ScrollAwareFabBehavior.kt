@@ -7,7 +7,7 @@ import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
 import android.view.View
 
-class ScrollAwareFABBehavior(context: Context, attrs: AttributeSet) : FloatingActionButton.Behavior(context, attrs) {
+class ScrollAwareFabBehavior(context: Context, attrs: AttributeSet) : FloatingActionButton.Behavior(context, attrs) {
 
     override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: FloatingActionButton,
                                      directTargetChild: View, target: View, axes: Int, type: Int): Boolean {

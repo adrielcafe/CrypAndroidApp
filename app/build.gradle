@@ -5,22 +5,24 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "io.mironov.smuggler"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "cafe.adriel.cryp"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
         resConfigs "en", "pt"
     }
     buildTypes {
         debug {
             splits.abi.enable false
             splits.density.enable false
-            aaptOptions.cruncherEnabled = false
+            aaptOptions.cruncherEnabled false
+            useProguard false
             buildConfigField "Boolean", "RELEASE", "false"
         }
         release {
@@ -32,11 +34,15 @@ android {
     dexOptions {
         javaMaxHeapSize "6g"
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     // Support
     implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:support-v4:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:design:$support_version"
@@ -45,7 +51,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
@@ -71,8 +77,8 @@ dependencies {
 
     // View
     implementation("com.mikepenz:fastadapter:$fastadapter_version@aar") { transitive true }
-    implementation "com.mikepenz:fastadapter-commons:3.0.3@aar"
-    implementation "com.mikepenz:fastadapter-extensions:3.0.3@aar"
+    implementation "com.mikepenz:fastadapter-commons:$fastadapter_version@aar"
+    implementation "com.mikepenz:fastadapter-extensions:$fastadapter_version@aar"
     implementation 'com.tubb.smrv:swipemenu-recyclerview:5.4.4'
     implementation 'com.github.GrenderG:Toasty:1.2.8'
     implementation 'com.github.blennerSilva:AwesomeDialog:2.0.5'
@@ -86,6 +92,7 @@ dependencies {
     implementation 'com.github.adrielcafe:KBus:1.0'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+    implementation 'com.github.franmontiel:LocaleChanger:0.9.1'
 
     // Test
     testImplementation 'junit:junit:4.12'

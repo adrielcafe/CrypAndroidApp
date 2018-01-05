@@ -1,12 +1,9 @@
 package cafe.adriel.cryp.view.wallet.add
 
-import cafe.adriel.cryp.model.entity.Wallet
-import cafe.adriel.cryp.view.BaseView
+import cafe.adriel.cryp.view.IView
 
-interface AddWalletView : BaseView {
+interface AddWalletView : IView {
 
-    fun showValidatingDialog(wallet: Wallet)
-    fun hideValidatingDialog()
     fun close()
 
 }

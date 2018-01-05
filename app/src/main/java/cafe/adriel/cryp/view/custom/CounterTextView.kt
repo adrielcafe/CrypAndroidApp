@@ -1,37 +1,24 @@
 package cafe.adriel.cryp.view.custom
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import java.text.DecimalFormat
 
-class CounterTextView(context: Context,
-                      attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
+class CounterTextView(context: Context, attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
 
-    private val DEFAULT_DURATION: Long = 2000
+    private val DURATION: Long = 2000
 
     private val animator: ValueAnimator
+    private var prefix: String? = ""
     private var decimalFormat: DecimalFormat? = null
-    private var isAnimating = false
 
     init {
         animator = ValueAnimator().apply {
-            this.duration = DEFAULT_DURATION
-            this.addUpdateListener({
-                text = decimalFormat?.format(it.animatedValue)
-                        ?: it.animatedValue.toString()
-            })
-            this.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {
-                    isAnimating = true
-                }
-                override fun onAnimationEnd(animation: Animator) {
-                    isAnimating = false
-                }
-                override fun onAnimationCancel(animation: Animator) { }
-                override fun onAnimationRepeat(animation: Animator) { }
+            duration = DURATION
+            addUpdateListener({
+                text = prefix + (decimalFormat?.format(it.animatedValue) ?: it.animatedValue.toString())
             })
         }
     }
@@ -41,13 +28,18 @@ class CounterTextView(context: Context,
         animator.cancel()
     }
 
+    fun setPrefix(prefix: String): CounterTextView{
+        this.prefix = prefix
+        return this
+    }
+
     fun setDecimalFormat(decimalFormat: DecimalFormat): CounterTextView {
         this.decimalFormat = decimalFormat
         return this
     }
 
     fun startAnimation(from: Float, to: Float) {
-        if (isAnimating) {
+        if (animator.isRunning) {
             animator.cancel()
             animator.setFloatValues(animator.animatedValue.toString().toFloat(), to)
         } else {

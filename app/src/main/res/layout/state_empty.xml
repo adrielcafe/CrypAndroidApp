@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:layout_margin="50dp"
+    android:layout_marginTop="75dp"
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="50dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_marginBottom="15dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_coin_bag"

@@ -1,4 +1,4 @@
-package cafe.adriel.cryp.view.qrcode.show
+package cafe.adriel.cryp.view.wallet.show
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,15 +8,15 @@ import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import com.evernote.android.state.State
-import kotlinx.android.synthetic.main.activity_show_qrcode.*
+import kotlinx.android.synthetic.main.activity_show_wallet.*
 
-class ShowQrCodeActivity : BaseActivity() {
+class ShowWalletActivity : BaseActivity() {
     @State
     lateinit var wallet: Wallet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_qrcode)
+        setContentView(R.layout.activity_show_wallet)
 
         setSupportActionBar(vToolbar)
         vToolbar.setNavigationIcon(R.drawable.ic_close)
@@ -29,8 +29,8 @@ class ShowQrCodeActivity : BaseActivity() {
             finish()
         }
 
-        vCoinLogo.setImageDrawable(wallet.coin.logo)
-        vCoinName.text = wallet.coin.toString()
+        vCryptocurrencyLogo.setImageDrawable(wallet.cryptocurrency.logo)
+        vCryptocurrencyName.text = wallet.cryptocurrency.toString()
         vPublicKey.text = wallet.address
         vQrCode.setImageBitmap(wallet.address.getQrCode(R.color.colorPrimaryDark))
 
@@ -56,7 +56,7 @@ class ShowQrCodeActivity : BaseActivity() {
             }
 
     private fun copyPublicKeyToClipboard(){
-        val label = getString(R.string.coin_public_key, wallet.coin.fullName)
+        val label = getString(R.string.cryptocurrency_public_key, wallet.cryptocurrency.fullName)
         wallet.address.copyToClipboard(label)
         showMessage(R.string.copied, MessageType.SUCCESS)
     }

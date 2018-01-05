@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/general">
+
+        <ListPreference
+            android:key="language"
+            android:title="@string/language"
+            android:entries="@array/language_titles"
+            android:entryValues="@array/language_values"
+            android:defaultValue="en"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+        <ListPreference
+            android:key="currency"
+            android:title="@string/currency"
+            android:defaultValue="USD"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+        <ListPreference
+            android:key="cryptocurrencyUnit"
+            android:title="@string/cryptocurrency_unit"
+            android:defaultValue="BTC"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            android:key="share"
+            android:title="@string/share"
+            android:summary="@string/help_sharing_app"/>
+
+        <Preference
+            android:key="review"
+            android:title="@string/review"
+            android:summary="@string/give_5_stars"/>
+
+        <Preference
+            android:key="contact"
+            android:title="@string/contact"
+            android:summary="@string/send_me_email"/>
+
+        <Preference
+            android:key="appVersion"
+            android:title="@string/app_version"
+            android:selectable="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
