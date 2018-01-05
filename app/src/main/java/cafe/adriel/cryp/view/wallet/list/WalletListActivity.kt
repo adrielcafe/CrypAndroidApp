@@ -10,8 +10,10 @@ import android.view.View
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
+import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.custom.SeparatorDecoration
+import cafe.adriel.cryp.view.settings.SettingsActivity
 import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
 import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import cafe.adriel.kbus.KBus
@@ -82,17 +84,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         vWallets.adapter = adapter
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        KBus.subscribe<OpenedSwipeMenuEvent>(this, {
-            currentOpenedMenuPosition = adapter.getPosition(it.itemId)
-            closeSwipeMenus(false)
-        })
-        KBus.subscribe<RefreshWalletListEvent>(this, {
-            refresh()
-        })
-    }
-
     override fun onResume() {
         super.onResume()
         refresh()
@@ -104,8 +95,16 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStart() {
+        super.onStart()
+        KBus.subscribe<OpenedSwipeMenuEvent>(this, {
+            currentOpenedMenuPosition = adapter.getPosition(it.itemId)
+            closeSwipeMenus(false)
+        })
+    }
+
+    override fun onStop() {
+        super.onStop()
         KBus.unsubscribe(this)
     }
 
@@ -129,11 +128,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        val walletIds = mutableListOf<String>()
-        (0 until adapter.adapterItemCount).forEach {
-            val holder = adapter.getItem(it)
-            walletIds.add(holder.wallet.id)
-        }
+        val walletIds = adapter.adapterItems.map { it.wallet.id }
         presenter.saveOrder(walletIds)
     }
 
@@ -178,24 +173,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         updateTotalBalance()
     }
 
-    // TODO move to settings screen
-//    private fun initCoinFormatSpinner(vSpinner: AppCompatSpinner){
-//        val currentCoinFormat = presenter.getCoinFormat().fullName
-//        val currentPosition = CoinFormat.values().indexOf(CoinFormat.getByFullName(currentCoinFormat))
-//        val formatsAdapter = ArrayAdapter(this, R.layout.spinner_item_coin_format, CoinFormat.values())
-//        formatsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_coin_format)
-//        vSpinner.adapter = formatsAdapter
-//        vSpinner.setSelection(currentPosition)
-//        vSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                val selectedCoinFormat = CoinFormat.values()[position]
-//                presenter.saveCoinFormat(selectedCoinFormat)
-//                adapter.notifyAdapterDataSetChanged()
-//            }
-//            override fun onNothingSelected(parent: AdapterView<*>?) { }
-//        }
-//    }
-
     private fun showWalletActivity(wallet: Wallet) {
         start<ShowWalletActivity>(
                 Const.EXTRA_WALLET to wallet)
@@ -207,14 +184,13 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         start<AddWalletActivity>()
     }
 
-    // TODO
     private fun showSettingsActivity() {
-//        start<SettingsActivity>()
+        start<SettingsActivity>()
     }
 
     private fun showDeleteDialog(wallet: Wallet) {
         AwesomeSuccessDialog(this)
-                .setTitle(wallet.coin.toString())
+                .setTitle(wallet.cryptocurrency.toString())
                 .setMessage(R.string.are_you_sure_remove_wallet)
                 .setColoredCircle(R.color.red)
                 .setDialogIconAndColor(R.drawable.ic_delete, R.color.white)
@@ -264,6 +240,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun updateTotalBalance() {
+        val currencySymbol = PreferenceRepository.getCurrency().symbol
         var totalBalance = BigDecimal.ZERO
         adapter.adapterItems.forEach {
             totalBalance += it.wallet.getBalanceCurrency()
@@ -272,7 +249,9 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             totalBalance = BigDecimal.ZERO
         }
         vTotalBalance.postDelayed({
-            vTotalBalance.setDecimalFormat(currencyFormat)
+            vTotalBalance
+                    .setPrefix("$currencySymbol ")
+                    .setDecimalFormat(getCurrencyFormat())
                     .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
             currentTotalBalance = totalBalance
         }, 500)
@@ -297,10 +276,9 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun getItemPosition(wallet: Wallet): Int {
-        (0 until adapter.adapterItemCount).forEach {
-            val holder = adapter.getItem(it)
-            if (holder.wallet.id == wallet.id){
-                return it
+        adapter.adapterItems.forEachIndexed { index, item ->
+            if (item.wallet.id == wallet.id){
+                return index
             }
         }
         return -1

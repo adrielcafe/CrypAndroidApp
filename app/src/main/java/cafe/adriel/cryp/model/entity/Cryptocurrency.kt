@@ -4,8 +4,8 @@ import android.graphics.drawable.Drawable
 import cafe.adriel.cryp.R
 import cafe.adriel.cryp.drawableFrom
 
-enum class Coin(val fullName: String,
-                val logo: Drawable) {
+enum class Cryptocurrency(val fullName: String,
+                          val logo: Drawable) {
 
     AEON("Aeon",
             drawableFrom(R.drawable.logo_aeon)),

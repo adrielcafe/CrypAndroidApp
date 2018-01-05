@@ -1,13 +1,13 @@
 package cafe.adriel.cryp.model.entity
 
-enum class CoinFormat(val fullName: String) {
+enum class CryptocurrencyUnit(val fullName: String) {
     BTC("BTC"),
     M_BTC("mBTC"),
     BITS("Bits"),
     SATOSHI("Satoshi");
 
     companion object {
-        fun getByFullName(fullName: String) : CoinFormat {
+        fun getByFullName(fullName: String) : CryptocurrencyUnit {
             return values().firstOrNull { it.fullName == fullName }
                     ?: BTC
         }

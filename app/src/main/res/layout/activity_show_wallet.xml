@@ -43,7 +43,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/vCoinLogo"
+                android:id="@+id/vCryptocurrencyLogo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="fitCenter"
@@ -51,7 +51,7 @@
                 tools:srcCompat="@drawable/logo_btc"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vCoinName"
+                android:id="@+id/vCryptocurrencyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

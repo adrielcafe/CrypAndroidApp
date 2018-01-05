@@ -90,7 +90,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/vCoins"
+            android:id="@+id/vCryptocurrencies"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_marginStart="20dp"

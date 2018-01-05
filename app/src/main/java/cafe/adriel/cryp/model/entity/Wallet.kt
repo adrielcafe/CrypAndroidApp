@@ -8,15 +8,16 @@ import java.util.*
 
 @SuppressLint("ParcelCreator")
 data class Wallet(
-        val coin: Coin,
+        val cryptocurrency: Cryptocurrency,
         val address: String,
         var balance: BigDecimal = BigDecimal.ONE.negate(),
         var priceBtc: BigDecimal = BigDecimal.ZERO,
         var priceCurrency: BigDecimal = BigDecimal.ZERO,
+        var position: Int = Int.MAX_VALUE,
         var updatedAt: Date? = null) : AutoParcelable {
 
     // Compound Key
-    val id = "${coin.name}:$address"
+    val id = "${cryptocurrency.name}:$address"
 
     fun getBalanceMBtc() = balance * Const.BTC_TO_MBTC.toBigDecimal()
 

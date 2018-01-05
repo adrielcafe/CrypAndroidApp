@@ -8,7 +8,7 @@ import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import cafe.adriel.cryp.*
-import cafe.adriel.cryp.model.entity.Coin
+import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity
@@ -51,13 +51,9 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         vQrCodeLayout.setOnClickListener { scanQrCode() }
         vAddWallet.setOnClickListener { addWallet() }
 
-        val coins = mutableListOf<String>().apply {
-            Coin.values().forEach {
-                add(it.toString())
-            }
-        }
-        vCoins.adapter = ArrayAdapter(this, R.layout.spinner_item_coin, coins).apply {
-            setDropDownViewResource(R.layout.spinner_dropdown_item_coin)
+        val cryptocurrencies = Cryptocurrency.values().map { it.toString() }
+        vCryptocurrencies.adapter = ArrayAdapter(this, R.layout.spinner_item_cryptocurrency, cryptocurrencies).apply {
+            setDropDownViewResource(R.layout.spinner_dropdown_item_cryptocurrency)
         }
 
         RxTextView.textChanges(vPublicKey)
@@ -122,10 +118,10 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     private fun addWallet(){
         val publicKey = vPublicKey.text.toString()
-        val coin = Coin.values()[vCoins.selectedItemPosition]
+        val cryptocurrency = Cryptocurrency.values()[vCryptocurrencies.selectedItemPosition]
         if (publicKey.isNotEmpty()) {
             if(isConnected()) {
-                presenter.saveWallet(coin, publicKey)
+                presenter.saveWallet(cryptocurrency, publicKey)
             } else {
                 showMessage(R.string.connect_internet, MessageType.INFO)
             }

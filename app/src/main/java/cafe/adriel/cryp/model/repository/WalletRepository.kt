@@ -1,8 +1,7 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.model.entity.Coin
-import cafe.adriel.cryp.model.entity.Currency
+import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
 import cafe.adriel.cryp.now
@@ -12,10 +11,8 @@ import io.reactivex.rxkotlin.toObservable
 import khronos.Dates
 import khronos.minus
 import khronos.minute
-import khronos.seconds
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.math.BigDecimal
 
 object WalletRepository {
     private val walletsDb by lazy {
@@ -43,28 +40,18 @@ object WalletRepository {
     fun updatePrices(wallets: List<Wallet>) =
             if (wallets.isNotEmpty()) {
                 with(wallets) {
-                    val currencies = listOf(Coin.BTC.name, Currency.USD.name)
-                    val coins = mutableListOf<String>()
-                    wallets.forEach {
-                        // 30 sec interval before updateBalance prices
-                        // to avoid API rate limits and socket timeout
-                        val canUpdate = it.priceBtc == BigDecimal.ZERO
-                                        || it.priceCurrency == BigDecimal.ZERO
-                                        || it.updatedAt?.before(Dates.now() - 30.seconds) == true
-                        if(canUpdate) {
-                            coins.add(it.coin.name)
-                        }
-                    }
-                    if(currencies.isNotEmpty() && coins.isNotEmpty()) {
+                    val currencies = listOf(Cryptocurrency.BTC.name, PreferenceRepository.getCurrency().currencyCode.toUpperCase())
+                    val cryptocurrencies = wallets.map { it.cryptocurrency.name }.toSet()
+                    if(currencies.isNotEmpty() && cryptocurrencies.isNotEmpty()) {
                         priceService.getPrices(
-                                coins.joinToString(","),
+                                cryptocurrencies.joinToString(","),
                                 currencies.joinToString(","))
                     } else {
-                        Observable.fromCallable { emptyMap<String, Map<String, BigDecimal>>() }
+                        Observable.fromCallable { emptyMap<Cryptocurrency, Map<String, String>>() }
                     }
                 }
             } else {
-                Observable.fromCallable { emptyMap<String, Map<String, BigDecimal>>() }
+                Observable.fromCallable { emptyMap<Cryptocurrency, Map<String, String>>() }
             }
 
     fun updateBalances(wallets: List<Wallet>) =
@@ -83,7 +70,7 @@ object WalletRepository {
                     .toList()
 
     fun updateBalance(wallet: Wallet) =
-            walletService.getBalance(wallet.coin.name.toLowerCase(), wallet.address)
+            walletService.getBalance(wallet.cryptocurrency.name.toLowerCase(), wallet.address)
                     .map {
                         wallet.apply {
                             balance = it.balance
@@ -96,7 +83,7 @@ object WalletRepository {
     interface WalletService {
         @GET("address_balance/fallback/")
         fun getBalance(
-                @Query("currency") coin: String,
+                @Query("currency") cryptocurrency: String,
                 @Query("address") publicKey: String):
                 Observable<BalanceResponse>
     }
@@ -104,8 +91,8 @@ object WalletRepository {
     interface PriceService {
         @GET("pricemulti")
         fun getPrices(
-                @Query("fsyms") coins: String,
+                @Query("fsyms") cryptocurrencies: String,
                 @Query("tsyms") currencies: String):
-                Observable<Map<String, Map<String, BigDecimal>>>
+                Observable<Map<Cryptocurrency, Map<String, String>>>
     }
 }

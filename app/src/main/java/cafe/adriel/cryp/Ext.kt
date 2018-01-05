@@ -17,6 +17,7 @@ import android.support.annotation.StringRes
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.ContextCompat
 import cafe.adriel.cryp.model.entity.Wallet
+import cafe.adriel.cryp.model.repository.PreferenceRepository
 import com.google.zxing.EncodeHintType
 import khronos.Dates
 import net.glxn.qrgen.android.QRCode
@@ -77,6 +78,13 @@ fun String.copyToClipboard(label: String) {
     clipboardManager.primaryClip = ClipData.newPlainText(label, this)
 }
 
+fun String.share(activity: Activity) =
+        ShareCompat.IntentBuilder
+                .from(activity)
+                .setType("text/plain")
+                .setText(this)
+                .startChooser()
+
 // Int
 val Int.dp: Int
     get() = (this / Resources.getSystem().displayMetrics.density).toInt()
@@ -97,7 +105,7 @@ fun Dates.now() =
         Calendar.getInstance().time
 
 // Wallet
-val coinFormat = DecimalFormat().apply {
+private val cryptocurrencyFormat = DecimalFormat().apply {
     maximumFractionDigits = 8
     groupingSize = 3
     isGroupingUsed = true
@@ -107,25 +115,22 @@ val coinFormat = DecimalFormat().apply {
         decimalFormatSymbols = this
     }
 }
-val currencyFormat = DecimalFormat().apply {
-    minimumFractionDigits = 2
-    maximumFractionDigits = 2
-    currency = Currency.getInstance(Locale.US)
-}
+fun getCurrencyFormat() =
+        DecimalFormat().apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+            currency = PreferenceRepository.getCurrency()
+        }
 
-fun Wallet.getFormattedBalanceBtc() = coinFormat.format(balance)
+fun Wallet.getFormattedBalanceBtc() = cryptocurrencyFormat.format(balance)
 
-fun Wallet.getFormattedBalanceMBtc() = coinFormat.format(getBalanceMBtc())
+fun Wallet.getFormattedBalanceMBtc() = cryptocurrencyFormat.format(getBalanceMBtc())
 
-fun Wallet.getFormattedBalanceBits() = coinFormat.format(getBalanceBits())
+fun Wallet.getFormattedBalanceBits() = cryptocurrencyFormat.format(getBalanceBits())
 
-fun Wallet.getFormattedBalanceSatoshi() = coinFormat.format(getBalanceSatoshi())
+fun Wallet.getFormattedBalanceSatoshi() = cryptocurrencyFormat.format(getBalanceSatoshi())
 
-fun Wallet.getFormattedBalanceCurrency() = currencyFormat.format(getBalanceCurrency())
+fun Wallet.getFormattedBalanceCurrency() = getCurrencyFormat().format(getBalanceCurrency())
 
 fun Wallet.share(activity: Activity) =
-        ShareCompat.IntentBuilder
-            .from(activity)
-            .setType("text/plain")
-            .setText("$coin\n$address")
-            .startChooser()
+        "$cryptocurrency\n$address".share(activity)

@@ -1,8 +1,9 @@
 package cafe.adriel.cryp.view.wallet.list
 
 import cafe.adriel.cryp.R
-import cafe.adriel.cryp.model.entity.*
-import cafe.adriel.cryp.model.entity.Currency
+import cafe.adriel.cryp.model.entity.Cryptocurrency
+import cafe.adriel.cryp.model.entity.MessageType
+import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.model.repository.WalletRepository
 import com.arellomobile.mvp.InjectViewState
@@ -24,11 +25,15 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
                 WalletRepository.updateBalances(it)
             }
             .zipWith(WalletRepository.updatePrices(WalletRepository.getAll()).singleOrError(),
-                    BiFunction { wallets: List<Wallet>, prices: Map<String, Map<String, BigDecimal>> ->
+                    BiFunction { wallets: List<Wallet>, prices: Map<Cryptocurrency, Map<String, String>> ->
                         wallets.forEach {
-                            if(prices.containsKey(it.coin.name)){
-                                it.priceBtc = prices[it.coin.name]?.get(Coin.BTC.name) ?: BigDecimal.ZERO
-                                it.priceCurrency = prices[it.coin.name]?.get(Currency.USD.name) ?: BigDecimal.ZERO
+                            if(prices.containsKey(it.cryptocurrency)){
+                                it.priceBtc = prices[it.cryptocurrency]
+                                        ?.get(Cryptocurrency.BTC.name)
+                                        ?.toBigDecimal() ?: BigDecimal.ZERO
+                                it.priceCurrency = prices[it.cryptocurrency]
+                                        ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
+                                        ?.toBigDecimal() ?: BigDecimal.ZERO
                             }
                             WalletRepository.addOrUpdate(it)
                         }
@@ -48,19 +53,15 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
     }
 
     fun saveOrder(walletIds: List<String>) =
-        PreferenceRepository.setWalletOrder(walletIds.toTypedArray())
+        WalletRepository.getAll().forEach {
+            it.position = walletIds.indexOf(it.id)
+            WalletRepository.addOrUpdate(it)
+        }
 
-    fun saveCoinFormat(coinFormat: CoinFormat) =
-        PreferenceRepository.setCoinFormat(coinFormat)
-
-    fun getCoinFormat() =
-        PreferenceRepository.getCoinFormat()
-
-    private fun getSortComparator() = object : Comparator<Wallet> {
-        private val order = PreferenceRepository.getWalletOrder()
-
-        override fun compare(w1: Wallet, w2: Wallet) =
-                order.indexOf(w1.id).compareTo(order.indexOf(w2.id))
+    private fun getSortComparator() = Comparator<Wallet> { w1, w2 ->
+        val result = w1.position.compareTo(w2.position)
+        if(result == 0) w1.cryptocurrency.compareTo(w2.cryptocurrency)
+        else result
     }
 
 }

@@ -11,13 +11,14 @@ class CounterTextView(context: Context, attrs: AttributeSet? = null) : AppCompat
     private val DURATION: Long = 2000
 
     private val animator: ValueAnimator
+    private var prefix: String? = ""
     private var decimalFormat: DecimalFormat? = null
 
     init {
         animator = ValueAnimator().apply {
             duration = DURATION
             addUpdateListener({
-                text = decimalFormat?.format(it.animatedValue) ?: it.animatedValue.toString()
+                text = prefix + (decimalFormat?.format(it.animatedValue) ?: it.animatedValue.toString())
             })
         }
     }
@@ -25,6 +26,11 @@ class CounterTextView(context: Context, attrs: AttributeSet? = null) : AppCompat
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         animator.cancel()
+    }
+
+    fun setPrefix(prefix: String): CounterTextView{
+        this.prefix = prefix
+        return this
     }
 
     fun setDecimalFormat(decimalFormat: DecimalFormat): CounterTextView {

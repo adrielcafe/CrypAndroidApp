@@ -41,37 +41,20 @@
                     android:fontFamily="sans-serif-light"
                     app:textAllCaps="true"/>
 
-                <android.support.v7.widget.LinearLayoutCompat
+                <cafe.adriel.cryp.view.custom.CounterTextView
+                    android:id="@+id/vTotalBalance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/vTotalBalanceCurrency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginEnd="5dp"
-                        android:maxLines="1"
-                        android:text="$"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="sans-serif-medium"/>
-
-                    <cafe.adriel.cryp.view.custom.CounterTextView
-                        android:id="@+id/vTotalBalance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="0"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textColor="@android:color/white"
-                        android:fontFamily="sans-serif-medium"/>
-
-                </android.support.v7.widget.LinearLayoutCompat>
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@android:color/white"
+                    android:textAlignment="center"
+                    android:fontFamily="sans-serif-medium"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMaxTextSize="@dimen/abc_text_size_display_1_material"
+                    app:autoSizeStepGranularity="1sp"
+                    tools:text="$ 0.00"/>
 
             </android.support.v7.widget.LinearLayoutCompat>
 
@@ -128,6 +111,6 @@
         android:layout_margin="16dp"
         android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_add"
-        app:layout_behavior="cafe.adriel.cryp.view.custom.ScrollAwareFABBehavior"/>
+        app:layout_behavior="cafe.adriel.cryp.view.custom.ScrollAwareFabBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
