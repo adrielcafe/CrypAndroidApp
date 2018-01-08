@@ -1,8 +1,7 @@
 package cafe.adriel.cryp
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class ExampleUnitTest {
     @Test

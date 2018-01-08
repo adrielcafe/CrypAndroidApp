@@ -38,7 +38,6 @@
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -65,17 +64,27 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/vQrCode"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:scaleType="fitCenter"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="0dp"
+            app:cardUseCompatPadding="false">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/vQrCode"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"/>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/vPublicKey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:maxLines="2"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

@@ -80,6 +80,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 .attachToRecyclerView(vWallets)
         vWallets.setHasFixedSize(true)
         vWallets.addItemDecoration(SeparatorDecoration(10))
+        vWallets.itemAnimator.changeDuration = 0
         vWallets.layoutManager = LinearLayoutManager(this)
         vWallets.adapter = adapter
     }
@@ -146,7 +147,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                     updateState()
                     updateTotalBalance()
                     closeSwipeMenus(true)
-                    setRefreshing(false)
+                    setContentRefreshing(false)
                 }, {
                     it.printStackTrace()
                 })
@@ -207,7 +208,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
 
     private fun refresh() {
         if(isConnected()) {
-            setRefreshing(true)
+            setContentRefreshing(true)
+            setTotalBalanceRefreshing(true)
             presenter.loadAll()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -215,20 +217,31 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                         it.forEach { addOrUpdate(it) }
                         updateState()
                         updateTotalBalance()
-                        setRefreshing(false)
+                        setContentRefreshing(false)
+                        setTotalBalanceRefreshing(false)
                     }, {
                         it.printStackTrace()
                         closeSwipeMenus(true)
-                        setRefreshing(false)
+                        setContentRefreshing(false)
+                        setTotalBalanceRefreshing(false)
                     })
         } else {
-            setRefreshing(false)
+            setContentRefreshing(false)
+            setTotalBalanceRefreshing(false)
             showMessage(R.string.connect_internet, MessageType.INFO)
         }
     }
 
-    private fun setRefreshing(refreshing: Boolean) {
+    private fun setContentRefreshing(refreshing: Boolean) {
         vRefresh.isRefreshing = refreshing
+    }
+
+    private fun setTotalBalanceRefreshing(refreshing: Boolean) {
+        if(refreshing){
+            vTotalBalanceProgress.show()
+        } else {
+            vTotalBalanceProgress.hide()
+        }
     }
 
     private fun updateState(){
@@ -245,16 +258,12 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         adapter.adapterItems.forEach {
             totalBalance += it.wallet.getBalanceCurrency()
         }
-        if(totalBalance < BigDecimal.ZERO){
-            totalBalance = BigDecimal.ZERO
-        }
-        vTotalBalance.postDelayed({
-            vTotalBalance
-                    .setPrefix("$currencySymbol ")
-                    .setDecimalFormat(getCurrencyFormat())
-                    .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
-            currentTotalBalance = totalBalance
-        }, 500)
+        if(totalBalance < BigDecimal.ZERO) totalBalance = BigDecimal.ZERO
+        vTotalBalance
+                .setPrefix("$currencySymbol ")
+                .setDecimalFormat(getCurrencyFormat())
+                .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
+        currentTotalBalance = totalBalance
     }
 
     private fun closeSwipeMenus(closeCurrentOpenedMenu: Boolean){
