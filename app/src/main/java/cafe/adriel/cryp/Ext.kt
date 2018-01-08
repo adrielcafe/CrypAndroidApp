@@ -27,8 +27,8 @@ import java.text.DecimalFormat
 import java.util.*
 
 // Resources
-fun stringFrom(@StringRes stringRes: Int, param : String? = null) =
-        App.context.getString(stringRes, param)
+fun stringFrom(@StringRes stringRes: Int, vararg param : String? = emptyArray()) =
+        App.context.getString(stringRes, *param)
 
 fun intFrom(@IntegerRes intRes: Int) =
         App.context.resources.getInteger(intRes)
