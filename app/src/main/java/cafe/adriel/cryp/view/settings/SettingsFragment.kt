@@ -8,12 +8,12 @@ import android.preference.ListPreference
 import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
-import cafe.adriel.cryp.BuildConfig
-import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.R
+import cafe.adriel.cryp.*
+import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
+import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
-import cafe.adriel.cryp.share
+import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import com.franmontiel.localechanger.LocaleChanger
 import java.util.*
 
@@ -24,6 +24,9 @@ class SettingsFragment : PreferenceFragment(),
     private val prefLanguage by lazy { findPreference(Const.PREF_LANGUAGE) as ListPreference}
     private val prefCurrency by lazy { findPreference(Const.PREF_CURRENCY) as ListPreference }
     private val prefCryptocurrencyUnit by lazy { findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
+    private val prefBtc by lazy { findPreference(Const.PREF_BTC) }
+    private val prefLtc by lazy { findPreference(Const.PREF_LTC) }
+    private val prefEth by lazy { findPreference(Const.PREF_ETH) }
     private val prefShare by lazy { findPreference(Const.PREF_SHARE) }
     private val prefReview by lazy { findPreference(Const.PREF_REVIEW) }
     private val prefContact by lazy { findPreference(Const.PREF_CONTACT) }
@@ -39,6 +42,9 @@ class SettingsFragment : PreferenceFragment(),
         prefCurrency.onPreferenceChangeListener = this
         prefCryptocurrencyUnit.onPreferenceChangeListener = this
 
+        prefBtc.onPreferenceClickListener = this
+        prefLtc.onPreferenceClickListener = this
+        prefEth.onPreferenceClickListener = this
         prefShare.onPreferenceClickListener = this
         prefReview.onPreferenceClickListener = this
         prefContact.onPreferenceClickListener = this
@@ -80,6 +86,18 @@ class SettingsFragment : PreferenceFragment(),
 
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when(preference?.key){
+            Const.PREF_BTC -> {
+                val wallet = Wallet(Cryptocurrency.BTC, Const.DONATE_BTC_ADDRESS)
+                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+            }
+            Const.PREF_LTC -> {
+                val wallet = Wallet(Cryptocurrency.LTC, Const.DONATE_LTC_ADDRESS)
+                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+            }
+            Const.PREF_ETH -> {
+                val wallet = Wallet(Cryptocurrency.ETH, Const.DONATE_ETH_ADDRESS)
+                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+            }
             Const.PREF_SHARE -> shareApp()
             Const.PREF_REVIEW -> reviewApp()
             Const.PREF_CONTACT -> sendEmail()

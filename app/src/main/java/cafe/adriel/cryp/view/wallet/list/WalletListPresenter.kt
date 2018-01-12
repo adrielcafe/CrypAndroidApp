@@ -28,10 +28,14 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
                     BiFunction { wallets: List<Wallet>, prices: Map<Cryptocurrency, Map<String, String>> ->
                         wallets.forEach {
                             if(prices.containsKey(it.cryptocurrency)){
-                                it.priceBtc = prices[it.cryptocurrency]
+                                val coinPrices = prices[it.cryptocurrency]
+                                it.priceBtc = coinPrices
                                         ?.get(Cryptocurrency.BTC.name)
                                         ?.toBigDecimal() ?: BigDecimal.ZERO
-                                it.priceCurrency = prices[it.cryptocurrency]
+                                it.priceEth = coinPrices
+                                        ?.get(Cryptocurrency.ETH.name)
+                                        ?.toBigDecimal() ?: BigDecimal.ZERO
+                                it.priceCurrency = coinPrices
                                         ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
                                         ?.toBigDecimal() ?: BigDecimal.ZERO
                             }

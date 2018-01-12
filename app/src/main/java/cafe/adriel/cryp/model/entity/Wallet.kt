@@ -12,6 +12,7 @@ data class Wallet(
         val address: String,
         var balance: BigDecimal = BigDecimal.ONE.negate(),
         var priceBtc: BigDecimal = BigDecimal.ZERO,
+        var priceEth: BigDecimal = BigDecimal.ZERO,
         var priceCurrency: BigDecimal = BigDecimal.ZERO,
         var position: Int = Int.MAX_VALUE,
         var updatedAt: Date? = null) : AutoParcelable {

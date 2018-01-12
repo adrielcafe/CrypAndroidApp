@@ -3,10 +3,15 @@
     <string name="cryp" translatable="false">Cryp</string>
     <string name="cryp_pro" translatable="false">Cryp PRO</string>
 
+    <string name="bitcoin" translatable="false">Bitcoin</string>
+    <string name="litecoin" translatable="false">Litecoin</string>
+    <string name="ethereum" translatable="false">Ethereum</string>
+
     <string name="total_balance">Total balance</string>
     <string name="add_wallet">Add wallet</string>
     <string name="tap_to_scan">Tap to scan</string>
     <string name="tap_to_copy">Tap to copy</string>
+    <string name="tap_to_see_address">Tap to see the address</string>
     <string name="copied">Copied</string>
     <string name="public_key">Public Key</string>
     <string name="cryptocurrency_public_key">%s Public Key</string>
@@ -39,6 +44,7 @@
     <string name="give_5_stars">Give 5 stars to Cryp!</string>
     <string name="contact">Contact</string>
     <string name="send_me_email">Send me an email</string>
+    <string name="donate">Donate</string>
 
     <string-array name="language_titles">
         <item>English</item>

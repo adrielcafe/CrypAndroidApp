@@ -27,6 +27,25 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/donate">
+
+        <Preference
+            android:key="btc"
+            android:title="@string/bitcoin"
+            android:summary="@string/tap_to_see_address"/>
+
+        <Preference
+            android:key="ltc"
+            android:title="@string/litecoin"
+            android:summary="@string/tap_to_see_address"/>
+
+        <Preference
+            android:key="eth"
+            android:title="@string/ethereum"
+            android:summary="@string/tap_to_see_address"/>
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/about">
 
         <Preference
