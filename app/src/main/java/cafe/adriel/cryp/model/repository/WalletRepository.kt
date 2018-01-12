@@ -40,8 +40,11 @@ object WalletRepository {
     fun updatePrices(wallets: List<Wallet>) =
             if (wallets.isNotEmpty()) {
                 with(wallets) {
-                    val currencies = listOf(Cryptocurrency.BTC.name, PreferenceRepository.getCurrency().currencyCode.toUpperCase())
                     val cryptocurrencies = wallets.map { it.cryptocurrency.name }.toSet()
+                    val currencies = listOf(
+                            Cryptocurrency.BTC.name,
+                            Cryptocurrency.ETH.name,
+                            PreferenceRepository.getCurrency().currencyCode.toUpperCase())
                     if(currencies.isNotEmpty() && cryptocurrencies.isNotEmpty()) {
                         priceService.getPrices(
                                 cryptocurrencies.joinToString(","),

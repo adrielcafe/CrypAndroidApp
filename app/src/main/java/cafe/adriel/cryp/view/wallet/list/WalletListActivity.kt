@@ -75,6 +75,11 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 }
             }
         })
+        adapter.withOnPreLongClickListener { v, adapter, item, position ->
+            // Disable SwipeRefreshLayout to allow drag down
+            vRefresh.isEnabled = false
+            false
+        }
 
         ItemTouchHelper(SimpleDragCallback(this))
                 .attachToRecyclerView(vWallets)
@@ -90,7 +95,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         refresh()
         // Re-enable add wallet button
         vAddWallet.isEnabled = true
-        // Fix missing logo of selected item
+        // Fix missing cryp of selected item
         if(currentOpenedMenuPosition >= 0){
             adapter.notifyAdapterItemChanged(currentOpenedMenuPosition)
         }
@@ -98,7 +103,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
 
     override fun onStart() {
         super.onStart()
-        KBus.subscribe<OpenedSwipeMenuEvent>(this, {
+        KBus.subscribe<SwipeMenuOpenedEvent>(this, {
             currentOpenedMenuPosition = adapter.getPosition(it.itemId)
             closeSwipeMenus(false)
         })
@@ -131,6 +136,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
         val walletIds = adapter.adapterItems.map { it.wallet.id }
         presenter.saveOrder(walletIds)
+        vRefresh.isEnabled = true
     }
 
     override fun addAll(wallets: List<Wallet>) {

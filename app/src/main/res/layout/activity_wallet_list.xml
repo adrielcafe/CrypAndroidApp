@@ -81,7 +81,7 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="50dp"
-                    android:layout_height="40dp"
+                    android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/cryp"
                     app:tint="@android:color/white"/>
