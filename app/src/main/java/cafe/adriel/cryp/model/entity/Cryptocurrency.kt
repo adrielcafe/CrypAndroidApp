@@ -1,84 +1,109 @@
 package cafe.adriel.cryp.model.entity
 
-import android.graphics.drawable.Drawable
+import android.support.annotation.DrawableRes
 import cafe.adriel.cryp.R
-import cafe.adriel.cryp.drawableFrom
 
 enum class Cryptocurrency(val fullName: String,
-                          val logo: Drawable) {
+                          @DrawableRes
+                          val logoRes: Int,
+                          val autoRefresh: Boolean) {
 
     AEON("Aeon",
-            drawableFrom(R.drawable.logo_aeon)),
+            R.drawable.logo_aeon,
+            true),
 
     AUR("Auroracoin",
-            drawableFrom(R.drawable.logo_aur)),
+            R.drawable.logo_aur,
+            true),
 
     BCH("Bitcoin Cash",
-            drawableFrom(R.drawable.logo_bch)),
+            R.drawable.logo_bch,
+            true),
 
     BCN("Bytecoin",
-            drawableFrom(R.drawable.logo_bcn)),
+            R.drawable.logo_bcn,
+            true),
 
     BTC("Bitcoin",
-            drawableFrom(R.drawable.logo_btc)),
+            R.drawable.logo_btc,
+            true),
 
     CLOAK("CloakCoin",
-            drawableFrom(R.drawable.logo_cloak)),
+            R.drawable.logo_cloak,
+            true),
 
     DASH("Dash",
-            drawableFrom(R.drawable.logo_dash)),
+            R.drawable.logo_dash,
+            true),
 
     DGB("DigiByte",
-            drawableFrom(R.drawable.logo_dgb)),
+            R.drawable.logo_dgb,
+            true),
 
     DOGE("Dogecoin",
-            drawableFrom(R.drawable.logo_doge)),
+            R.drawable.logo_doge,
+            true),
 
     EMC("Emercoin",
-            drawableFrom(R.drawable.logo_emc)),
+            R.drawable.logo_emc,
+            true),
 
     ETH("Ethereum",
-            drawableFrom(R.drawable.logo_eth)),
+            R.drawable.logo_eth,
+            true),
 
     FTC("Feathercoin",
-            drawableFrom(R.drawable.logo_ftc)),
+            R.drawable.logo_ftc,
+            true),
 
     GRS("Groestlcoin",
-            drawableFrom(R.drawable.logo_grs)),
+            R.drawable.logo_grs,
+            true),
 
     LTC("Litecoin",
-            drawableFrom(R.drawable.logo_ltc)),
+            R.drawable.logo_ltc,
+            true),
 
     NMC("Namecoin",
-            drawableFrom(R.drawable.logo_nmc)),
+            R.drawable.logo_nmc,
+            true),
 
     NVC("NovaCoin",
-            drawableFrom(R.drawable.logo_nvc)),
+            R.drawable.logo_nvc,
+            true),
 
     NXT("Nxt",
-            drawableFrom(R.drawable.logo_nxt)),
+            R.drawable.logo_nxt,
+            true),
 
     PART("Particl",
-            drawableFrom(R.drawable.logo_part)),
+            R.drawable.logo_part,
+            true),
 
     PPC("Peercoin",
-            drawableFrom(R.drawable.logo_ppc)),
+            R.drawable.logo_ppc,
+            true),
 
     RDD("ReddCoin",
-            drawableFrom(R.drawable.logo_rdd)),
+            R.drawable.logo_rdd,
+            true),
 
     VTC("Vertcoin",
-            drawableFrom(R.drawable.logo_vtc)),
+            R.drawable.logo_vtc,
+            true),
 
     // TODO not working
 //    XMR("Monero",
-//            drawableFrom(R.drawable.logo_xmr)),
+//            R.drawable.logo_xmr,
+//            true),
 
     XVG("Verge",
-            drawableFrom(R.drawable.logo_xvg)),
+            R.drawable.logo_xvg,
+            true),
 
     ZEC("Zcash",
-            drawableFrom(R.drawable.logo_zec));
+            R.drawable.logo_zec,
+            true);
 
     override fun toString() = "$fullName ($name)"
 

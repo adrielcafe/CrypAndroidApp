@@ -35,7 +35,7 @@
         android:layout_gravity="center"
         android:text="@string/tap_plus_to_add"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/grey_light"
+        android:textColor="@color/grey"
         android:textAlignment="center"/>
 
 </android.support.v7.widget.LinearLayoutCompat>

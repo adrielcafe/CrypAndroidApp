@@ -35,6 +35,9 @@
             android:name=".view.wallet.scan.ScanWalletActivity" />
 
         <activity
+            android:name=".view.wallet.select.SelectCryptocurrencyActivity" />
+
+        <activity
             android:name=".view.settings.SettingsActivity"
             android:theme="@style/AppTheme"/>
 

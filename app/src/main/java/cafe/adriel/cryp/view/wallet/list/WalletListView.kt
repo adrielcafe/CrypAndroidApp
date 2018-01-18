@@ -5,8 +5,6 @@ import cafe.adriel.cryp.view.IView
 
 interface WalletListView: IView {
 
-    fun addAll(wallets: List<Wallet>)
-    fun addOrUpdate(wallet: Wallet)
     fun remove(wallet: Wallet)
 
 }

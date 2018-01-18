@@ -1,4 +1,4 @@
-package cafe.adriel.cryp.model.repository
+package cafe.adriel.cryp.model.repository.factory
 
 import cafe.adriel.cryp.BuildConfig
 import cafe.adriel.cryp.model.repository.adapter.BigDecimalAdapter

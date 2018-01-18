@@ -1,5 +1,7 @@
 package cafe.adriel.cryp
 
+import cafe.adriel.cryp.model.entity.Cryptocurrency
+
 object Const {
     // URL
     const val GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
@@ -17,6 +19,7 @@ object Const {
 
     // Database
     const val DB_WALLETS = "wallets"
+    const val DB_PRICES = "prices"
 
     // Preference
     const val PREF_FIRST_OPEN = "firstOpen"
@@ -35,6 +38,7 @@ object Const {
     const val EXTRA_WALLET = "wallet"
 
     // Currency
+    val DEFAULT_CRYPTOCURRENCY = Cryptocurrency.BTC
     const val DEFAULT_CURRENCY = "USD"
     const val BTC_SYMBOL = "Ƀ"
     const val ETH_SYMBOL = "Ξ"

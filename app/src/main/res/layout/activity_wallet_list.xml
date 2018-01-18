@@ -80,7 +80,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="50dp"
+                    android:layout_width="55dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/cryp"

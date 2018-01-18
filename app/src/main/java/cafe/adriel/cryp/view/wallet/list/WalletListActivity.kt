@@ -28,7 +28,6 @@ import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback
 import com.mikepenz.fastadapter_extensions.utilities.DragDropUtil
 import com.tubb.smrv.SwipeHorizontalMenuLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
@@ -93,12 +92,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     override fun onResume() {
         super.onResume()
         refresh()
-        // Re-enable add wallet button
+        // Re-enable Add Wallet button
         vAddWallet.isEnabled = true
-        // Fix missing cryp of selected item
-        if(currentOpenedMenuPosition >= 0){
-            adapter.notifyAdapterItemChanged(currentOpenedMenuPosition)
-        }
     }
 
     override fun onStart() {
@@ -139,38 +134,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         vRefresh.isEnabled = true
     }
 
-    override fun addAll(wallets: List<Wallet>) {
-        wallets.toObservable()
-                .map { WalletAdapterItem(it) }
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    adapter.clear()
-                    if(it.isNotEmpty()) {
-                        adapter.add(it)
-                    }
-                    updateState()
-                    updateTotalBalance()
-                    closeSwipeMenus(true)
-                    setContentRefreshing(false)
-                }, {
-                    it.printStackTrace()
-                })
-    }
-
-    override fun addOrUpdate(wallet: Wallet) {
-        val position = getItemPosition(wallet)
-        if(position < 0) {
-            if(presenter.exists(wallet)) {
-                adapter.add(WalletAdapterItem(wallet))
-            }
-        } else {
-            adapter.getAdapterItem(position).wallet = wallet
-            adapter.notifyAdapterItemChanged(position)
-        }
-    }
-
     override fun remove(wallet: Wallet) {
         val position = getItemPosition(wallet)
         if(position >= 0) {
@@ -181,8 +144,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showWalletActivity(wallet: Wallet) {
-        start<ShowWalletActivity>(
-                Const.EXTRA_WALLET to wallet)
+        start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
     }
 
     private fun showAddWalletActivity() {
@@ -216,7 +178,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         if(isConnected()) {
             setContentRefreshing(true)
             setTotalBalanceRefreshing(true)
-            presenter.loadAll()
+            addAll(presenter.loadAll())
+            presenter.updateAll()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -235,6 +198,32 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             setContentRefreshing(false)
             setTotalBalanceRefreshing(false)
             showMessage(R.string.connect_internet, MessageType.INFO)
+        }
+    }
+
+    fun addAll(wallets: List<Wallet>) {
+        wallets.map { WalletAdapterItem(it) }
+            .let {
+                adapter.clear()
+                if(it.isNotEmpty()) {
+                    adapter.add(it)
+                }
+                updateState()
+                updateTotalBalance()
+                closeSwipeMenus(true)
+                setContentRefreshing(false)
+            }
+    }
+
+    fun addOrUpdate(wallet: Wallet) {
+        val position = getItemPosition(wallet)
+        if(position < 0) {
+            if(presenter.exists(wallet)) {
+                adapter.add(WalletAdapterItem(wallet))
+            }
+        } else {
+            adapter.getAdapterItem(position).wallet = wallet
+            adapter.notifyAdapterItemChanged(position)
         }
     }
 

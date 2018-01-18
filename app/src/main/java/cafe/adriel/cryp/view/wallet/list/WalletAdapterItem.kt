@@ -65,8 +65,8 @@ class WalletAdapterItem(var wallet: Wallet) :
             }
 
             vCryptocurrencyName.text = wallet.cryptocurrency.fullName
-            vCryptocurrencyLogo.setImageDrawable(wallet.cryptocurrency.logo)
-            vCryptocurrencyLogo.imageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
+            vCryptocurrencyLogo.setImageResource(wallet.cryptocurrency.logoRes)
+            vCryptocurrencyLogo.supportImageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
             vSwipeMenu.setSwipeListener(object : SimpleSwipeSwitchListener(){
                 override fun beginMenuOpened(swipeMenuLayout: SwipeMenuLayout?) {
                     KBus.post(SwipeMenuOpenedEvent(identifier))
