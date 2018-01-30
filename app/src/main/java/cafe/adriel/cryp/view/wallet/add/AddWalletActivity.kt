@@ -1,6 +1,7 @@
 package cafe.adriel.cryp.view.wallet.add
 
 import android.Manifest
+import android.animation.Animator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
@@ -51,7 +52,10 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             }
         }
 
+        vScanQrCode.enableMergePathsForKitKatAndAbove(true)
+
         vCryptocurrenciesLayout.setOnClickListener { selectCryptoCurrency() }
+        vScanQrCode.setOnClickListener { scanQrCode() }
         vQrCode.setOnClickListener { scanQrCode() }
         vTapToScan.setOnClickListener { scanQrCode() }
         vAddWallet.setOnClickListener { addWallet() }
@@ -126,10 +130,14 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     private fun setQrCode(text: String){
         if(text.isNotEmpty()) {
             vQrCode.setImageBitmap(text.getQrCode(R.color.colorAccentDark))
-            vQrCode.setPadding(0, 0, 0, 0)
+            vQrCode.visibility = View.VISIBLE
+            vScanQrCode.pauseAnimation()
+            vScanQrCode.visibility = View.INVISIBLE
         } else {
-            vQrCode.setImageResource(R.drawable.ic_scan_qrcode)
-            vQrCode.setPadding(20.px, 20.px, 20.px, 20.px)
+            vQrCode.setImageBitmap(null)
+            vQrCode.visibility = View.INVISIBLE
+            vScanQrCode.resumeAnimation()
+            vScanQrCode.visibility = View.VISIBLE
         }
     }
 
@@ -175,9 +183,17 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         val duration = intFrom(android.R.integer.config_mediumAnimTime).toLong()
 
         vRoot.visibility = View.VISIBLE
-        ViewAnimationUtils
+        val animation = ViewAnimationUtils
                 .createCircularReveal(vRoot, x, y, startRadius, endRadius)
                 .setDuration(duration)
-                .start()
+        animation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator?) { }
+            override fun onAnimationEnd(animation: Animator?) {
+                vScanQrCode.playAnimation()
+            }
+            override fun onAnimationCancel(animation: Animator?) { }
+            override fun onAnimationRepeat(animation: Animator?) { }
+        })
+        animation.start()
     }
 }

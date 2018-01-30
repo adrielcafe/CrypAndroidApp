@@ -32,6 +32,40 @@
         android:layout_marginTop="30dp"
         android:focusableInTouchMode="true">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/vScanQrCode"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/vCryptocurrenciesLayout"
+            android:layout_marginTop="-50dp"
+            android:paddingStart="50dp"
+            app:lottie_fileName="animations/scan_qrcode.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="false"
+            app:lottie_cacheStrategy="strong"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/vQrCode"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/vCryptocurrenciesLayout"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/vTapToScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/vScanQrCode"
+            android:text="@string/tap_to_scan"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-light"
+            app:textAllCaps="true"/>
+
         <android.support.v7.widget.CardView
             android:id="@+id/vCryptocurrenciesLayout"
             android:layout_width="wrap_content"
@@ -102,30 +136,6 @@
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/vQrCode"
-            android:layout_width="175dp"
-            android:layout_height="175dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_below="@id/vCryptocurrenciesLayout"
-            android:layout_centerHorizontal="true"
-            android:padding="20dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_scan_qrcode"/>
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/vTapToScan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/vQrCode"
-            android:text="@string/tap_to_scan"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-light"
-            app:textAllCaps="true"/>
 
     </RelativeLayout>
 

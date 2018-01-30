@@ -10,11 +10,11 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/cryp"
-        android:supportsRtl="true"
+        android:icon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme.NoActionBar"
+        android:supportsRtl="true"
+        android:allowBackup="true"
         tools:replace="android:label">
 
         <activity android:name=".view.wallet.list.WalletListActivity">

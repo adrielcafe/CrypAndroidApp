@@ -19,6 +19,7 @@ import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import cafe.adriel.kbus.KBus
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog
+import com.github.ajalt.timberkt.e
 import com.kennyc.view.MultiStateView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
@@ -177,6 +178,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     private fun refresh() {
         if(isConnected()) {
             setContentRefreshing(true)
+            e { "REFRESH START" }
             setTotalBalanceRefreshing(true)
             addAll(presenter.loadAll())
             presenter.updateAll()
@@ -187,15 +189,18 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                         updateState()
                         updateTotalBalance()
                         setContentRefreshing(false)
+                        e { "REFRESH STOP 1" }
                         setTotalBalanceRefreshing(false)
                     }, {
                         it.printStackTrace()
                         closeSwipeMenus(true)
                         setContentRefreshing(false)
+                        e { "REFRESH STOP 2" }
                         setTotalBalanceRefreshing(false)
                     })
         } else {
             setContentRefreshing(false)
+            e { "REFRESH STOP 3" }
             setTotalBalanceRefreshing(false)
             showMessage(R.string.connect_internet, MessageType.INFO)
         }

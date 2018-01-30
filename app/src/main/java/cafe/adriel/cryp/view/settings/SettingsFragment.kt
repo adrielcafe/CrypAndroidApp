@@ -12,18 +12,17 @@ import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
 import cafe.adriel.cryp.model.entity.Wallet
-import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import com.franmontiel.localechanger.LocaleChanger
 import java.util.*
-
 
 class SettingsFragment : PreferenceFragment(),
         Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private val prefLanguage by lazy { findPreference(Const.PREF_LANGUAGE) as ListPreference}
     private val prefCurrency by lazy { findPreference(Const.PREF_CURRENCY) as ListPreference }
-    private val prefCryptocurrencyUnit by lazy { findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
+    private val prefCryptocurrencyUnit by lazy {
+        findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
     private val prefBtc by lazy { findPreference(Const.PREF_BTC) }
     private val prefLtc by lazy { findPreference(Const.PREF_LTC) }
     private val prefEth by lazy { findPreference(Const.PREF_ETH) }
@@ -107,7 +106,7 @@ class SettingsFragment : PreferenceFragment(),
 
     private fun addCurrencies(){
         val allCurrencies = Currency.getAvailableCurrencies()
-        val supportedCurrencies = PreferenceRepository.getSupportedCurrencies()
+        val supportedCurrencies = Const.SUPPORTED_CURRENCIES
                 .map { currencyCode ->
                     allCurrencies.first { it.currencyCode == currencyCode.toUpperCase() }
                 }.sortedWith(kotlin.Comparator { o1, o2 ->
@@ -122,10 +121,11 @@ class SettingsFragment : PreferenceFragment(),
     }
 
     private fun addCryptocurrencyUnits(){
-        prefCryptocurrencyUnit.entries = CryptocurrencyUnit.values()
+        val supportedUnits = CryptocurrencyUnit.values()
+        prefCryptocurrencyUnit.entries = supportedUnits
                 .map { it.fullName }
                 .toTypedArray()
-        prefCryptocurrencyUnit.entryValues = CryptocurrencyUnit.values()
+        prefCryptocurrencyUnit.entryValues = supportedUnits
                 .map { it.name }
                 .toTypedArray()
     }

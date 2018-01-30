@@ -27,7 +27,6 @@
     <string name="wallet_not_found">Wallet not found</string>
     <string name="yes_please">Yes, please</string>
     <string name="nevermind">Nevermind</string>
-    <string name="point_camera_qrcode">Point the camera at the QR Code</string>
     <string name="connect_internet">Connect to the internet</string>
     <string name="no_wallet_yet">No wallet, yet</string>
     <string name="tap_plus_to_add">Tap on \"+\" to add one!</string>
@@ -57,122 +56,6 @@
     <string-array name="language_values">
         <item>en</item>
         <item>pt</item>
-    </string-array>
-
-    <string-array name="supported_currencies">
-        <item>afn</item>
-        <item>all</item>
-        <item>dzd</item>
-        <item>aoa</item>
-        <item>ars</item>
-        <item>amd</item>
-        <item>aud</item>
-        <item>azn</item>
-        <item>bsd</item>
-        <item>bhd</item>
-        <item>bdt</item>
-        <item>bbd</item>
-        <item>byr</item>
-        <item>btn</item>
-        <item>bob</item>
-        <item>bam</item>
-        <item>bwp</item>
-        <item>brl</item>
-        <item>gbp</item>
-        <item>bnd</item>
-        <item>bgn</item>
-        <item>bif</item>
-        <item>khr</item>
-        <item>cad</item>
-        <item>xaf</item>
-        <item>clp</item>
-        <item>cny</item>
-        <item>cop</item>
-        <item>crc</item>
-        <item>hrk</item>
-        <item>cuc</item>
-        <item>czk</item>
-        <item>dkk</item>
-        <item>dop</item>
-        <item>egp</item>
-        <item>etb</item>
-        <item>eur</item>
-        <item>gel</item>
-        <item>ghs</item>
-        <item>gip</item>
-        <item>gtq</item>
-        <item>hnl</item>
-        <item>hkd</item>
-        <item>huf</item>
-        <item>isk</item>
-        <item>inr</item>
-        <item>idr</item>
-        <item>irr</item>
-        <item>iqd</item>
-        <item>ils</item>
-        <item>jmd</item>
-        <item>jpy</item>
-        <item>jod</item>
-        <item>kzt</item>
-        <item>kes</item>
-        <item>kwd</item>
-        <item>kgs</item>
-        <item>lbp</item>
-        <item>lsl</item>
-        <item>mop</item>
-        <item>myr</item>
-        <item>mvr</item>
-        <item>mur</item>
-        <item>mxn</item>
-        <item>mdl</item>
-        <item>mad</item>
-        <item>mzn</item>
-        <item>mmk</item>
-        <item>nad</item>
-        <item>npr</item>
-        <item>twd</item>
-        <item>nzd</item>
-        <item>nio</item>
-        <item>ngn</item>
-        <item>nok</item>
-        <item>omr</item>
-        <item>pkr</item>
-        <item>pab</item>
-        <item>pyg</item>
-        <item>pen</item>
-        <item>php</item>
-        <item>pln</item>
-        <item>qar</item>
-        <item>ron</item>
-        <item>rub</item>
-        <item>rwf</item>
-        <item>svc</item>
-        <item>sar</item>
-        <item>rsd</item>
-        <item>sgd</item>
-        <item>sbd</item>
-        <item>zar</item>
-        <item>krw</item>
-        <item>lkr</item>
-        <item>szl</item>
-        <item>sek</item>
-        <item>chf</item>
-        <item>tzs</item>
-        <item>thb</item>
-        <item>top</item>
-        <item>ttd</item>
-        <item>tnd</item>
-        <item>try</item>
-        <item>usd</item>
-        <item>ugx</item>
-        <item>uah</item>
-        <item>aed</item>
-        <item>uyu</item>
-        <item>uzs</item>
-        <item>vuv</item>
-        <item>vef</item>
-        <item>vnd</item>
-        <item>xof</item>
     </string-array>
 
 </resources>

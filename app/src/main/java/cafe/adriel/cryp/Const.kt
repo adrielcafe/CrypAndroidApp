@@ -38,6 +38,16 @@ object Const {
     const val EXTRA_WALLET = "wallet"
 
     // Currency
+    val SUPPORTED_CURRENCIES = arrayOf(
+        "afn", "all", "dzd", "aoa", "ars", "amd", "aud", "azn", "bsd", "bhd", "bdt", "bbd", "byr",
+        "btn", "bob", "bam", "bwp", "brl", "gbp", "bnd", "bgn", "bif", "khr", "cad", "xaf", "clp",
+        "cny", "cop", "crc", "hrk", "cuc", "czk", "dkk", "dop", "egp", "etb", "eur", "gel", "ghs",
+        "gip", "gtq", "hnl", "hkd", "huf", "isk", "inr", "idr", "irr", "iqd", "ils", "jmd", "jpy",
+        "jod", "kzt", "kes", "kwd", "kgs", "lbp", "lsl", "mop", "myr", "mvr", "mur", "mxn", "mdl",
+        "mad", "mzn", "mmk", "nad", "npr", "twd", "nzd", "nio", "ngn", "nok", "omr", "pkr", "pab",
+        "pyg", "pen", "php", "pln", "qar", "ron", "rub", "rwf", "svc", "sar", "rsd", "sgd", "sbd",
+        "zar", "krw", "lkr", "szl", "sek", "chf", "tzs", "thb", "top", "ttd", "tnd", "try", "usd",
+        "ugx", "uah", "aed", "uyu", "uzs", "vuv", "vef", "vnd", "xof")
     val DEFAULT_CRYPTOCURRENCY = Cryptocurrency.BTC
     const val DEFAULT_CURRENCY = "USD"
     const val BTC_SYMBOL = "Ƀ"

@@ -24,6 +24,7 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
 
     fun updateAll() =
         PriceRepository.updatePrices()
+            .defaultIfEmpty(emptyMap())
             .map { WalletRepository.updateBalances() }
             .flatMapSingle { it }
             .doOnNext {
