@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.MessageType
+import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity
 import cafe.adriel.cryp.view.wallet.select.SelectCryptocurrencyActivity
@@ -38,6 +39,13 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         window.statusBarColor = colorFrom(R.color.colorAccentDark)
         window.navigationBarColor = colorFrom(R.color.colorAccentDark).darken
 
+        if(intent.hasExtra(Const.EXTRA_WALLET)){
+            val wallet: Wallet = intent.getParcelableExtra(Const.EXTRA_WALLET)
+            setEditMode(wallet)
+        } else {
+            setCryptocurrency(Const.DEFAULT_CRYPTOCURRENCY)
+        }
+
         if (savedInstanceState == null) {
             vRoot.apply {
                 visibility = View.INVISIBLE
@@ -58,14 +66,12 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         vScanQrCode.setOnClickListener { scanQrCode() }
         vQrCode.setOnClickListener { scanQrCode() }
         vTapToScan.setOnClickListener { scanQrCode() }
-        vAddWallet.setOnClickListener { addWallet() }
+        vSaveWallet.setOnClickListener { addWallet() }
 
         RxTextView.textChanges(vPublicKey)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { setQrCode(it.toString()) }
-
-        setCryptocurrency(Const.DEFAULT_CRYPTOCURRENCY)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -96,6 +102,24 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         finish()
     }
 
+    private fun setEditMode(wallet: Wallet){
+        setCryptocurrency(wallet.cryptocurrency)
+        setQrCode(wallet.address)
+        setPublicKey(wallet.address)
+
+        vName.setText(wallet.name)
+        if(wallet.cryptocurrency.autoRefresh) vBalance.setText(R.string.auto_updated)
+        else vBalance.setText(wallet.balance.toPlainString())
+
+        vCryptocurrenciesLayout.isEnabled = false
+        vPublicKey.isEnabled = false
+        vScanQrCode.isEnabled = false
+        vQrCode.isEnabled = false
+
+        vArrowRight.visibility = View.GONE
+        vTapToScan.visibility = View.GONE
+    }
+
     private fun selectCryptoCurrency(){
         start<SelectCryptocurrencyActivity>()
     }
@@ -113,10 +137,10 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     private fun setCryptocurrency(cryptocurrency: Cryptocurrency){
         selectedCryptocurrency = cryptocurrency
-        vName.text = cryptocurrency.name
-        vFullName.text = cryptocurrency.fullName
-        vLogo.setImageResource(cryptocurrency.logoRes)
-        toggleFixedBalanceMessage()
+        vCryptocurrencyName.text = cryptocurrency.name
+        vCryptocurrencyFullName.text = cryptocurrency.fullName
+        vCryptocurrencyLogo.setImageResource(cryptocurrency.logoRes)
+        toggleBalanceMessage()
     }
 
     private fun setPublicKey(qrCodeValue: String){
@@ -142,36 +166,34 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     }
 
     private fun addWallet(){
-        val publicKey = vPublicKey.text.toString()
-        val fixedBalance = vFixedBalance.text.toString().toBigDecimalOrNull()
+        val publicKey = vPublicKey.text.toString().trim()
+        val name = vName.text.toString().trim()
+        val balance = vBalance.text.toString().toBigDecimalOrNull()
 
         // Validations
         if(publicKey.isEmpty()){
             showMessage(R.string.type_or_scan_public_key, MessageType.ERROR)
             return
-        } else if(fixedBalance == null && !selectedCryptocurrency.autoRefresh) {
+        } else if(balance == null && !selectedCryptocurrency.autoRefresh) {
             showMessage(R.string.invalid_balance, MessageType.ERROR)
-            return
-        } else if(presenter.exists(selectedCryptocurrency, publicKey)) {
-            showMessage(R.string.wallet_already_saved, MessageType.WARN)
             return
         } else if(!isConnected()) {
             showMessage(R.string.connect_internet, MessageType.INFO)
             return
         }
 
-        presenter.saveWallet(selectedCryptocurrency, publicKey, fixedBalance)
+        presenter.saveWallet(selectedCryptocurrency, publicKey, name, balance)
     }
 
-    private fun toggleFixedBalanceMessage(){
+    private fun toggleBalanceMessage(){
         if(selectedCryptocurrency.autoRefresh){
-            vFixedBalance.isEnabled = false
-            vFixedBalance.setText(getString(R.string.coin_balance_auto_updated))
-            vFixedBalance.setTextColor(colorFrom(R.color.grey_light))
+            vBalance.isEnabled = false
+            vBalance.setText(getString(R.string.auto_updated))
+            vBalance.setTextColor(colorFrom(R.color.grey_light))
         } else {
-            vFixedBalance.isEnabled = true
-            vFixedBalance.setText("")
-            vFixedBalance.setTextColor(Color.WHITE)
+            vBalance.isEnabled = true
+            vBalance.setText("")
+            vBalance.setTextColor(Color.WHITE)
         }
     }
 

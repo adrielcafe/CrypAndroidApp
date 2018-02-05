@@ -10,6 +10,7 @@ import java.util.*
 data class Wallet(
         val cryptocurrency: Cryptocurrency,
         val address: String,
+        var name: String = "",
         var balance: BigDecimal = BigDecimal.ONE.negate(),
         var priceBtc: BigDecimal = BigDecimal.ZERO,
         var priceEth: BigDecimal = BigDecimal.ZERO,

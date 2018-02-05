@@ -8,13 +8,14 @@
     <string name="ethereum" translatable="false">Ethereum</string>
 
     <string name="total_balance">Total balance</string>
-    <string name="add_wallet">Add wallet</string>
+    <string name="save_wallet">Save wallet</string>
     <string name="tap_to_scan">Tap to scan</string>
     <string name="tap_to_copy">Tap to copy</string>
     <string name="tap_to_see_address">Tap to see the address</string>
     <string name="copied">Copied</string>
     <string name="public_key">Public Key</string>
-    <string name="fixed_balance">Fixed balance</string>
+    <string name="wallet_name">Wallet name</string>
+    <string name="balance">Balance</string>
     <string name="cryptocurrency_public_key">%s Public Key</string>
     <string name="type_or_scan_public_key">Type or scan your Public Key</string>
     <string name="invalid_balance">Invalid balance</string>
@@ -46,7 +47,7 @@
     <string name="contact">Contact</string>
     <string name="send_me_email">Send me an email</string>
     <string name="donate">Donate</string>
-    <string name="coin_balance_auto_updated">This coin\'s balance is auto updated</string>
+    <string name="auto_updated">Auto updated</string>
     <string name="select_cryptocurrency">Select cryptocurrency</string>
 
     <string-array name="language_titles">

@@ -21,8 +21,7 @@ class SettingsFragment : PreferenceFragment(),
 
     private val prefLanguage by lazy { findPreference(Const.PREF_LANGUAGE) as ListPreference}
     private val prefCurrency by lazy { findPreference(Const.PREF_CURRENCY) as ListPreference }
-    private val prefCryptocurrencyUnit by lazy {
-        findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
+    private val prefCryptocurrencyUnit by lazy { findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
     private val prefBtc by lazy { findPreference(Const.PREF_BTC) }
     private val prefLtc by lazy { findPreference(Const.PREF_LTC) }
     private val prefEth by lazy { findPreference(Const.PREF_ETH) }
@@ -48,7 +47,6 @@ class SettingsFragment : PreferenceFragment(),
         prefReview.onPreferenceClickListener = this
         prefContact.onPreferenceClickListener = this
 
-        // Set currencies in current language
         addCurrencies()
         addCryptocurrencyUnits()
 
@@ -104,6 +102,7 @@ class SettingsFragment : PreferenceFragment(),
         return true
     }
 
+    // Set currencies in current language
     private fun addCurrencies(){
         val allCurrencies = Currency.getAvailableCurrencies()
         val supportedCurrencies = Const.SUPPORTED_CURRENCIES

@@ -33,6 +33,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         ActivityRecreationHelper.onDestroy(this)
     }
 
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleChanger.configureBaseContext(newBase))
+    }
+
     override fun onMenuItemSelected(featureId: Int, item: MenuItem) =
         when(item.itemId){
             android.R.id.home -> {
@@ -41,10 +45,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             }
             else -> super.onMenuItemSelected(featureId, item)
         }
-
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(LocaleChanger.configureBaseContext(newBase))
-    }
 
     override fun isValidFragment(fragmentName: String) =
         SettingsFragment::class.java.name == fragmentName

@@ -31,9 +31,7 @@ class App : Application() {
     }
 
     private fun initLogging(){
-        if (!BuildConfig.RELEASE) {
-            Timber.plant(Timber.DebugTree())
-        }
+        if (!BuildConfig.RELEASE) Timber.plant(Timber.DebugTree())
     }
 
     private fun initDatabase(){
@@ -46,6 +44,8 @@ class App : Application() {
         val defaultLanguage = Locale.getDefault().language
         LocaleChanger.initialize(this, supportedLanguages.map { Locale.forLanguageTag(it) })
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
+
+        // Set current device language as default (if supported by app)
         if(PreferenceRepository.isFirstOpen()){
             PreferenceRepository.setFirstOpen(false)
             if(supportedLanguages.contains(defaultLanguage)) {

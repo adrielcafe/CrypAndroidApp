@@ -64,7 +64,8 @@ class WalletAdapterItem(var wallet: Wallet) :
                 vCryptocurrencyUnit.text = ""
             }
 
-            vCryptocurrencyName.text = wallet.cryptocurrency.fullName
+            vCryptocurrencyName.text = if(wallet.name.isNotEmpty()) wallet.name
+                                        else wallet.cryptocurrency.fullName
             vCryptocurrencyLogo.setImageResource(wallet.cryptocurrency.logoRes)
             vCryptocurrencyLogo.supportImageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
             vSwipeMenu.setSwipeListener(object : SimpleSwipeSwitchListener(){

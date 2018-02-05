@@ -16,9 +16,18 @@ import java.net.SocketTimeoutException
 @InjectViewState
 class AddWalletPresenter : MvpPresenter<AddWalletView>() {
 
-    fun saveWallet(cryptocurrency: Cryptocurrency, publicKey: String, fixedBalance: BigDecimal?){
-        val wallet = Wallet(cryptocurrency, publicKey, fixedBalance ?: BigDecimal.ONE.negate())
-        if(cryptocurrency.autoRefresh) {
+    fun saveWallet(cryptocurrency: Cryptocurrency, publicKey: String, name: String, balance: BigDecimal?){
+        val wallet = Wallet(cryptocurrency, publicKey, name, balance ?: BigDecimal.ONE.negate())
+        val exists = WalletRepository.contains(wallet)
+        // TODO prices should be kept outside wallet object
+        if(exists) {
+            if(cryptocurrency.autoRefresh)
+                wallet.balance = WalletRepository.getById(wallet.id).balance
+            wallet.priceCurrency = WalletRepository.getById(wallet.id).priceCurrency
+            wallet.priceBtc = WalletRepository.getById(wallet.id).priceBtc
+            wallet.priceEth = WalletRepository.getById(wallet.id).priceEth
+        }
+        if(!exists && cryptocurrency.autoRefresh) {
             viewState.showProgressDialog(
                 wallet.cryptocurrency.toString(),
                 stringFrom(R.string.validating_public_key)
@@ -64,6 +73,4 @@ class AddWalletPresenter : MvpPresenter<AddWalletView>() {
         }
     }
 
-    fun exists(cryptocurrency: Cryptocurrency, publicKey: String) =
-        WalletRepository.contains(Wallet(cryptocurrency, publicKey))
 }

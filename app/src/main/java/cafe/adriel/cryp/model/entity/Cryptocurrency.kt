@@ -92,7 +92,7 @@ enum class Cryptocurrency(val fullName: String,
             R.drawable.logo_vtc,
             true),
 
-    // TODO not working
+    // TODO API not working
 //    XMR("Monero",
 //            R.drawable.logo_xmr,
 //            true),

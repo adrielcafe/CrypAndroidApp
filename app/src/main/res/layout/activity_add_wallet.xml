@@ -85,7 +85,7 @@
                 android:padding="10dp">
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/vLogo"
+                    android:id="@+id/vCryptocurrencyLogo"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
@@ -96,10 +96,10 @@
                     tools:srcCompat="@drawable/logo_btc"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vName"
+                    android:id="@+id/vCryptocurrencyName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/vLogo"
+                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
                     android:layout_toStartOf="@id/vArrowRight"
                     android:layout_alignParentTop="true"
                     android:maxLines="1"
@@ -110,10 +110,10 @@
                     tools:text="BTC"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vFullName"
+                    android:id="@+id/vCryptocurrencyFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/vLogo"
+                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
                     android:layout_toStartOf="@id/vArrowRight"
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
@@ -177,11 +177,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             android:textColorHint="@color/grey_light"
             app:hintTextAppearance="@style/FloatingLabelTextAppearance">
 
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/vFixedBalance"
+                android:id="@+id/vName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
@@ -189,7 +190,33 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:background="@android:color/transparent"
-                android:hint="@string/fixed_balance"
+                android:hint="@string/wallet_name"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textCursorDrawable="@null"
+                android:inputType="textNoSuggestions"
+                tools:text="My BTC Wallet"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColorHint="@color/grey_light"
+            app:hintTextAppearance="@style/FloatingLabelTextAppearance">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/vBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"
+                android:hint="@string/balance"
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textCursorDrawable="@null"
@@ -199,10 +226,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/vAddWallet"
+            android:id="@+id/vSaveWallet"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:text="@string/add_wallet"
+            android:text="@string/save_wallet"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"

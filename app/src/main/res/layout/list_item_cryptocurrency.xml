@@ -9,7 +9,7 @@
     android:foreground="?selectableItemBackgroundBorderless">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/vLogo"
+        android:id="@+id/vCryptocurrencyLogo"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="10dp"
@@ -20,10 +20,10 @@
         tools:srcCompat="@drawable/logo_btc"/>
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/vName"
+        android:id="@+id/vCryptocurrencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/vLogo"
+        android:layout_toEndOf="@id/vCryptocurrencyLogo"
         android:layout_alignParentTop="true"
         android:maxLines="1"
         android:ellipsize="end"
@@ -33,10 +33,10 @@
         tools:text="BTC"/>
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/vFullName"
+        android:id="@+id/vCryptocurrencyFullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/vLogo"
+        android:layout_toEndOf="@id/vCryptocurrencyLogo"
         android:layout_alignParentBottom="true"
         android:maxLines="1"
         android:ellipsize="end"
@@ -50,7 +50,7 @@
         android:layout_height="15dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5.5dp"
-        android:layout_toEndOf="@id/vName"
+        android:layout_toEndOf="@id/vCryptocurrencyName"
         android:visibility="visible"
         app:srcCompat="@drawable/ic_refresh"
         app:tint="@color/grey_dark"/>
