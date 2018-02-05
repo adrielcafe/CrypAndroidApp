@@ -10,39 +10,62 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.math.BigDecimal
 import java.net.SocketTimeoutException
 
 @InjectViewState
 class AddWalletPresenter : MvpPresenter<AddWalletView>() {
 
-    fun saveWallet(cryptocurrency: Cryptocurrency, publicKey: String){
-        val wallet = Wallet(cryptocurrency, publicKey)
-        viewState.showProgressDialog(wallet.cryptocurrency.toString(), stringFrom(R.string.validating_public_key))
-        WalletRepository.updateBalance(wallet)
+    fun saveWallet(cryptocurrency: Cryptocurrency, publicKey: String, name: String, balance: BigDecimal?){
+        val wallet = Wallet(cryptocurrency, publicKey, name, balance ?: BigDecimal.ONE.negate())
+        val exists = WalletRepository.contains(wallet)
+        if(exists && cryptocurrency.autoRefresh) {
+            wallet.balance = WalletRepository.getById(wallet.id).balance
+        }
+        if(!exists && cryptocurrency.autoRefresh) {
+            viewState.showProgressDialog(
+                wallet.cryptocurrency.toString(),
+                stringFrom(R.string.validating_public_key)
+            )
+            WalletRepository.updateBalance(wallet)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     viewState.hideProgressDialog()
-                    when {
-                        WalletRepository.contains(wallet) ->
-                            viewState.showMessage(R.string.wallet_already_saved, MessageType.ERROR)
-                        WalletRepository.addOrUpdate(wallet) -> {
-                            viewState.showMessage(R.string.wallet_saved, MessageType.SUCCESS)
-                            viewState.close()
-                        }
-                        else ->
-                            viewState.showMessage(stringFrom(R.string.invalid_public_key, cryptocurrency.fullName), MessageType.ERROR)
+                    if (WalletRepository.contains(wallet)) {
+                        viewState.showMessage(R.string.wallet_saved, MessageType.SUCCESS)
+                        viewState.close()
+                    } else {
+                        viewState.showMessage(
+                            stringFrom(
+                                R.string.invalid_public_key,
+                                cryptocurrency.fullName
+                            ), MessageType.ERROR
+                        )
                     }
                 }, {
                     it.printStackTrace()
                     viewState.hideProgressDialog()
                     when (it) {
                         is SocketTimeoutException ->
-                            viewState.showMessage(stringFrom(R.string.server_unavailable_try_later), MessageType.ERROR)
+                            viewState.showMessage(
+                                stringFrom(R.string.server_unavailable_try_later),
+                                MessageType.ERROR
+                            )
                         else ->
-                            viewState.showMessage(stringFrom(R.string.invalid_public_key, cryptocurrency.fullName), MessageType.ERROR)
+                            viewState.showMessage(
+                                stringFrom(
+                                    R.string.invalid_public_key,
+                                    cryptocurrency.fullName
+                                ), MessageType.ERROR
+                            )
                     }
                 })
+        } else {
+            WalletRepository.addOrUpdate(wallet)
+            viewState.showMessage(R.string.wallet_saved, MessageType.SUCCESS)
+            viewState.close()
+        }
     }
 
 }

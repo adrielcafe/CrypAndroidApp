@@ -33,9 +33,6 @@ object PreferenceRepository {
                     .putString(Const.PREF_LANGUAGE, language)
                     .apply()
 
-    fun getSupportedCurrencies() =
-            App.context.resources.getStringArray(R.array.supported_currencies)
-
     fun getCurrency() =
             Currency.getInstance(prefDb.getString(Const.PREF_CURRENCY, Const.DEFAULT_CURRENCY))
 

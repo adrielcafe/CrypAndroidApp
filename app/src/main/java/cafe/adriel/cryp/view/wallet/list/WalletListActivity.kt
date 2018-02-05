@@ -12,7 +12,7 @@ import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.view.BaseActivity
-import cafe.adriel.cryp.view.custom.SeparatorDecoration
+import cafe.adriel.cryp.view.custom.VerticalSeparatorDecoration
 import cafe.adriel.cryp.view.settings.SettingsActivity
 import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
 import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
@@ -28,7 +28,6 @@ import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback
 import com.mikepenz.fastadapter_extensions.utilities.DragDropUtil
 import com.tubb.smrv.SwipeHorizontalMenuLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
@@ -50,13 +49,14 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         vRefresh.setOnRefreshListener { refresh() }
-        vAddWallet.setOnClickListener { showAddWalletActivity() }
+        vSaveWallet.setOnClickListener { showAddWalletActivity() }
 
         adapter.setHasStableIds(true)
         adapter.withEventHook(object: ClickEventHook<WalletAdapterItem>(){
             override fun onBindMany(viewHolder: RecyclerView.ViewHolder) =
                     listOf<View>(
                         viewHolder.itemView.vSeeAddress,
+                        viewHolder.itemView.vEdit,
                         viewHolder.itemView.vDelete
                     )
             override fun onClick(v: View?, position: Int, fastAdapter: FastAdapter<WalletAdapterItem>?, item: WalletAdapterItem?) {
@@ -67,6 +67,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                             item?.wallet?.let {
                                 when(v.id){
                                     R.id.vSeeAddress -> showWalletActivity(it)
+                                    R.id.vEdit -> showEditActivity(it)
                                     R.id.vDelete -> showDeleteDialog(it)
                                 }
                             }
@@ -75,7 +76,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 }
             }
         })
-        adapter.withOnPreLongClickListener { v, adapter, item, position ->
+        adapter.withOnLongClickListener { v, adapter, item, position ->
             // Disable SwipeRefreshLayout to allow drag down
             vRefresh.isEnabled = false
             false
@@ -84,7 +85,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         ItemTouchHelper(SimpleDragCallback(this))
                 .attachToRecyclerView(vWallets)
         vWallets.setHasFixedSize(true)
-        vWallets.addItemDecoration(SeparatorDecoration(10))
+        vWallets.addItemDecoration(VerticalSeparatorDecoration(10))
         vWallets.itemAnimator.changeDuration = 0
         vWallets.layoutManager = LinearLayoutManager(this)
         vWallets.adapter = adapter
@@ -93,12 +94,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     override fun onResume() {
         super.onResume()
         refresh()
-        // Re-enable add wallet button
-        vAddWallet.isEnabled = true
-        // Fix missing cryp of selected item
-        if(currentOpenedMenuPosition >= 0){
-            adapter.notifyAdapterItemChanged(currentOpenedMenuPosition)
-        }
+        // Re-enable Add Wallet button
+        vSaveWallet.isEnabled = true
     }
 
     override fun onStart() {
@@ -139,38 +136,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         vRefresh.isEnabled = true
     }
 
-    override fun addAll(wallets: List<Wallet>) {
-        wallets.toObservable()
-                .map { WalletAdapterItem(it) }
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    adapter.clear()
-                    if(it.isNotEmpty()) {
-                        adapter.add(it)
-                    }
-                    updateState()
-                    updateTotalBalance()
-                    closeSwipeMenus(true)
-                    setContentRefreshing(false)
-                }, {
-                    it.printStackTrace()
-                })
-    }
-
-    override fun addOrUpdate(wallet: Wallet) {
-        val position = getItemPosition(wallet)
-        if(position < 0) {
-            if(presenter.exists(wallet)) {
-                adapter.add(WalletAdapterItem(wallet))
-            }
-        } else {
-            adapter.getAdapterItem(position).wallet = wallet
-            adapter.notifyAdapterItemChanged(position)
-        }
-    }
-
     override fun remove(wallet: Wallet) {
         val position = getItemPosition(wallet)
         if(position >= 0) {
@@ -181,14 +146,17 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showWalletActivity(wallet: Wallet) {
-        start<ShowWalletActivity>(
-                Const.EXTRA_WALLET to wallet)
+        start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
     }
 
     private fun showAddWalletActivity() {
         // Disable button to avoid be clicked multiple times
-        vAddWallet.isEnabled = false
+        vSaveWallet.isEnabled = false
         start<AddWalletActivity>()
+    }
+
+    private fun showEditActivity(wallet: Wallet) {
+        start<AddWalletActivity>(Const.EXTRA_WALLET to wallet)
     }
 
     private fun showSettingsActivity() {
@@ -216,7 +184,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         if(isConnected()) {
             setContentRefreshing(true)
             setTotalBalanceRefreshing(true)
-            presenter.loadAll()
+            addAll(presenter.loadAll())
+            presenter.updateAll()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -235,6 +204,30 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             setContentRefreshing(false)
             setTotalBalanceRefreshing(false)
             showMessage(R.string.connect_internet, MessageType.INFO)
+        }
+    }
+
+    fun addAll(wallets: List<Wallet>) {
+        wallets.map { WalletAdapterItem(it) }
+            .let {
+                adapter.clear()
+                adapter.add(it)
+                updateState()
+                updateTotalBalance()
+                closeSwipeMenus(true)
+                setContentRefreshing(false)
+            }
+    }
+
+    fun addOrUpdate(wallet: Wallet) {
+        val position = getItemPosition(wallet)
+        if(position < 0) {
+            if(presenter.exists(wallet)) {
+                adapter.add(WalletAdapterItem(wallet))
+            }
+        } else {
+            adapter.getAdapterItem(position).wallet = wallet
+            adapter.notifyAdapterItemChanged(position)
         }
     }
 

@@ -19,7 +19,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/vToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
@@ -29,32 +29,113 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginTop="?actionBarSize"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_marginTop="30dp"
         android:focusableInTouchMode="true">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/vScanQrCode"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/vCryptocurrenciesLayout"
+            android:layout_marginTop="-50dp"
+            android:paddingStart="50dp"
+            app:lottie_fileName="animations/scan_qrcode.json"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="false"
+            app:lottie_cacheStrategy="strong"/>
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/vQrCode"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/vCryptocurrenciesLayout"
             android:layout_centerHorizontal="true"
-            android:padding="20dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_scan_qrcode"/>
+            android:visibility="invisible"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/vTapToScan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/vQrCode"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/vScanQrCode"
             android:text="@string/tap_to_scan"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-light"
             app:textAllCaps="true"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/vCryptocurrenciesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/colorAccentDarkTransparent">
+
+            <RelativeLayout
+                android:layout_width="175dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="3dp"
+                android:padding="10dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/vCryptocurrencyLogo"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitCenter"
+                    app:tint="@android:color/white"
+                    tools:srcCompat="@drawable/logo_btc"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/vCryptocurrencyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
+                    android:layout_toStartOf="@id/vArrowRight"
+                    android:layout_alignParentTop="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:fontFamily="sans-serif-condensed"
+                    tools:text="BTC"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/vCryptocurrencyFullName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
+                    android:layout_toStartOf="@id/vArrowRight"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/grey_extra_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    tools:text="Bitcoin"/>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/vArrowRight"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_arrow_right"
+                    app:tint="@color/grey_light"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 
@@ -67,7 +148,10 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/grey_extra_light"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:textColorHint="@color/grey_light"
             app:hintTextAppearance="@style/FloatingLabelTextAppearance">
 
             <android.support.v7.widget.AppCompatEditText
@@ -75,8 +159,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -84,26 +166,70 @@
                 android:hint="@string/public_key"
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textCursorDrawable="@null"
                 android:inputType="textNoSuggestions"
-                tools:text="14bSgbk7n59DZ8xK6zZcg6MDQR8c9tAoJj"/>
+                tools:text="15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS"/>
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/vCryptocurrencies"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-            android:spinnerMode="dialog"
-            app:backgroundTint="@android:color/white"/>
+            android:textColorHint="@color/grey_light"
+            app:hintTextAppearance="@style/FloatingLabelTextAppearance">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/vName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"
+                android:hint="@string/wallet_name"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textCursorDrawable="@null"
+                android:inputType="textNoSuggestions"
+                tools:text="My BTC Wallet"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textColorHint="@color/grey_light"
+            app:hintTextAppearance="@style/FloatingLabelTextAppearance">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/vBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"
+                android:hint="@string/balance"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textCursorDrawable="@null"
+                android:inputType="numberDecimal"
+                tools:text="12345678.12345678"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/vAddWallet"
+            android:id="@+id/vSaveWallet"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:text="@string/add_wallet"
+            android:text="@string/save_wallet"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"

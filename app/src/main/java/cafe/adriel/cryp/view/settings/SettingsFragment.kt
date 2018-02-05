@@ -12,11 +12,9 @@ import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
 import cafe.adriel.cryp.model.entity.Wallet
-import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import com.franmontiel.localechanger.LocaleChanger
 import java.util.*
-
 
 class SettingsFragment : PreferenceFragment(),
         Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
@@ -49,7 +47,6 @@ class SettingsFragment : PreferenceFragment(),
         prefReview.onPreferenceClickListener = this
         prefContact.onPreferenceClickListener = this
 
-        // Set currencies in current language
         addCurrencies()
         addCryptocurrencyUnits()
 
@@ -105,9 +102,10 @@ class SettingsFragment : PreferenceFragment(),
         return true
     }
 
+    // Set currencies in current language
     private fun addCurrencies(){
         val allCurrencies = Currency.getAvailableCurrencies()
-        val supportedCurrencies = PreferenceRepository.getSupportedCurrencies()
+        val supportedCurrencies = Const.SUPPORTED_CURRENCIES
                 .map { currencyCode ->
                     allCurrencies.first { it.currencyCode == currencyCode.toUpperCase() }
                 }.sortedWith(kotlin.Comparator { o1, o2 ->
@@ -122,10 +120,11 @@ class SettingsFragment : PreferenceFragment(),
     }
 
     private fun addCryptocurrencyUnits(){
-        prefCryptocurrencyUnit.entries = CryptocurrencyUnit.values()
+        val supportedUnits = CryptocurrencyUnit.values()
+        prefCryptocurrencyUnit.entries = supportedUnits
                 .map { it.fullName }
                 .toTypedArray()
-        prefCryptocurrencyUnit.entryValues = CryptocurrencyUnit.values()
+        prefCryptocurrencyUnit.entryValues = supportedUnits
                 .map { it.name }
                 .toTypedArray()
     }

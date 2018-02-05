@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:aapt="http://schemas.android.com/aapt"
+<vector xmlns:aapt="http://schemas.android.com/aapt"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:width="108dp"
         android:height="108dp"
         android:viewportHeight="108"
@@ -12,17 +12,17 @@
         android:strokeWidth="1">
         <aapt:attr name="android:fillColor">
             <gradient
-                android:startX="0"
-                android:startY="0"
                 android:endX="108"
                 android:endY="108"
+                android:startX="0"
+                android:startY="0"
                 android:type="linear">
                 <item
                     android:color="@color/colorAccent"
-                    android:offset="0.0" />
+                    android:offset="0.0"/>
                 <item
                     android:color="@color/colorPrimaryDark"
-                    android:offset="1.0" />
+                    android:offset="1.0"/>
             </gradient>
         </aapt:attr>
     </path>

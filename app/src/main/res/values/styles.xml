@@ -18,7 +18,7 @@
     </style>
 
     <style name="FloatingLabelTextAppearance" parent="TextAppearance.Design.Hint">
-        <item name="android:textColor">@color/grey_extra_light</item>
+        <item name="android:textColor">@color/grey_light</item>
     </style>
 
 </resources>

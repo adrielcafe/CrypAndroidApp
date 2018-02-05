@@ -1,17 +1,20 @@
 package cafe.adriel.cryp.view.wallet.add
 
 import android.Manifest
+import android.animation.Animator
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
-import android.widget.ArrayAdapter
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.MessageType
+import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
 import cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity
+import cafe.adriel.cryp.view.wallet.select.SelectCryptocurrencyActivity
 import cafe.adriel.kbus.KBus
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -23,6 +26,8 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     @InjectPresenter
     lateinit var presenter: AddWalletPresenter
 
+    lateinit var selectedCryptocurrency: Cryptocurrency
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_wallet)
@@ -33,6 +38,13 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
         window.statusBarColor = colorFrom(R.color.colorAccentDark)
         window.navigationBarColor = colorFrom(R.color.colorAccentDark).darken
+
+        if(intent.hasExtra(Const.EXTRA_WALLET)){
+            val wallet: Wallet = intent.getParcelableExtra(Const.EXTRA_WALLET)
+            setEditMode(wallet)
+        } else {
+            setCryptocurrency(Const.DEFAULT_CRYPTOCURRENCY)
+        }
 
         if (savedInstanceState == null) {
             vRoot.apply {
@@ -48,13 +60,13 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             }
         }
 
-        vQrCodeLayout.setOnClickListener { scanQrCode() }
-        vAddWallet.setOnClickListener { addWallet() }
+        vScanQrCode.enableMergePathsForKitKatAndAbove(true)
 
-        val cryptocurrencies = Cryptocurrency.values().map { it.toString() }
-        vCryptocurrencies.adapter = ArrayAdapter(this, R.layout.spinner_item_cryptocurrency, cryptocurrencies).apply {
-            setDropDownViewResource(R.layout.spinner_dropdown_item_cryptocurrency)
-        }
+        vCryptocurrenciesLayout.setOnClickListener { selectCryptoCurrency() }
+        vScanQrCode.setOnClickListener { scanQrCode() }
+        vQrCode.setOnClickListener { scanQrCode() }
+        vTapToScan.setOnClickListener { scanQrCode() }
+        vSaveWallet.setOnClickListener { addWallet() }
 
         RxTextView.textChanges(vPublicKey)
                 .debounce(300, TimeUnit.MILLISECONDS)
@@ -64,6 +76,9 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+        KBus.subscribe<SelectCryptocurrencyEvent>(this, {
+            setCryptocurrency(it.cryptocurrency)
+        })
         KBus.subscribe<QrCodeScannedEvent>(this, {
             setPublicKey(it.text)
         })
@@ -87,6 +102,28 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         finish()
     }
 
+    private fun setEditMode(wallet: Wallet){
+        setCryptocurrency(wallet.cryptocurrency)
+        setQrCode(wallet.address)
+        setPublicKey(wallet.address)
+
+        vName.setText(wallet.name)
+        if(wallet.cryptocurrency.autoRefresh) vBalance.setText(R.string.auto_updated)
+        else vBalance.setText(wallet.balance.toPlainString())
+
+        vCryptocurrenciesLayout.isEnabled = false
+        vPublicKey.isEnabled = false
+        vScanQrCode.isEnabled = false
+        vQrCode.isEnabled = false
+
+        vArrowRight.visibility = View.GONE
+        vTapToScan.visibility = View.GONE
+    }
+
+    private fun selectCryptoCurrency(){
+        start<SelectCryptocurrencyActivity>()
+    }
+
     private fun scanQrCode() {
         rxPermissions.request(Manifest.permission.CAMERA)
                 .subscribe { granted ->
@@ -96,6 +133,14 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
                         setQrCode("")
                     }
                 }
+    }
+
+    private fun setCryptocurrency(cryptocurrency: Cryptocurrency){
+        selectedCryptocurrency = cryptocurrency
+        vCryptocurrencyName.text = cryptocurrency.name
+        vCryptocurrencyFullName.text = cryptocurrency.fullName
+        vCryptocurrencyLogo.setImageResource(cryptocurrency.logoRes)
+        toggleBalanceMessage()
     }
 
     private fun setPublicKey(qrCodeValue: String){
@@ -109,24 +154,46 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     private fun setQrCode(text: String){
         if(text.isNotEmpty()) {
             vQrCode.setImageBitmap(text.getQrCode(R.color.colorAccentDark))
-            vQrCode.setPadding(0, 0, 0, 0)
+            vQrCode.visibility = View.VISIBLE
+            vScanQrCode.pauseAnimation()
+            vScanQrCode.visibility = View.INVISIBLE
         } else {
-            vQrCode.setImageResource(R.drawable.ic_scan_qrcode)
-            vQrCode.setPadding(20.px, 20.px, 20.px, 20.px)
+            vQrCode.setImageBitmap(null)
+            vQrCode.visibility = View.INVISIBLE
+            vScanQrCode.resumeAnimation()
+            vScanQrCode.visibility = View.VISIBLE
         }
     }
 
     private fun addWallet(){
-        val publicKey = vPublicKey.text.toString()
-        val cryptocurrency = Cryptocurrency.values()[vCryptocurrencies.selectedItemPosition]
-        if (publicKey.isNotEmpty()) {
-            if(isConnected()) {
-                presenter.saveWallet(cryptocurrency, publicKey)
-            } else {
-                showMessage(R.string.connect_internet, MessageType.INFO)
-            }
+        val publicKey = vPublicKey.text.toString().trim()
+        val name = vName.text.toString().trim()
+        val balance = vBalance.text.toString().toBigDecimalOrNull()
+
+        // Validations
+        if(publicKey.isEmpty()){
+            showMessage(R.string.type_or_scan_public_key, MessageType.ERROR)
+            return
+        } else if(balance == null && !selectedCryptocurrency.autoRefresh) {
+            showMessage(R.string.invalid_balance, MessageType.ERROR)
+            return
+        } else if(!isConnected()) {
+            showMessage(R.string.connect_internet, MessageType.INFO)
+            return
+        }
+
+        presenter.saveWallet(selectedCryptocurrency, publicKey, name, balance)
+    }
+
+    private fun toggleBalanceMessage(){
+        if(selectedCryptocurrency.autoRefresh){
+            vBalance.isEnabled = false
+            vBalance.setText(getString(R.string.auto_updated))
+            vBalance.setTextColor(colorFrom(R.color.grey_light))
         } else {
-            showMessage(R.string.type_or_scan_public_key, MessageType.WARN)
+            vBalance.isEnabled = true
+            vBalance.setText("")
+            vBalance.setTextColor(Color.WHITE)
         }
     }
 
@@ -138,9 +205,17 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         val duration = intFrom(android.R.integer.config_mediumAnimTime).toLong()
 
         vRoot.visibility = View.VISIBLE
-        ViewAnimationUtils
+        val animation = ViewAnimationUtils
                 .createCircularReveal(vRoot, x, y, startRadius, endRadius)
                 .setDuration(duration)
-                .start()
+        animation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator?) { }
+            override fun onAnimationEnd(animation: Animator?) {
+                vScanQrCode.playAnimation()
+            }
+            override fun onAnimationCancel(animation: Animator?) { }
+            override fun onAnimationRepeat(animation: Animator?) { }
+        })
+        animation.start()
     }
 }

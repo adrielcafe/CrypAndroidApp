@@ -1,13 +1,13 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
+import cafe.adriel.cryp.model.repository.factory.ServiceFactory
 import cafe.adriel.cryp.now
 import io.paperdb.Paper
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.toObservable
+import io.reactivex.schedulers.Schedulers
 import khronos.Dates
 import khronos.minus
 import khronos.minute
@@ -15,74 +15,54 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 object WalletRepository {
-    private val walletsDb by lazy {
+    private val walletDb by lazy {
         Paper.book(Const.DB_WALLETS)
     }
     private val walletService by lazy {
         ServiceFactory.newInstance<WalletService>(Const.WALLET_API_BASE_URL)
     }
-    private val priceService by lazy {
-        ServiceFactory.newInstance<PriceService>(Const.PRICE_API_BASE_URL)
-    }
 
-    fun getAll() = walletsDb.allKeys.map { walletsDb.read<Wallet>(it) }
+    fun getAll() = walletDb.allKeys.map { walletDb.read<Wallet>(it) }
 
-    fun getById(id: String) = walletsDb.read<Wallet>(id)
+    fun getById(id: String) = walletDb.read<Wallet>(id)
 
-    fun addOrUpdate(wallet: Wallet) =
-            walletsDb.write(wallet.id, wallet)
-                    .contains(wallet.id)
+    fun addOrUpdate(wallet: Wallet) = walletDb.write(wallet.id, wallet).contains(wallet.id)
 
-    fun remove(wallet: Wallet) =
-            walletsDb.delete(wallet.id)
-                    .let { !walletsDb.contains(wallet.id) }
+    fun remove(wallet: Wallet) = walletDb.delete(wallet.id).let { !walletDb.contains(wallet.id) }
 
-    fun updatePrices(wallets: List<Wallet>) =
-            if (wallets.isNotEmpty()) {
-                with(wallets) {
-                    val cryptocurrencies = wallets.map { it.cryptocurrency.name }.toSet()
-                    val currencies = listOf(
-                            Cryptocurrency.BTC.name,
-                            Cryptocurrency.ETH.name,
-                            PreferenceRepository.getCurrency().currencyCode.toUpperCase())
-                    if(currencies.isNotEmpty() && cryptocurrencies.isNotEmpty()) {
-                        priceService.getPrices(
-                                cryptocurrencies.joinToString(","),
-                                currencies.joinToString(","))
-                    } else {
-                        Observable.fromCallable { emptyMap<Cryptocurrency, Map<String, String>>() }
-                    }
-                }
-            } else {
-                Observable.fromCallable { emptyMap<Cryptocurrency, Map<String, String>>() }
-            }
+    fun contains(wallet: Wallet) = walletDb.contains(wallet.id)
 
-    fun updateBalances(wallets: List<Wallet>) =
-            wallets.toObservable()
-                    .onExceptionResumeNext {  }
-                    .flatMap {
-                        // 1 min interval before updateBalance balances
-                        // to avoid API rate limits and socket timeout
-                        val canUpdate = it.updatedAt == null || it.updatedAt?.before(Dates.now() - 1.minute) == true
-                        if(canUpdate){
-                            updateBalance(it)
-                        } else {
-                            Observable.fromCallable { it }
-                        }
-                    }
-                    .toList()
+    fun updateBalances() =
+            Observable.fromArray(getAll())
+                .map { it }
+                .flatMapIterable { it }
+                .flatMap { WalletRepository.updateBalance(it) }
+                .toList()
 
     fun updateBalance(wallet: Wallet) =
-            walletService.getBalance(wallet.cryptocurrency.name.toLowerCase(), wallet.address)
-                    .map {
-                        wallet.apply {
-                            balance = it.balance
-                            updatedAt = Dates.now()
+            if(wallet.cryptocurrency.autoRefresh) {
+                // 1 min interval before update balance
+                // to avoid API rate limit and socket timeout
+                val canUpdate = wallet.updatedAt == null || wallet.updatedAt?.before(Dates.now() - 1.minute) == true
+                if(canUpdate){
+                    walletService.getBalance(wallet.cryptocurrency.name.toLowerCase(), wallet.address)
+                        .map {
+                            wallet.apply {
+                                balance = it.balance
+                                updatedAt = Dates.now()
+                                addOrUpdate(this)
+                            }
                         }
-                    }
+                        .onErrorResumeNext(Observable.fromCallable { wallet })
+                        .subscribeOn(Schedulers.io())
+                } else {
+                    Observable.fromCallable { wallet }
+                }
+            } else {
+                Observable.fromCallable { wallet }
+            }
 
-    fun contains(wallet: Wallet) = walletsDb.contains(wallet.id)
-
+    // https://multiexplorer.com/api
     interface WalletService {
         @GET("address_balance/fallback/")
         fun getBalance(
@@ -91,11 +71,4 @@ object WalletRepository {
                 Observable<BalanceResponse>
     }
 
-    interface PriceService {
-        @GET("pricemulti")
-        fun getPrices(
-                @Query("fsyms") cryptocurrencies: String,
-                @Query("tsyms") currencies: String):
-                Observable<Map<Cryptocurrency, Map<String, String>>>
-    }
 }

@@ -5,18 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:layout_marginTop="75dp"
     android:layout_marginStart="50dp"
     android:layout_marginEnd="50dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginBottom="15dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_coin_bag"
-        app:tint="@color/grey_dark"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:lottie_fileName="animations/coin_stack.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:lottie_cacheStrategy="weak"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -35,7 +34,7 @@
         android:layout_gravity="center"
         android:text="@string/tap_plus_to_add"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/grey_light"
+        android:textColor="@color/grey"
         android:textAlignment="center"/>
 
 </android.support.v7.widget.LinearLayoutCompat>

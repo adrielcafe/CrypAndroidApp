@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#266370</color>
     <color name="colorAccent">#1e8bc3</color>
     <color name="colorAccentDark">#2574a9</color>
+    <color name="colorAccentDarkTransparent">#442574a9</color>
 
     <color name="grey_extra_dark">#424242</color>
     <color name="grey_dark">#6c7a89</color>
-    <color name="grey_light">#95a5a6</color>
+    <color name="grey">#bdc3c7</color>
+    <color name="grey_light">#dadfe1</color>
     <color name="grey_extra_light">#ecf0f1</color>
 
     <color name="red">#cf000f</color>

@@ -6,13 +6,6 @@ enum class CryptocurrencyUnit(val fullName: String) {
     BITS("Bits"),
     SATOSHI("Satoshi");
 
-    companion object {
-        fun getByFullName(fullName: String) : CryptocurrencyUnit {
-            return values().firstOrNull { it.fullName == fullName }
-                    ?: BTC
-        }
-    }
-
     override fun toString() = fullName
 
 }

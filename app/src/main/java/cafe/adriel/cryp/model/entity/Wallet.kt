@@ -2,6 +2,7 @@ package cafe.adriel.cryp.model.entity
 
 import android.annotation.SuppressLint
 import cafe.adriel.cryp.Const
+import cafe.adriel.cryp.model.repository.PriceRepository
 import io.mironov.smuggler.AutoParcelable
 import java.math.BigDecimal
 import java.util.*
@@ -10,10 +11,8 @@ import java.util.*
 data class Wallet(
         val cryptocurrency: Cryptocurrency,
         val address: String,
+        var name: String = "",
         var balance: BigDecimal = BigDecimal.ONE.negate(),
-        var priceBtc: BigDecimal = BigDecimal.ZERO,
-        var priceEth: BigDecimal = BigDecimal.ZERO,
-        var priceCurrency: BigDecimal = BigDecimal.ZERO,
         var position: Int = Int.MAX_VALUE,
         var updatedAt: Date? = null) : AutoParcelable {
 
@@ -26,6 +25,6 @@ data class Wallet(
 
     fun getBalanceSatoshi() = (balance * Const.BTC_TO_SATOSHI.toBigDecimal()).toLong()
 
-    fun getBalanceCurrency() = balance * priceCurrency
+    fun getBalanceCurrency() = balance * PriceRepository.getById(cryptocurrency).priceCurrency
 
 }

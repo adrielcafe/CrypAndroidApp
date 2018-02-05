@@ -1,7 +1,8 @@
-package cafe.adriel.cryp.model.repository
+package cafe.adriel.cryp.model.repository.factory
 
 import cafe.adriel.cryp.BuildConfig
 import cafe.adriel.cryp.model.repository.adapter.BigDecimalAdapter
+import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +28,7 @@ object ServiceFactory {
 
     fun getJsonConverter() : Moshi =
             Moshi.Builder()
+                    .add(KotlinJsonAdapterFactory())
                     .add(BigDecimalAdapter())
                     .build()
 
