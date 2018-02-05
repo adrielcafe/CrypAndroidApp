@@ -2,11 +2,13 @@ package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
 import cafe.adriel.cryp.model.entity.Cryptocurrency
+import cafe.adriel.cryp.model.entity.Prices
 import cafe.adriel.cryp.model.repository.factory.ServiceFactory
 import io.paperdb.Paper
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.math.BigDecimal
 
 object PriceRepository {
     private val priceDb by lazy {
@@ -16,21 +18,19 @@ object PriceRepository {
         ServiceFactory.newInstance<PriceService>(Const.PRICE_API_BASE_URL)
     }
 
-    fun getAll() =
-        mutableMapOf<Cryptocurrency, Map<String, String>>().apply {
-            priceDb.allKeys.map {
-                put(Cryptocurrency.valueOf(it), priceDb.read<Map<String, String>>(it)) }
-        }
+    fun getAll() = priceDb.allKeys.map { priceDb.read<Prices>(it) }
 
-    fun getById(id: Cryptocurrency) = priceDb.read<Map<String, String>>(id.name)
+    fun getById(id: Cryptocurrency) =
+        if(contains(id)) priceDb.read<Prices>(id.name)
+        else Prices(id)
 
-    fun addOrUpdate(id: Cryptocurrency, prices: Map<String, String>) = priceDb.write(id.name, prices)
+    fun addOrUpdate(prices: Prices) = priceDb.write(prices.id, prices)
 
     fun remove(id: Cryptocurrency) = priceDb.delete(id.name).let { !priceDb.contains(id.name) }
 
     fun contains(id: Cryptocurrency) = priceDb.contains(id.name)
 
-    fun updatePrices() =
+    fun updatePrices(): Observable<List<Prices>> =
         WalletRepository.getAll().let {
             val cryptocurrencies = it.map { it.cryptocurrency.name }
                 .toSet()
@@ -43,7 +43,22 @@ object PriceRepository {
             if (currencies.isNotEmpty() && cryptocurrencies.isNotEmpty()) {
                 priceService.getPrices(cryptocurrencies, currencies)
                         .map {
-                            it.apply { forEach { addOrUpdate(it.key, it.value) } }
+                            val allPrices = mutableListOf<Prices>()
+                            it.forEach { cryptocurrency, mapPrices ->
+                                val priceBtc = mapPrices
+                                    ?.get(Cryptocurrency.BTC.name)
+                                    ?.toBigDecimal() ?: BigDecimal.ZERO
+                                val priceEth = mapPrices
+                                    ?.get(Cryptocurrency.ETH.name)
+                                    ?.toBigDecimal() ?: BigDecimal.ZERO
+                                val priceCurrency = mapPrices
+                                    ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
+                                    ?.toBigDecimal() ?: BigDecimal.ZERO
+                                val prices = Prices(cryptocurrency, priceBtc, priceEth, priceCurrency)
+                                allPrices.add(prices)
+                                addOrUpdate(prices)
+                            }
+                            allPrices
                         }
             } else {
                 Observable.empty()

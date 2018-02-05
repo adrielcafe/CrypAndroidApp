@@ -76,7 +76,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 }
             }
         })
-        adapter.withOnPreLongClickListener { v, adapter, item, position ->
+        adapter.withOnLongClickListener { v, adapter, item, position ->
             // Disable SwipeRefreshLayout to allow drag down
             vRefresh.isEnabled = false
             false
