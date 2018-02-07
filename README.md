@@ -1,7 +1,7 @@
 ![Cryp Icon](https://raw.githubusercontent.com/adrielcafe/CrypAndroidApp/master/app/src/main/res/mipmap-xxhdpi/ic_launcher.png)
 
 # Cryp
-A - work in progress - cryptocurrency portfolio app for Android
+An cryptocurrency portfolio app for Android (WIP)
 
 ![Cryp Icon](https://raw.githubusercontent.com/adrielcafe/CrypAndroidApp/master/art/screenshots.png)
 
