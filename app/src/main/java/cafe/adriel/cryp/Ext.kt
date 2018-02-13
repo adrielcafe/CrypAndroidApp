@@ -105,16 +105,17 @@ fun Dates.now() =
         Calendar.getInstance().time
 
 // Wallet
-private val cryptocurrencyFormat = DecimalFormat().apply {
-    maximumFractionDigits = 8
-    groupingSize = 3
-    isGroupingUsed = true
-    decimalFormatSymbols.apply {
-        decimalSeparator = '.'
-        groupingSeparator = Character.MIN_VALUE
-        decimalFormatSymbols = this
+fun getCryptocurrencyFormat() =
+    DecimalFormat().apply {
+        maximumFractionDigits = 8
+        groupingSize = 3
+        isGroupingUsed = true
+        decimalFormatSymbols.apply {
+            decimalSeparator = '.'
+            groupingSeparator = Character.MIN_VALUE
+            decimalFormatSymbols = this
+        }
     }
-}
 fun getCurrencyFormat() =
         DecimalFormat().apply {
             minimumFractionDigits = 2
@@ -122,13 +123,13 @@ fun getCurrencyFormat() =
             currency = PreferenceRepository.getCurrency()
         }
 
-fun Wallet.getFormattedBalanceBtc() = cryptocurrencyFormat.format(balance)
+fun Wallet.getFormattedBalanceBtc() = getCryptocurrencyFormat().format(balance)
 
-fun Wallet.getFormattedBalanceMBtc() = cryptocurrencyFormat.format(getBalanceMBtc())
+fun Wallet.getFormattedBalanceMBtc() = getCryptocurrencyFormat().format(getBalanceMBtc())
 
-fun Wallet.getFormattedBalanceBits() = cryptocurrencyFormat.format(getBalanceBits())
+fun Wallet.getFormattedBalanceBits() = getCryptocurrencyFormat().format(getBalanceBits())
 
-fun Wallet.getFormattedBalanceSatoshi() = cryptocurrencyFormat.format(getBalanceSatoshi())
+fun Wallet.getFormattedBalanceSatoshi() = getCryptocurrencyFormat().format(getBalanceSatoshi())
 
 fun Wallet.getFormattedBalanceCurrency() = getCurrencyFormat().format(getBalanceCurrency())
 

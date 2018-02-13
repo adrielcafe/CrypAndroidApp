@@ -64,6 +64,8 @@
                     android:textColor="@android:color/white"
                     android:textAlignment="center"
                     android:fontFamily="sans-serif-medium"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:autoSizeTextType="uniform"
                     app:autoSizeMaxTextSize="@dimen/abc_text_size_display_1_material"
                     app:autoSizeStepGranularity="1sp"
@@ -117,7 +119,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/vSaveWallet"
+        android:id="@+id/vAddWallet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

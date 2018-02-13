@@ -1,5 +1,6 @@
 package cafe.adriel.cryp.view.wallet.list
 
+import cafe.adriel.cryp.Const
 import cafe.adriel.cryp.R
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
@@ -26,6 +27,8 @@ class WalletListPresenter: MvpPresenter<WalletListView>() {
             .flatMapSingle { it }
 
     fun exists(wallet: Wallet) = WalletRepository.contains(wallet)
+
+    fun hasWalletSlotRemaining() = WalletRepository.count() < Const.WALLET_SLOTS_FREE
 
     fun delete(wallet: Wallet) {
         if(WalletRepository.remove(wallet)){

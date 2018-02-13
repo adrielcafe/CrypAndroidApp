@@ -76,12 +76,12 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        KBus.subscribe<SelectCryptocurrencyEvent>(this, {
+        KBus.subscribe<SelectCryptocurrencyEvent>(this) {
             setCryptocurrency(it.cryptocurrency)
-        })
-        KBus.subscribe<QrCodeScannedEvent>(this, {
+        }
+        KBus.subscribe<QrCodeScannedEvent>(this) {
             setPublicKey(it.text)
-        })
+        }
     }
 
     override fun onDestroy() {
@@ -171,14 +171,20 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         val balance = vBalance.text.toString().toBigDecimalOrNull()
 
         // Validations
-        if(publicKey.isEmpty()){
-            showMessage(R.string.type_or_scan_public_key, MessageType.ERROR)
+        if(!presenter.hasWalletSlotRemaining()){
+            showMessage(R.string.you_can_track_ten_wallets, MessageType.INFO)
+            return
+        } else if(presenter.isCryptocurrencyInUse(selectedCryptocurrency)){
+            showMessage(getString(R.string.you_can_track_one_wallet_at_time, selectedCryptocurrency.name), MessageType.INFO)
+            return
+        } else if(publicKey.isEmpty()){
+            showMessage(R.string.type_or_scan_public_key, MessageType.INFO)
             return
         } else if(balance == null && !selectedCryptocurrency.autoRefresh) {
-            showMessage(R.string.invalid_balance, MessageType.ERROR)
+            showMessage(R.string.invalid_balance, MessageType.WARN)
             return
         } else if(!isConnected()) {
-            showMessage(R.string.connect_internet, MessageType.INFO)
+            showMessage(R.string.connect_internet, MessageType.WARN)
             return
         }
 

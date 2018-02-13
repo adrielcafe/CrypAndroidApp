@@ -1,5 +1,6 @@
 package cafe.adriel.cryp.view.wallet.add
 
+import cafe.adriel.cryp.Const
 import cafe.adriel.cryp.R
 import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.MessageType
@@ -67,5 +68,10 @@ class AddWalletPresenter : MvpPresenter<AddWalletView>() {
             viewState.close()
         }
     }
+
+    fun isCryptocurrencyInUse(cryptocurrency: Cryptocurrency) =
+        WalletRepository.isCryptocurrencyInUse(cryptocurrency)
+
+    fun hasWalletSlotRemaining() = WalletRepository.count() < Const.WALLET_SLOTS_FREE
 
 }

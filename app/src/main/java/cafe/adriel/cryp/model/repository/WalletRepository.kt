@@ -1,6 +1,7 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
+import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
 import cafe.adriel.cryp.model.repository.factory.ServiceFactory
@@ -12,7 +13,7 @@ import khronos.Dates
 import khronos.minus
 import khronos.minute
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Path
 
 object WalletRepository {
     private val walletDb by lazy {
@@ -31,6 +32,11 @@ object WalletRepository {
     fun remove(wallet: Wallet) = walletDb.delete(wallet.id).let { !walletDb.contains(wallet.id) }
 
     fun contains(wallet: Wallet) = walletDb.contains(wallet.id)
+
+    fun count() = walletDb.allKeys.size
+
+    fun isCryptocurrencyInUse(cryptocurrency: Cryptocurrency) =
+        walletDb.allKeys.firstOrNull { it.startsWith(cryptocurrency.name) } != null
 
     fun updateBalances() =
             Observable.fromArray(getAll())
@@ -62,12 +68,12 @@ object WalletRepository {
                 Observable.fromCallable { wallet }
             }
 
-    // https://multiexplorer.com/api
+    // https://github.com/adrielcafe/Scryp
     interface WalletService {
-        @GET("address_balance/fallback/")
+        @GET("balance/{crypto}/{address}")
         fun getBalance(
-                @Query("currency") cryptocurrency: String,
-                @Query("address") publicKey: String):
+                @Path("crypto") cryptocurrency: String,
+                @Path("address") publicKey: String):
                 Observable<BalanceResponse>
     }
 

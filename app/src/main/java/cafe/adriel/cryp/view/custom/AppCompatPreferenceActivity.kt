@@ -10,6 +10,9 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import cafe.adriel.cryp.R
+import cafe.adriel.cryp.colorFrom
+import cafe.adriel.cryp.darken
 
 abstract class AppCompatPreferenceActivity : PreferenceActivity() {
 
@@ -23,6 +26,8 @@ abstract class AppCompatPreferenceActivity : PreferenceActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         delegate.installViewFactory()
         delegate.onCreate(savedInstanceState)
+        window.statusBarColor = colorFrom(R.color.colorPrimaryDark)
+        window.navigationBarColor = colorFrom(R.color.colorPrimaryDark).darken
         super.onCreate(savedInstanceState)
     }
 
