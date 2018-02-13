@@ -9,7 +9,7 @@ object Const {
     const val CONTACT_EMAIL = "me@adriel.cafe"
 
     // API
-    const val WALLET_API_BASE_URL = "https://multiexplorer.com/api/"
+    const val WALLET_API_BASE_URL = "https://scryp.herokuapp.com/"
     const val PRICE_API_BASE_URL = "https://min-api.cryptocompare.com/data/"
 
     // Donate
