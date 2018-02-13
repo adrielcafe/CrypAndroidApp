@@ -1,6 +1,7 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
+import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
 import cafe.adriel.cryp.model.repository.factory.ServiceFactory
@@ -31,6 +32,11 @@ object WalletRepository {
     fun remove(wallet: Wallet) = walletDb.delete(wallet.id).let { !walletDb.contains(wallet.id) }
 
     fun contains(wallet: Wallet) = walletDb.contains(wallet.id)
+
+    fun count() = walletDb.allKeys.size
+
+    fun isCryptocurrencyInUse(cryptocurrency: Cryptocurrency) =
+        walletDb.allKeys.firstOrNull { it.startsWith(cryptocurrency.name) } != null
 
     fun updateBalances() =
             Observable.fromArray(getAll())

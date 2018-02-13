@@ -49,6 +49,8 @@
     <string name="donate">Donate</string>
     <string name="auto_updated">Auto updated</string>
     <string name="select_cryptocurrency">Select cryptocurrency</string>
+    <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>
+    <string name="you_can_track_one_wallet_at_time">For now you can only track one %s wallet at a time</string>
 
     <string-array name="language_titles">
         <item>English</item>

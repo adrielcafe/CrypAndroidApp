@@ -39,6 +39,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
 
     private val adapter = FastItemAdapter<WalletAdapterItem>()
     private var currentTotalBalance = BigDecimal.ZERO
+    private var currentTotalBalanceCurrency = 0
     private var currentOpenedMenuPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +50,8 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         vRefresh.setOnRefreshListener { refresh() }
-        vSaveWallet.setOnClickListener { showAddWalletActivity() }
+        vAddWallet.setOnClickListener { showAddWalletActivity() }
+        vTotalBalance.setOnClickListener { toggleTotalBalanceCurrency() }
 
         adapter.setHasStableIds(true)
         adapter.withEventHook(object: ClickEventHook<WalletAdapterItem>(){
@@ -95,15 +97,15 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         super.onResume()
         refresh()
         // Re-enable Add Wallet button
-        vSaveWallet.isEnabled = true
+        vAddWallet.isEnabled = true
     }
 
     override fun onStart() {
         super.onStart()
-        KBus.subscribe<SwipeMenuOpenedEvent>(this, {
+        KBus.subscribe<SwipeMenuOpenedEvent>(this) {
             currentOpenedMenuPosition = adapter.getPosition(it.itemId)
             closeSwipeMenus(false)
-        })
+        }
     }
 
     override fun onStop() {
@@ -126,6 +128,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
+        vRefresh.isEnabled = false
         DragDropUtil.onMove(adapter.itemAdapter, oldPosition, newPosition)
         return true
     }
@@ -150,9 +153,13 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showAddWalletActivity() {
-        // Disable button to avoid be clicked multiple times
-        vSaveWallet.isEnabled = false
-        start<AddWalletActivity>()
+        if(presenter.hasWalletSlotRemaining()) {
+            // Disable button to avoid be clicked multiple times
+            vAddWallet.isEnabled = false
+            start<AddWalletActivity>()
+        } else {
+            showMessage(R.string.you_can_track_ten_wallets, MessageType.INFO)
+        }
     }
 
     private fun showEditActivity(wallet: Wallet) {
@@ -190,17 +197,20 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         it.forEach { addOrUpdate(it) }
+                        vRefresh.isEnabled = true
                         updateState()
                         updateTotalBalance()
                         setContentRefreshing(false)
                         setTotalBalanceRefreshing(false)
                     }, {
                         it.printStackTrace()
+                        vRefresh.isEnabled = true
                         closeSwipeMenus(true)
                         setContentRefreshing(false)
                         setTotalBalanceRefreshing(false)
                     })
         } else {
+            vRefresh.isEnabled = true
             setContentRefreshing(false)
             setTotalBalanceRefreshing(false)
             showMessage(R.string.connect_internet, MessageType.INFO)
@@ -249,20 +259,53 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         } else {
             MultiStateView.VIEW_STATE_CONTENT
         }
+        vAddWallet.show()
     }
 
     private fun updateTotalBalance() {
-        val currencySymbol = PreferenceRepository.getCurrency().symbol
+        var currencySymbol = PreferenceRepository.getCurrency().symbol
+        var decimalFormat = getCurrencyFormat()
         var totalBalance = BigDecimal.ZERO
         adapter.adapterItems.forEach {
-            totalBalance += it.wallet.getBalanceCurrency()
+            var balance = when(currentTotalBalanceCurrency){
+                1 -> { // BTC
+                    it.wallet.getBalanceBtc()
+                }
+                2 -> { // ETH
+                    it.wallet.getBalanceEth()
+                }
+                else -> { // Fiat
+                    it.wallet.getBalanceCurrency()
+                }
+            }
+            if(balance < BigDecimal.ZERO) balance = BigDecimal.ZERO
+            totalBalance += balance
+        }
+        when(currentTotalBalanceCurrency){
+            1 -> { // BTC
+                currencySymbol = Const.BTC_SYMBOL
+                decimalFormat = getCryptocurrencyFormat()
+            }
+            2 -> { // ETH
+                currencySymbol = Const.ETH_SYMBOL
+                decimalFormat = getCryptocurrencyFormat()
+            }
         }
         if(totalBalance < BigDecimal.ZERO) totalBalance = BigDecimal.ZERO
         vTotalBalance
                 .setPrefix("$currencySymbol ")
-                .setDecimalFormat(getCurrencyFormat())
+                .setDecimalFormat(decimalFormat)
                 .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
         currentTotalBalance = totalBalance
+    }
+
+    private fun toggleTotalBalanceCurrency(){
+        currentTotalBalanceCurrency = when(currentTotalBalanceCurrency){
+            1 -> 2 // BTC -> ETH
+            2 -> 0 // ETH -> Fiat
+            else -> 1 // Fiat -> BTC
+        }
+        updateTotalBalance()
     }
 
     private fun closeSwipeMenus(closeCurrentOpenedMenu: Boolean){

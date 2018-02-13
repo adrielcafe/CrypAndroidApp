@@ -25,6 +25,10 @@ data class Wallet(
 
     fun getBalanceSatoshi() = (balance * Const.BTC_TO_SATOSHI.toBigDecimal()).toLong()
 
+    fun getBalanceBtc() = balance * PriceRepository.getById(cryptocurrency).priceBtc
+
+    fun getBalanceEth() = balance * PriceRepository.getById(cryptocurrency).priceEth
+
     fun getBalanceCurrency() = balance * PriceRepository.getById(cryptocurrency).priceCurrency
 
 }

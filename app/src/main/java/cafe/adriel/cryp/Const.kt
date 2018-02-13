@@ -21,6 +21,10 @@ object Const {
     const val DB_WALLETS = "wallets"
     const val DB_PRICES = "prices"
 
+    // Features
+    const val WALLET_SLOTS_FREE = 10
+    const val WALLET_SLOTS_PRO = 100
+
     // Preference
     const val PREF_FIRST_OPEN = "firstOpen"
     const val PREF_LANGUAGE = "language"
