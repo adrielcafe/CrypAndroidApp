@@ -36,10 +36,10 @@
             android:id="@+id/vScanQrCode"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_below="@id/vCryptocurrenciesLayout"
+            android:layout_below="@id/vCryptosLayout"
             android:layout_marginTop="-50dp"
             android:paddingStart="50dp"
-            app:lottie_fileName="animations/scan_qrcode.json"
+            app:lottie_rawRes="@raw/anim_scan_qrcode"
             app:lottie_loop="true"
             app:lottie_autoPlay="false"
             app:lottie_cacheStrategy="strong"/>
@@ -49,7 +49,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="25dp"
-            android:layout_below="@id/vCryptocurrenciesLayout"
+            android:layout_below="@id/vCryptosLayout"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
             android:visibility="invisible"/>
@@ -67,7 +67,7 @@
             app:textAllCaps="true"/>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/vCryptocurrenciesLayout"
+            android:id="@+id/vCryptosLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
                 android:padding="10dp">
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/vCryptocurrencyLogo"
+                    android:id="@+id/vCryptoLogo"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
@@ -96,10 +96,10 @@
                     tools:srcCompat="@drawable/logo_btc"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vCryptocurrencyName"
+                    android:id="@+id/vCryptoSymbol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
+                    android:layout_toEndOf="@id/vCryptoLogo"
                     android:layout_toStartOf="@id/vArrowRight"
                     android:layout_alignParentTop="true"
                     android:maxLines="1"
@@ -110,10 +110,10 @@
                     tools:text="BTC"/>
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/vCryptocurrencyFullName"
+                    android:id="@+id/vCryptoName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/vCryptocurrencyLogo"
+                    android:layout_toEndOf="@id/vCryptoLogo"
                     android:layout_toStartOf="@id/vArrowRight"
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"

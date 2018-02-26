@@ -16,7 +16,7 @@
     <string name="public_key">Public Key</string>
     <string name="wallet_name">Wallet name</string>
     <string name="balance">Balance</string>
-    <string name="cryptocurrency_public_key">%s Public Key</string>
+    <string name="crypto_public_key">%s Public Key</string>
     <string name="type_or_scan_public_key">Type or scan your Public Key</string>
     <string name="invalid_balance">Invalid balance</string>
     <string name="wallet_saved">Wallet saved</string>
@@ -30,6 +30,7 @@
     <string name="nevermind">Nevermind</string>
     <string name="connect_internet">Connect to the internet</string>
     <string name="no_wallet_yet">No wallet, yet</string>
+    <string name="no_crypto_found">No crypto found</string>
     <string name="tap_plus_to_add">Tap on \"+\" to add one!</string>
     <string name="validating_public_key">Validating Public Key…</string>
     <string name="settings">Settings</string>
@@ -37,9 +38,10 @@
     <string name="about">About</string>
     <string name="language">Language</string>
     <string name="currency">Currency</string>
-    <string name="cryptocurrency_unit">Cryptocurrency unit</string>
+    <string name="crypto_unit">Cryptocurrency unit</string>
     <string name="app_version">App version</string>
     <string name="share">Share</string>
+    <string name="search">Search</string>
     <string name="you_should_try_crp">You should try Cryp for Android, the best cryptocurrency portfolio tracker ever!</string>
     <string name="help_sharing_app">Help by sharing the app</string>
     <string name="review">Review</string>
@@ -48,9 +50,8 @@
     <string name="send_me_email">Send me an email</string>
     <string name="donate">Donate</string>
     <string name="auto_updated">Auto updated</string>
-    <string name="select_cryptocurrency">Select cryptocurrency</string>
+    <string name="choose_one">Choose one</string>
     <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>
-    <string name="you_can_track_one_wallet_at_time">For now you can only track one %s wallet at a time</string>
 
     <string-array name="language_titles">
         <item>English</item>

@@ -19,7 +19,7 @@
         app:cardCornerRadius="10dp">
 
         <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/vCryptocurrencyLogo"
+            android:id="@+id/vCryptoLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="20dp"
@@ -36,7 +36,7 @@
             android:layout_marginEnd="20dp">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vCryptocurrencyName"
+                android:id="@+id/vWalletName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -52,7 +52,7 @@
                 android:id="@+id/vConvertedBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vCryptocurrencyName"
+                android:layout_below="@id/vWalletName"
                 android:layout_marginBottom="3dp"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
@@ -70,7 +70,7 @@
                 tools:text="123456789.00000001"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vCryptocurrencyUnit"
+                android:id="@+id/vCryptoUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/vBalance"

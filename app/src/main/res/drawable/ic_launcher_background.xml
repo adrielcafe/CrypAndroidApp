@@ -8,7 +8,7 @@
     <path
         android:fillType="evenOdd"
         android:pathData="M 0 0 L 0 108 L 108 108 L 108 0"
-        android:strokeColor="@android:color/black"
+        android:strokeColor="#000000"
         android:strokeWidth="1">
         <aapt:attr name="android:fillColor">
             <gradient

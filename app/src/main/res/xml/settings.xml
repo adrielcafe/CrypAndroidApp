@@ -19,8 +19,8 @@
             android:positiveButtonText="@null" />
 
         <ListPreference
-            android:key="cryptocurrencyUnit"
-            android:title="@string/cryptocurrency_unit"
+            android:key="cryptoUnit"
+            android:title="@string/crypto_unit"
             android:defaultValue="BTC"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null" />
@@ -30,17 +30,17 @@
     <PreferenceCategory android:title="@string/donate">
 
         <Preference
-            android:key="btc"
+            android:key="donateBtc"
             android:title="@string/bitcoin"
             android:summary="@string/tap_to_see_address"/>
 
         <Preference
-            android:key="ltc"
+            android:key="donateLtc"
             android:title="@string/litecoin"
             android:summary="@string/tap_to_see_address"/>
 
         <Preference
-            android:key="eth"
+            android:key="donateEth"
             android:title="@string/ethereum"
             android:summary="@string/tap_to_see_address"/>
 

@@ -172,7 +172,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
 
     private fun showDeleteDialog(wallet: Wallet) {
         AwesomeSuccessDialog(this)
-                .setTitle(wallet.cryptocurrency.toString())
+                .setTitle(wallet.crypto.fullName)
                 .setMessage(R.string.are_you_sure_remove_wallet)
                 .setColoredCircle(R.color.red)
                 .setDialogIconAndColor(R.drawable.ic_delete, R.color.white)
@@ -191,12 +191,12 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         if(isConnected()) {
             setContentRefreshing(true)
             setTotalBalanceRefreshing(true)
-            addAll(presenter.loadAll())
-            presenter.updateAll()
+            addAll(presenter.loadWallets())
+            presenter.updatePrices()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        it.forEach { addOrUpdate(it) }
+                        adapter.notifyAdapterDataSetChanged()
                         vRefresh.isEnabled = true
                         updateState()
                         updateTotalBalance()
@@ -283,12 +283,12 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         }
         when(currentTotalBalanceCurrency){
             1 -> { // BTC
-                currencySymbol = Const.BTC_SYMBOL
-                decimalFormat = getCryptocurrencyFormat()
+                currencySymbol = Const.SYMBOL_BTC
+                decimalFormat = getCryptoFormat()
             }
             2 -> { // ETH
-                currencySymbol = Const.ETH_SYMBOL
-                decimalFormat = getCryptocurrencyFormat()
+                currencySymbol = Const.SYMBOL_ETH
+                decimalFormat = getCryptoFormat()
             }
         }
         if(totalBalance < BigDecimal.ZERO) totalBalance = BigDecimal.ZERO

@@ -1,17 +1,11 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
 import cafe.adriel.cryp.model.repository.factory.ServiceFactory
-import cafe.adriel.cryp.now
 import io.paperdb.Paper
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import khronos.Dates
-import khronos.minus
-import khronos.minute
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -35,44 +29,41 @@ object WalletRepository {
 
     fun count() = walletDb.allKeys.size
 
-    fun isCryptocurrencyInUse(cryptocurrency: Cryptocurrency) =
-        walletDb.allKeys.firstOrNull { it.startsWith(cryptocurrency.name) } != null
+//    fun updateBalances() =
+//            Observable.fromArray(getAll())
+//                .map { it }
+//                .flatMapIterable { it }
+//                .flatMap { WalletRepository.updateBalance(it) }
+//                .toList()
 
-    fun updateBalances() =
-            Observable.fromArray(getAll())
-                .map { it }
-                .flatMapIterable { it }
-                .flatMap { WalletRepository.updateBalance(it) }
-                .toList()
-
-    fun updateBalance(wallet: Wallet) =
-            if(wallet.cryptocurrency.autoRefresh) {
-                // 1 min interval before update balance
-                // to avoid API rate limit and socket timeout
-                val canUpdate = wallet.updatedAt == null || wallet.updatedAt?.before(Dates.now() - 1.minute) == true
-                if(canUpdate){
-                    walletService.getBalance(wallet.cryptocurrency.name.toLowerCase(), wallet.address)
-                        .map {
-                            wallet.apply {
-                                balance = it.balance
-                                updatedAt = Dates.now()
-                                addOrUpdate(this)
-                            }
-                        }
-                        .onErrorResumeNext(Observable.fromCallable { wallet })
-                        .subscribeOn(Schedulers.io())
-                } else {
-                    Observable.fromCallable { wallet }
-                }
-            } else {
-                Observable.fromCallable { wallet }
-            }
+//    fun updateBalance(wallet: Wallet) =
+//            if(wallet.crypto.autoRefresh) {
+//                // 1 min interval before update balance
+//                // to avoid API rate limit and socket timeout
+//                val canUpdate = wallet.updatedAt == null || wallet.updatedAt?.before(Dates.now() - 1.minute) == true
+//                if(canUpdate){
+//                    walletService.getBalance(wallet.crypto.name.toLowerCase(), wallet.address)
+//                        .map {
+//                            wallet.apply {
+//                                balance = it.balance
+//                                updatedAt = Dates.now()
+//                                addOrUpdate(this)
+//                            }
+//                        }
+//                        .onErrorResumeNext(Observable.fromCallable { wallet })
+//                        .subscribeOn(Schedulers.io())
+//                } else {
+//                    Observable.fromCallable { wallet }
+//                }
+//            } else {
+//                Observable.fromCallable { wallet }
+//            }
 
     // https://github.com/adrielcafe/Scryp
     interface WalletService {
         @GET("balance/{crypto}/{address}")
         fun getBalance(
-                @Path("crypto") cryptocurrency: String,
+                @Path("crypto") crypto: String,
                 @Path("address") publicKey: String):
                 Observable<BalanceResponse>
     }

@@ -9,8 +9,7 @@ import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
 import cafe.adriel.cryp.*
-import cafe.adriel.cryp.model.entity.Cryptocurrency
-import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
+import cafe.adriel.cryp.model.entity.CryptoUnit
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import com.franmontiel.localechanger.LocaleChanger
@@ -21,10 +20,10 @@ class SettingsFragment : PreferenceFragment(),
 
     private val prefLanguage by lazy { findPreference(Const.PREF_LANGUAGE) as ListPreference}
     private val prefCurrency by lazy { findPreference(Const.PREF_CURRENCY) as ListPreference }
-    private val prefCryptocurrencyUnit by lazy { findPreference(Const.PREF_CRYPTOCURRENCY_UNIT) as ListPreference}
-    private val prefBtc by lazy { findPreference(Const.PREF_BTC) }
-    private val prefLtc by lazy { findPreference(Const.PREF_LTC) }
-    private val prefEth by lazy { findPreference(Const.PREF_ETH) }
+    private val prefCryptoUnit by lazy { findPreference(Const.PREF_CRYPTO_UNIT) as ListPreference}
+    private val prefDonateBtc by lazy { findPreference(Const.PREF_DONATE_BTC) }
+    private val prefDonateLtc by lazy { findPreference(Const.PREF_DONATE_LTC) }
+    private val prefDonateEth by lazy { findPreference(Const.PREF_DONATE_ETH) }
     private val prefShare by lazy { findPreference(Const.PREF_SHARE) }
     private val prefReview by lazy { findPreference(Const.PREF_REVIEW) }
     private val prefContact by lazy { findPreference(Const.PREF_CONTACT) }
@@ -38,21 +37,21 @@ class SettingsFragment : PreferenceFragment(),
 
         prefLanguage.onPreferenceChangeListener = this
         prefCurrency.onPreferenceChangeListener = this
-        prefCryptocurrencyUnit.onPreferenceChangeListener = this
+        prefCryptoUnit.onPreferenceChangeListener = this
 
-        prefBtc.onPreferenceClickListener = this
-        prefLtc.onPreferenceClickListener = this
-        prefEth.onPreferenceClickListener = this
+        prefDonateBtc.onPreferenceClickListener = this
+        prefDonateLtc.onPreferenceClickListener = this
+        prefDonateEth.onPreferenceClickListener = this
         prefShare.onPreferenceClickListener = this
         prefReview.onPreferenceClickListener = this
         prefContact.onPreferenceClickListener = this
 
         addCurrencies()
-        addCryptocurrencyUnits()
+        addCryptoUnits()
 
         updateSummary(prefLanguage)
         updateSummary(prefCurrency)
-        updateSummary(prefCryptocurrencyUnit)
+        updateSummary(prefCryptoUnit)
 
         setAppVersion()
 
@@ -83,16 +82,16 @@ class SettingsFragment : PreferenceFragment(),
 
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when(preference?.key){
-            Const.PREF_BTC -> {
-                val wallet = Wallet(Cryptocurrency.BTC, Const.DONATE_BTC_ADDRESS)
+            Const.PREF_DONATE_BTC -> {
+                val wallet = Wallet(Const.CRYPTO_BTC, Const.DONATE_BTC_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
             }
-            Const.PREF_LTC -> {
-                val wallet = Wallet(Cryptocurrency.LTC, Const.DONATE_LTC_ADDRESS)
+            Const.PREF_DONATE_LTC -> {
+                val wallet = Wallet(Const.CRYPTO_LTC, Const.DONATE_LTC_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
             }
-            Const.PREF_ETH -> {
-                val wallet = Wallet(Cryptocurrency.ETH, Const.DONATE_ETH_ADDRESS)
+            Const.PREF_DONATE_ETH -> {
+                val wallet = Wallet(Const.CRYPTO_ETH, Const.DONATE_ETH_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
             }
             Const.PREF_SHARE -> shareApp()
@@ -119,12 +118,12 @@ class SettingsFragment : PreferenceFragment(),
                 .toTypedArray()
     }
 
-    private fun addCryptocurrencyUnits(){
-        val supportedUnits = CryptocurrencyUnit.values()
-        prefCryptocurrencyUnit.entries = supportedUnits
+    private fun addCryptoUnits(){
+        val supportedUnits = CryptoUnit.values()
+        prefCryptoUnit.entries = supportedUnits
                 .map { it.fullName }
                 .toTypedArray()
-        prefCryptocurrencyUnit.entryValues = supportedUnits
+        prefCryptoUnit.entryValues = supportedUnits
                 .map { it.name }
                 .toTypedArray()
     }

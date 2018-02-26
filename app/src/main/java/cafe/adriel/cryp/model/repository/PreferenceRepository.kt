@@ -4,7 +4,7 @@ import android.preference.PreferenceManager
 import cafe.adriel.cryp.App
 import cafe.adriel.cryp.Const
 import cafe.adriel.cryp.R
-import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
+import cafe.adriel.cryp.model.entity.CryptoUnit
 import java.util.*
 
 object PreferenceRepository {
@@ -36,8 +36,8 @@ object PreferenceRepository {
     fun getCurrency() =
             Currency.getInstance(prefDb.getString(Const.PREF_CURRENCY, Const.DEFAULT_CURRENCY))
 
-    fun getCryptocurrencyUnit() =
-            CryptocurrencyUnit.valueOf(
-                    prefDb.getString(Const.PREF_CRYPTOCURRENCY_UNIT, CryptocurrencyUnit.BTC.name))
+    fun getCryptoUnit() =
+            CryptoUnit.valueOf(
+                    prefDb.getString(Const.PREF_CRYPTO_UNIT, CryptoUnit.BTC.name))
 
 }
