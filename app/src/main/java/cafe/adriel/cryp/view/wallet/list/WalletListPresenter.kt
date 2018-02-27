@@ -12,19 +12,19 @@ import com.arellomobile.mvp.MvpPresenter
 @InjectViewState
 class WalletListPresenter: MvpPresenter<WalletListView>() {
 
-    fun loadAll() =
+    fun loadWallets() =
             WalletRepository.getAll()
                 .sortedWith(Comparator { w1, w2 ->
                     val result = w1.position.compareTo(w2.position)
-                    if(result == 0) w1.cryptocurrency.compareTo(w2.cryptocurrency)
+                    if(result == 0) w1.crypto.symbol.compareTo(w2.crypto.symbol)
                     else result
                 })
 
-    fun updateAll() =
+    fun updatePrices() =
         PriceRepository.updatePrices()
             .defaultIfEmpty(emptyList())
-            .map { WalletRepository.updateBalances() }
-            .flatMapSingle { it }
+//            .map { WalletRepository.getAll() }
+//            .flatMapSingle { it }
 
     fun exists(wallet: Wallet) = WalletRepository.contains(wallet)
 

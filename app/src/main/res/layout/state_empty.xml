@@ -12,7 +12,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        app:lottie_fileName="animations/coin_stack.json"
+        app:lottie_rawRes="@raw/anim_coin_stack"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"
         app:lottie_cacheStrategy="weak"/>

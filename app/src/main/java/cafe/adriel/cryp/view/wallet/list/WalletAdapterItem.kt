@@ -1,10 +1,9 @@
 package cafe.adriel.cryp.view.wallet.list
 
-import android.content.res.ColorStateList
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import cafe.adriel.cryp.*
-import cafe.adriel.cryp.model.entity.CryptocurrencyUnit
+import cafe.adriel.cryp.model.entity.CryptoUnit
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.kbus.KBus
@@ -34,40 +33,39 @@ class WalletAdapterItem(var wallet: Wallet) :
         holder.itemView?.apply {
             val currencySymbol = PreferenceRepository.getCurrency().symbol
             val balance: String
-            val cryptocurrencyUnit: String
-            when(PreferenceRepository.getCryptocurrencyUnit()){
-                CryptocurrencyUnit.M_BTC -> {
+            val cryptoUnit: String
+            when(PreferenceRepository.getCryptoUnit()){
+                CryptoUnit.M_BTC -> {
                     balance = wallet.getFormattedBalanceMBtc()
-                    cryptocurrencyUnit = "m${wallet.cryptocurrency.name}"
+                    cryptoUnit = "m${wallet.crypto.symbol}"
                 }
-                CryptocurrencyUnit.BITS -> {
+                CryptoUnit.BITS -> {
                     balance = wallet.getFormattedBalanceBits()
-                    cryptocurrencyUnit = CryptocurrencyUnit.BITS.name
+                    cryptoUnit = CryptoUnit.BITS.name
                 }
-                CryptocurrencyUnit.SATOSHI -> {
+                CryptoUnit.SATOSHI -> {
                     balance = wallet.getFormattedBalanceSatoshi()
-                    cryptocurrencyUnit = CryptocurrencyUnit.SATOSHI.name
+                    cryptoUnit = CryptoUnit.SATOSHI.name
                 }
                 else -> {
                     balance = wallet.getFormattedBalanceBtc()
-                    cryptocurrencyUnit = wallet.cryptocurrency.name
+                    cryptoUnit = wallet.crypto.symbol
                 }
             }
 
             if(wallet.balance >= BigDecimal.ZERO){
                 vConvertedBalance.text = "$currencySymbol ${wallet.getFormattedBalanceCurrency()}"
                 vBalance.text = balance
-                vCryptocurrencyUnit.text = cryptocurrencyUnit
+                vCryptoUnit.text = cryptoUnit
             } else {
                 vConvertedBalance.text = "-"
                 vBalance.text = "-"
-                vCryptocurrencyUnit.text = ""
+                vCryptoUnit.text = ""
             }
 
-            vCryptocurrencyName.text = if(wallet.name.isNotEmpty()) wallet.name
-                                        else wallet.cryptocurrency.fullName
-            vCryptocurrencyLogo.setImageResource(wallet.cryptocurrency.logoRes)
-            vCryptocurrencyLogo.supportImageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
+            vWalletName.text = if(wallet.name.isNotEmpty()) wallet.name
+                                else wallet.crypto.name
+            vCryptoLogo.setCrypto(wallet.crypto)
             vSwipeMenu.setSwipeListener(object : SimpleSwipeSwitchListener(){
                 override fun beginMenuOpened(swipeMenuLayout: SwipeMenuLayout?) {
                     KBus.post(SwipeMenuOpenedEvent(identifier))
@@ -79,11 +77,11 @@ class WalletAdapterItem(var wallet: Wallet) :
     override fun unbindView(holder: ViewHolder) {
         super.unbindView(holder)
         holder.itemView?.apply {
-            vCryptocurrencyName.text = ""
+            vWalletName.text = ""
             vConvertedBalance.text = "-"
             vBalance.text = "-"
-            vCryptocurrencyUnit.text = ""
-            vCryptocurrencyLogo.setImageDrawable(null)
+            vCryptoUnit.text = ""
+            vCryptoLogo.clear()
             vSwipeMenu.smoothCloseMenu(0)
             vSwipeMenu.setSwipeListener(null)
         }

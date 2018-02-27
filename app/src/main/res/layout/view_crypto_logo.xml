@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
+        android:id="@+id/vClvLogo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:background="@android:color/white"
+        app:shape_mode="circle"
+        app:stroke_width="0dp"
+        tools:backgroundTint="@color/colorPrimaryDark"
+        tools:srcCompat="@drawable/logo_btc"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/vClvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:maxLines="1"
+        app:fontFamily="sans-serif-medium"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeMaxTextSize="11sp"
+        tools:textColor="@android:color/white"
+        tools:text="BTC"/>
+
+</merge>

@@ -29,8 +29,8 @@ class ShowWalletActivity : BaseActivity() {
             finish()
         }
 
-        vCryptocurrencyLogo.setImageResource(wallet.cryptocurrency.logoRes)
-        vCryptocurrencyName.text = wallet.cryptocurrency.toString()
+        vCryptoLogo.setCrypto(wallet.crypto)
+        vCryptoFullName.text = wallet.crypto.fullName
         vPublicKey.text = wallet.address
         vQrCode.setImageBitmap(wallet.address.getQrCode(R.color.colorPrimaryDark))
 
@@ -56,7 +56,7 @@ class ShowWalletActivity : BaseActivity() {
             }
 
     private fun copyPublicKeyToClipboard(){
-        val label = getString(R.string.cryptocurrency_public_key, wallet.cryptocurrency.fullName)
+        val label = getString(R.string.crypto_public_key, wallet.crypto.fullName)
         wallet.address.copyToClipboard(label)
         showMessage(R.string.copied, MessageType.SUCCESS)
     }

@@ -105,7 +105,7 @@ fun Dates.now() =
         Calendar.getInstance().time
 
 // Wallet
-fun getCryptocurrencyFormat() =
+fun getCryptoFormat() =
     DecimalFormat().apply {
         maximumFractionDigits = 8
         groupingSize = 3
@@ -117,21 +117,21 @@ fun getCryptocurrencyFormat() =
         }
     }
 fun getCurrencyFormat() =
-        DecimalFormat().apply {
-            minimumFractionDigits = 2
-            maximumFractionDigits = 2
-            currency = PreferenceRepository.getCurrency()
-        }
+    DecimalFormat().apply {
+        minimumFractionDigits = 2
+        maximumFractionDigits = 2
+        currency = PreferenceRepository.getCurrency()
+    }
 
-fun Wallet.getFormattedBalanceBtc() = getCryptocurrencyFormat().format(balance)
+fun Wallet.getFormattedBalanceBtc() = getCryptoFormat().format(balance)
 
-fun Wallet.getFormattedBalanceMBtc() = getCryptocurrencyFormat().format(getBalanceMBtc())
+fun Wallet.getFormattedBalanceMBtc() = getCryptoFormat().format(getBalanceMBtc())
 
-fun Wallet.getFormattedBalanceBits() = getCryptocurrencyFormat().format(getBalanceBits())
+fun Wallet.getFormattedBalanceBits() = getCryptoFormat().format(getBalanceBits())
 
-fun Wallet.getFormattedBalanceSatoshi() = getCryptocurrencyFormat().format(getBalanceSatoshi())
+fun Wallet.getFormattedBalanceSatoshi() = getCryptoFormat().format(getBalanceSatoshi())
 
 fun Wallet.getFormattedBalanceCurrency() = getCurrencyFormat().format(getBalanceCurrency())
 
 fun Wallet.share(activity: Activity) =
-        "$cryptocurrency\n$address".share(activity)
+        "$crypto\n$address".share(activity)

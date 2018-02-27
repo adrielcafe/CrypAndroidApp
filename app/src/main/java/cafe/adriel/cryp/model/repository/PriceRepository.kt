@@ -1,7 +1,6 @@
 package cafe.adriel.cryp.model.repository
 
 import cafe.adriel.cryp.Const
-import cafe.adriel.cryp.model.entity.Cryptocurrency
 import cafe.adriel.cryp.model.entity.Prices
 import cafe.adriel.cryp.model.repository.factory.ServiceFactory
 import io.paperdb.Paper
@@ -15,46 +14,42 @@ object PriceRepository {
         Paper.book(Const.DB_PRICES)
     }
     private val priceService by lazy {
-        ServiceFactory.newInstance<PriceService>(Const.PRICE_API_BASE_URL)
+        ServiceFactory.newInstance<PriceService>(Const.CRYPTO_PRICE_API_BASE_URL)
     }
 
-    fun getAll() = priceDb.allKeys.map { priceDb.read<Prices>(it) }
+    fun getBySymbol(symbol: String) =
+        if(contains(symbol)) priceDb.read<Prices>(symbol)
+        else Prices(symbol)
 
-    fun getById(id: Cryptocurrency) =
-        if(contains(id)) priceDb.read<Prices>(id.name)
-        else Prices(id)
+    private fun addOrUpdate(prices: Prices) = priceDb.write(prices.cryptoSymbol, prices)
 
-    fun addOrUpdate(prices: Prices) = priceDb.write(prices.id, prices)
-
-    fun remove(id: Cryptocurrency) = priceDb.delete(id.name).let { !priceDb.contains(id.name) }
-
-    fun contains(id: Cryptocurrency) = priceDb.contains(id.name)
+    fun contains(symbol: String) = priceDb.contains(symbol)
 
     fun updatePrices(): Observable<List<Prices>> =
         WalletRepository.getAll().let {
-            val cryptocurrencies = it.map { it.cryptocurrency.name }
+            val cryptos = it.map { it.crypto.symbol }
                 .toSet()
                 .joinToString(",")
             val currencies = listOf(
-                    Cryptocurrency.BTC.name,
-                    Cryptocurrency.ETH.name,
+                    "BTC",
+                    "ETH",
                     PreferenceRepository.getCurrency().currencyCode.toUpperCase()
                 ).joinToString(",")
-            if (currencies.isNotEmpty() && cryptocurrencies.isNotEmpty()) {
-                priceService.getPrices(cryptocurrencies, currencies)
+            return if (cryptos.isNotEmpty()) {
+                priceService.getPrices(cryptos, currencies)
                         .map {
                             val allPrices = mutableListOf<Prices>()
-                            it.forEach { cryptocurrency, mapPrices ->
+                            it.forEach { crypto, mapPrices ->
                                 val priceBtc = mapPrices
-                                    ?.get(Cryptocurrency.BTC.name)
+                                    ?.get("BTC")
                                     ?.toBigDecimal() ?: BigDecimal.ZERO
                                 val priceEth = mapPrices
-                                    ?.get(Cryptocurrency.ETH.name)
+                                    ?.get("ETH")
                                     ?.toBigDecimal() ?: BigDecimal.ZERO
                                 val priceCurrency = mapPrices
                                     ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
                                     ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val prices = Prices(cryptocurrency, priceBtc, priceEth, priceCurrency)
+                                val prices = Prices(crypto, priceBtc, priceEth, priceCurrency)
                                 allPrices.add(prices)
                                 addOrUpdate(prices)
                             }
@@ -65,12 +60,12 @@ object PriceRepository {
             }
         }
 
-    // https://cryptocompare.com/api/
+    // https://min-api.cryptocompare.com
     interface PriceService {
         @GET("pricemulti")
         fun getPrices(
-                @Query("fsyms") cryptocurrencies: String,
-                @Query("tsyms") currencies: String):
-                Observable<Map<Cryptocurrency, Map<String, String>>>
+            @Query("fsyms") cryptos: String,
+            @Query("tsyms") currencies: String):
+                Observable<Map<String, Map<String, String>>>
     }
 }

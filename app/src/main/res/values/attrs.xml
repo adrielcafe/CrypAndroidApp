@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CryptoLogoView">
+        <attr name="clv_backgroundColor" format="color|reference" />
+        <attr name="clv_textColor" format="color|reference" />
+    </declare-styleable>
+
+</resources>

@@ -1,6 +1,6 @@
 package cafe.adriel.cryp
 
-import cafe.adriel.cryp.model.entity.Cryptocurrency
+import cafe.adriel.cryp.model.entity.Crypto
 
 object Const {
     // URL
@@ -10,7 +10,7 @@ object Const {
 
     // API
     const val WALLET_API_BASE_URL = "https://scryp.herokuapp.com/"
-    const val PRICE_API_BASE_URL = "https://min-api.cryptocompare.com/data/"
+    const val CRYPTO_PRICE_API_BASE_URL = "https://min-api.cryptocompare.com/data/"
 
     // Donate
     const val DONATE_BTC_ADDRESS = "15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS"
@@ -18,8 +18,9 @@ object Const {
     const val DONATE_ETH_ADDRESS = "0x922847B8781FfbeFbADcC4BE34475521b2990647"
 
     // Database
-    const val DB_WALLETS = "wallets"
+    const val DB_CRYPTOS = "cryptos"
     const val DB_PRICES = "prices"
+    const val DB_WALLETS = "wallets"
 
     // Features
     const val WALLET_SLOTS_FREE = 10
@@ -29,10 +30,10 @@ object Const {
     const val PREF_FIRST_OPEN = "firstOpen"
     const val PREF_LANGUAGE = "language"
     const val PREF_CURRENCY = "currency"
-    const val PREF_CRYPTOCURRENCY_UNIT = "cryptocurrencyUnit"
-    const val PREF_BTC = "btc"
-    const val PREF_LTC = "ltc"
-    const val PREF_ETH = "eth"
+    const val PREF_CRYPTO_UNIT = "cryptoUnit"
+    const val PREF_DONATE_BTC = "donateBtc"
+    const val PREF_DONATE_LTC = "donateLtc"
+    const val PREF_DONATE_ETH = "donateEth"
     const val PREF_SHARE = "share"
     const val PREF_REVIEW = "review"
     const val PREF_CONTACT = "contact"
@@ -52,10 +53,13 @@ object Const {
         "pyg", "pen", "php", "pln", "qar", "ron", "rub", "rwf", "svc", "sar", "rsd", "sgd", "sbd",
         "zar", "krw", "lkr", "szl", "sek", "chf", "tzs", "thb", "top", "ttd", "tnd", "try", "usd",
         "ugx", "uah", "aed", "uyu", "uzs", "vuv", "vef", "vnd", "xof")
-    val DEFAULT_CRYPTOCURRENCY = Cryptocurrency.BTC
+    val CRYPTO_BTC = Crypto("BTC", "Bitcoin")
+    val CRYPTO_LTC = Crypto("LTC", "Litecoin")
+    val CRYPTO_ETH = Crypto("ETH", "Ethereum")
+    val DEFAULT_CRYPTO = CRYPTO_BTC
     const val DEFAULT_CURRENCY = "USD"
-    const val BTC_SYMBOL = "Ƀ"
-    const val ETH_SYMBOL = "Ξ"
+    const val SYMBOL_BTC = "Ƀ"
+    const val SYMBOL_ETH = "Ξ"
     const val BTC_TO_MBTC = 1_000
     const val BTC_TO_BITS = 1_000_000
     const val BTC_TO_SATOSHI = 100_000_000
