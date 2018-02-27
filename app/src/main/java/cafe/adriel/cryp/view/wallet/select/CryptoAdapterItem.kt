@@ -23,7 +23,7 @@ class CryptoAdapterItem(val crypto: Crypto) :
         holder.itemView?.apply {
             vCryptoSymbol.text = crypto.symbol
             vCryptoName.text = crypto.name
-            vCryptoLogo.setImageResource(crypto.logoResId)
+            vCryptoLogo.setCrypto(crypto)
 //            vAutoRefresh.visibility = if(crypto.autoRefresh) View.VISIBLE else View.GONE
         }
     }
@@ -33,7 +33,7 @@ class CryptoAdapterItem(val crypto: Crypto) :
         holder.itemView?.apply {
             vCryptoSymbol.text = ""
             vCryptoName.text = ""
-            vCryptoLogo.setImageDrawable(null)
+            vCryptoLogo.clear()
             vAutoRefresh.visibility = View.GONE
         }
     }

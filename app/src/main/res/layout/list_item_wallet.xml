@@ -18,15 +18,14 @@
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="10dp">
 
-        <android.support.v7.widget.AppCompatImageView
+        <cafe.adriel.cryp.view.custom.CryptoLogoView
             android:id="@+id/vCryptoLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="20dp"
             android:layout_gravity="start|center_vertical"
-            android:scaleType="fitCenter"
-            app:tint="@color/colorPrimaryDark"
-            tools:srcCompat="@drawable/logo_btc"/>
+            app:clv_backgroundColor="@color/colorPrimaryDark"
+            app:clv_textColor="@android:color/white"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

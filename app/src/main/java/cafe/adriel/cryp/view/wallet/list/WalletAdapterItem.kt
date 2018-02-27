@@ -1,6 +1,5 @@
 package cafe.adriel.cryp.view.wallet.list
 
-import android.content.res.ColorStateList
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import cafe.adriel.cryp.*
@@ -64,10 +63,9 @@ class WalletAdapterItem(var wallet: Wallet) :
                 vCryptoUnit.text = ""
             }
 
-            vWalletName.text =
-                    if(wallet.name.isNotEmpty()) wallet.name else wallet.crypto.name
-            vCryptoLogo.setImageResource(wallet.crypto.logoResId)
-            vCryptoLogo.imageTintList = ColorStateList.valueOf(colorFrom(R.color.colorPrimaryDark))
+            vWalletName.text = if(wallet.name.isNotEmpty()) wallet.name
+                                else wallet.crypto.name
+            vCryptoLogo.setCrypto(wallet.crypto)
             vSwipeMenu.setSwipeListener(object : SimpleSwipeSwitchListener(){
                 override fun beginMenuOpened(swipeMenuLayout: SwipeMenuLayout?) {
                     KBus.post(SwipeMenuOpenedEvent(identifier))
@@ -83,7 +81,7 @@ class WalletAdapterItem(var wallet: Wallet) :
             vConvertedBalance.text = "-"
             vBalance.text = "-"
             vCryptoUnit.text = ""
-            vCryptoLogo.setImageDrawable(null)
+            vCryptoLogo.clear()
             vSwipeMenu.smoothCloseMenu(0)
             vSwipeMenu.setSwipeListener(null)
         }

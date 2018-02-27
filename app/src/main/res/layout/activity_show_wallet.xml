@@ -27,8 +27,8 @@
         android:id="@+id/vQrCodeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
@@ -41,13 +41,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <cafe.adriel.cryp.view.custom.CryptoLogoView
                 android:id="@+id/vCryptoLogo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="fitCenter"
-                app:tint="@android:color/white"
-                tools:srcCompat="@drawable/logo_btc"/>
+                app:clv_backgroundColor="@android:color/white"
+                app:clv_textColor="@color/colorAccentDark"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/vCryptoFullName"

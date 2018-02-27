@@ -29,7 +29,7 @@ class ShowWalletActivity : BaseActivity() {
             finish()
         }
 
-        vCryptoLogo.setImageResource(wallet.crypto.logoResId)
+        vCryptoLogo.setCrypto(wallet.crypto)
         vCryptoFullName.text = wallet.crypto.fullName
         vPublicKey.text = wallet.address
         vQrCode.setImageBitmap(wallet.address.getQrCode(R.color.colorPrimaryDark))

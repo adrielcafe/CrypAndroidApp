@@ -84,16 +84,15 @@
                 android:layout_marginStart="3dp"
                 android:padding="10dp">
 
-                <android.support.v7.widget.AppCompatImageView
+                <cafe.adriel.cryp.view.custom.CryptoLogoView
                     android:id="@+id/vCryptoLogo"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:scaleType="fitCenter"
-                    app:tint="@android:color/white"
-                    tools:srcCompat="@drawable/logo_btc"/>
+                    app:clv_backgroundColor="@android:color/white"
+                    app:clv_textColor="@color/colorAccentDark"/>
 
                 <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/vCryptoSymbol"

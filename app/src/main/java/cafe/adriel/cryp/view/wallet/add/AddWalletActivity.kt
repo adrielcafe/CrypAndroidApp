@@ -27,6 +27,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     lateinit var presenter: AddWalletPresenter
 
     lateinit var selectedCrypto: Crypto
+    var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,8 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     }
 
     private fun setEditMode(wallet: Wallet){
+        isEditMode = true
+
         setCrypto(wallet.crypto)
         setQrCode(wallet.address)
         setPublicKey(wallet.address)
@@ -140,7 +143,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         selectedCrypto = crypto
         vCryptoSymbol.text = crypto.symbol
         vCryptoName.text = crypto.name
-        vCryptoLogo.setImageResource(crypto.logoResId)
+        vCryptoLogo.setCrypto(crypto)
         toggleBalanceMessage()
     }
 
@@ -172,7 +175,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         val balance = vBalance.text.toString().toBigDecimalOrNull()
 
         // Validations
-        if(!presenter.hasWalletSlotRemaining()){
+        if(!presenter.hasWalletSlotRemaining() && !isEditMode){
             showMessage(R.string.you_can_track_ten_wallets, MessageType.INFO)
             return
         } else if(publicKey.isEmpty()){
