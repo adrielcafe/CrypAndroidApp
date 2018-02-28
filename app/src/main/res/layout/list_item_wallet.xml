@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_qrcode"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:background="?android:selectableItemBackgroundBorderless"/>
 
         </android.support.v7.widget.CardView>
 
@@ -127,7 +127,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_edit"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:background="?android:selectableItemBackgroundBorderless"/>
 
         </android.support.v7.widget.CardView>
 
@@ -145,7 +145,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_delete"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:background="?android:selectableItemBackgroundBorderless"/>
 
         </android.support.v7.widget.CardView>
 

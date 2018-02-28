@@ -72,7 +72,14 @@ class SettingsFragment : PreferenceFragment(),
                 when (it.key) {
                     Const.PREF_LANGUAGE -> {
                         LocaleChanger.setLocale(Locale.forLanguageTag(value))
+                        Analytics.logChangeLanguage(value)
                         activity.recreate()
+                    }
+                    Const.PREF_CURRENCY -> {
+                        Analytics.logChangeCurrency(value)
+                    }
+                    Const.PREF_CRYPTO_UNIT -> {
+                        Analytics.logChangeCryptoUnit(value)
                     }
                 }
             }
@@ -85,14 +92,17 @@ class SettingsFragment : PreferenceFragment(),
             Const.PREF_DONATE_BTC -> {
                 val wallet = Wallet(Const.CRYPTO_BTC, Const.DONATE_BTC_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+                Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_LTC -> {
                 val wallet = Wallet(Const.CRYPTO_LTC, Const.DONATE_LTC_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+                Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_ETH -> {
                 val wallet = Wallet(Const.CRYPTO_ETH, Const.DONATE_ETH_ADDRESS)
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+                Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_SHARE -> shareApp()
             Const.PREF_REVIEW -> reviewApp()

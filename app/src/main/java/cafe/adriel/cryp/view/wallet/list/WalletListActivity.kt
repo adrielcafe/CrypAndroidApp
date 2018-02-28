@@ -1,6 +1,7 @@
 package cafe.adriel.cryp.view.wallet.list
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -27,11 +28,13 @@ import com.mikepenz.fastadapter_extensions.drag.ItemTouchCallback
 import com.mikepenz.fastadapter_extensions.drag.SimpleDragCallback
 import com.mikepenz.fastadapter_extensions.utilities.DragDropUtil
 import com.tubb.smrv.SwipeHorizontalMenuLayout
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import kotlinx.android.synthetic.main.list_item_wallet.view.*
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     @InjectPresenter
@@ -41,6 +44,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     private var currentTotalBalance = BigDecimal.ZERO
     private var currentTotalBalanceCurrency = 0
     private var currentOpenedMenuPosition = -1
+    private var backPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +115,19 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     override fun onStop() {
         super.onStop()
         KBus.unsubscribe(this)
+    }
+
+    override fun onBackPressed() {
+        if(backPressed) {
+            super.onBackPressed()
+        } else {
+            backPressed = true
+            Snackbar.make(vCoordinator, R.string.press_back_exit, Snackbar.LENGTH_SHORT).show()
+            Observable.just(Unit)
+                .delay(2, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe { backPressed = false }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -217,7 +234,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         }
     }
 
-    fun addAll(wallets: List<Wallet>) {
+    private fun addAll(wallets: List<Wallet>) {
         wallets.map { WalletAdapterItem(it) }
             .let {
                 adapter.clear()
@@ -227,18 +244,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 closeSwipeMenus(true)
                 setContentRefreshing(false)
             }
-    }
-
-    fun addOrUpdate(wallet: Wallet) {
-        val position = getItemPosition(wallet)
-        if(position < 0) {
-            if(presenter.exists(wallet)) {
-                adapter.add(WalletAdapterItem(wallet))
-            }
-        } else {
-            adapter.getAdapterItem(position).wallet = wallet
-            adapter.notifyAdapterItemChanged(position)
-        }
     }
 
     private fun setContentRefreshing(refreshing: Boolean) {

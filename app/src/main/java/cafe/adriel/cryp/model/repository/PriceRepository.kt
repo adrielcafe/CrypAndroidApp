@@ -25,7 +25,7 @@ object PriceRepository {
 
     fun contains(symbol: String) = priceDb.contains(symbol)
 
-    fun updatePrices(): Observable<List<Prices>> =
+    fun updatePrices(): Observable<Unit> =
         WalletRepository.getAll().let {
             val cryptos = it.map { it.crypto.symbol }
                 .toSet()
@@ -35,28 +35,25 @@ object PriceRepository {
                     "ETH",
                     PreferenceRepository.getCurrency().currencyCode.toUpperCase()
                 ).joinToString(",")
+
             return if (cryptos.isNotEmpty()) {
                 priceService.getPrices(cryptos, currencies)
-                        .map {
-                            val allPrices = mutableListOf<Prices>()
-                            it.forEach { crypto, mapPrices ->
-                                val priceBtc = mapPrices
-                                    ?.get("BTC")
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val priceEth = mapPrices
-                                    ?.get("ETH")
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val priceCurrency = mapPrices
-                                    ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val prices = Prices(crypto, priceBtc, priceEth, priceCurrency)
-                                allPrices.add(prices)
-                                addOrUpdate(prices)
-                            }
-                            allPrices
+                    .map {
+                        val allPrices = mutableListOf<Prices>()
+                        val currency = PreferenceRepository.getCurrency().currencyCode.toUpperCase()
+                        it.forEach {
+                            val crypto = it.key
+                            val mapPrices = it.value
+                            val priceBtc = mapPrices["BTC"]?.toBigDecimal() ?: BigDecimal.ZERO
+                            val priceEth = mapPrices["ETH"]?.toBigDecimal() ?: BigDecimal.ZERO
+                            val priceCurrency = mapPrices[currency]?.toBigDecimal() ?: BigDecimal.ZERO
+                            val prices = Prices(crypto, priceBtc, priceEth, priceCurrency)
+                            allPrices.add(prices)
+                            addOrUpdate(prices)
                         }
+                    }
             } else {
-                Observable.empty()
+                Observable.just(Unit)
             }
         }
 

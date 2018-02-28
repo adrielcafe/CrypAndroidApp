@@ -18,7 +18,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/vToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
@@ -89,17 +89,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             tools:text="15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS"/>
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/vTapToCopy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/tap_to_copy"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-light"
-            app:textAllCaps="true"/>
 
     </android.support.v7.widget.LinearLayoutCompat>
 

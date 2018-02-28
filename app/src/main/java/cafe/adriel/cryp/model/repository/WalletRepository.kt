@@ -1,5 +1,6 @@
 package cafe.adriel.cryp.model.repository
 
+import cafe.adriel.cryp.Analytics
 import cafe.adriel.cryp.Const
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.entity.response.BalanceResponse
@@ -21,7 +22,12 @@ object WalletRepository {
 
     fun getById(id: String) = walletDb.read<Wallet>(id)
 
-    fun addOrUpdate(wallet: Wallet) = walletDb.write(wallet.id, wallet).contains(wallet.id)
+    fun addOrUpdate(wallet: Wallet) {
+        if(!contains(wallet)){
+            Analytics.logAddWallet(wallet.crypto)
+        }
+        walletDb.write(wallet.id, wallet)
+    }
 
     fun remove(wallet: Wallet) = walletDb.delete(wallet.id).let { !walletDb.contains(wallet.id) }
 

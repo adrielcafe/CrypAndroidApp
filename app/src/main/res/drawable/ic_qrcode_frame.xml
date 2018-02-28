@@ -4,15 +4,15 @@
         android:viewportHeight="286.92"
         android:viewportWidth="286.92">
     <path
-        android:fillColor="@color/colorPrimaryDark"
+        android:fillColor="@color/colorAccent"
         android:pathData="M4.78,47.82c-2.64,0 -4.78,-2.14 -4.78,-4.78l0,-38.26c0,-2.64 2.14,-4.78 4.78,-4.78l38.26,0c2.64,0 4.78,2.14 4.78,4.78 0,2.64 -2.14,4.78 -4.78,4.78l-33.48,0 0,33.48c0,2.64 -2.14,4.78 -4.78,4.78z"/>
     <path
-        android:fillColor="@color/colorPrimaryDark"
+        android:fillColor="@color/colorAccent"
         android:pathData="M282.14,47.82c-2.64,0 -4.78,-2.14 -4.78,-4.78l0,-33.48 -33.48,0c-2.64,0 -4.78,-2.14 -4.78,-4.78 0,-2.64 2.14,-4.78 4.78,-4.78l38.26,0c2.64,0 4.78,2.14 4.78,4.78l0,38.26c0,2.64 -2.14,4.78 -4.78,4.78z"/>
     <path
-        android:fillColor="@color/colorPrimaryDark"
+        android:fillColor="@color/colorAccent"
         android:pathData="M282.14,286.92l-38.26,0c-2.64,0 -4.78,-2.14 -4.78,-4.78 0,-2.64 2.14,-4.78 4.78,-4.78l33.48,0 0,-33.48c0,-2.64 2.14,-4.78 4.78,-4.78 2.64,0 4.78,2.14 4.78,4.78l0,38.26c0,2.64 -2.14,4.78 -4.78,4.78z"/>
     <path
-        android:fillColor="@color/colorPrimaryDark"
+        android:fillColor="@color/colorAccent"
         android:pathData="M43.04,286.92l-38.26,0c-2.64,0 -4.78,-2.14 -4.78,-4.78l0,-38.26c0,-2.64 2.14,-4.78 4.78,-4.78 2.64,0 4.78,2.14 4.78,4.78l0,33.48 33.48,0c2.64,0 4.78,2.14 4.78,4.78 0,2.64 -2.14,4.78 -4.78,4.78z"/>
 </vector>
