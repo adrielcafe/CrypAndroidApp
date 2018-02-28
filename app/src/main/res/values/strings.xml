@@ -10,7 +10,6 @@
     <string name="total_balance">Total balance</string>
     <string name="save_wallet">Save wallet</string>
     <string name="tap_to_scan">Tap to scan</string>
-    <string name="tap_to_copy">Tap to copy</string>
     <string name="tap_to_see_address">Tap to see the address</string>
     <string name="copied">Copied</string>
     <string name="public_key">Public Key</string>
@@ -23,7 +22,7 @@
     <string name="wallet_already_saved">Wallet already saved</string>
     <string name="invalid_public_key">Invalid %s Public Key</string>
     <string name="server_unavailable_try_later">Server unavailable, try again later</string>
-    <string name="are_you_sure_remove_wallet">Are you sure you want to remove this wallet from app?</string>
+    <string name="are_you_sure_remove_wallet">Are you sure you want to remove this wallet from Cryp?</string>
     <string name="wallet_removed">Wallet removed</string>
     <string name="wallet_not_found">Wallet not found</string>
     <string name="yes_please">Yes, please</string>
@@ -52,6 +51,7 @@
     <string name="auto_updated">Auto updated</string>
     <string name="choose_one">Choose one</string>
     <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>
+    <string name="press_back_exit">Press back again to close Cryp</string>
 
     <string-array name="language_titles">
         <item>English</item>

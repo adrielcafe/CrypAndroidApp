@@ -77,8 +77,9 @@ class SelectCryptoActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
 
-        val vSearch = menu.findItem(R.id.action_search).actionView as SearchView
-        vSearch.queryTextChanges()
+        val searchMenuItem = menu.findItem(R.id.action_search)
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.queryTextChanges()
             .skipInitialValue()
             .subscribe { adapter.filter(it) }
 
