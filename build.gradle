@@ -1,5 +1,6 @@
 buildscript {
     ext.support_version = '27.0.2'
+    ext.firebase_version = '11.8.0'
     ext.kotlin_version = '1.2.21'
     ext.moxy_version = '1.5.3'
     ext.retrofit_version = '2.3.0'
@@ -10,6 +11,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.0-beta4'
+        classpath 'com.google.gms:google-services:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "io.mironov.smuggler:smuggler-plugin:0.12.18"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'

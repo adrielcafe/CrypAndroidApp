@@ -20,8 +20,9 @@
 
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_margin="50dp"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_qrcode_frame"/>
 
 </FrameLayout>

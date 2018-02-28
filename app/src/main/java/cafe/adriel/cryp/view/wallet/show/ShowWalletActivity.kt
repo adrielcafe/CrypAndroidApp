@@ -59,10 +59,12 @@ class ShowWalletActivity : BaseActivity() {
         val label = getString(R.string.crypto_public_key, wallet.crypto.fullName)
         wallet.address.copyToClipboard(label)
         showMessage(R.string.copied, MessageType.SUCCESS)
+        Analytics.logCopyWallet(wallet.crypto)
     }
 
     private fun shareWallet(){
         wallet.share(this)
+        Analytics.logShareWallet(wallet.crypto)
     }
 
 }
