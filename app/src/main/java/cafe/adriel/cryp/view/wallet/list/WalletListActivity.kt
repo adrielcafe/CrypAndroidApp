@@ -217,7 +217,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         }
     }
 
-    fun addAll(wallets: List<Wallet>) {
+    private fun addAll(wallets: List<Wallet>) {
         wallets.map { WalletAdapterItem(it) }
             .let {
                 adapter.clear()
@@ -227,18 +227,6 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 closeSwipeMenus(true)
                 setContentRefreshing(false)
             }
-    }
-
-    fun addOrUpdate(wallet: Wallet) {
-        val position = getItemPosition(wallet)
-        if(position < 0) {
-            if(presenter.exists(wallet)) {
-                adapter.add(WalletAdapterItem(wallet))
-            }
-        } else {
-            adapter.getAdapterItem(position).wallet = wallet
-            adapter.notifyAdapterItemChanged(position)
-        }
     }
 
     private fun setContentRefreshing(refreshing: Boolean) {

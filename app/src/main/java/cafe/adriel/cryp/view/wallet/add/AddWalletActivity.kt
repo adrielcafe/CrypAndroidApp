@@ -26,8 +26,8 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     @InjectPresenter
     lateinit var presenter: AddWalletPresenter
 
-    lateinit var selectedCrypto: Crypto
-    var isEditMode = false
+    private lateinit var selectedCrypto: Crypto
+    private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

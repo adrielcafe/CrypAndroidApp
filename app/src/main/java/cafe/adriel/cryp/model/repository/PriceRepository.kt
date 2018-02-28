@@ -39,16 +39,11 @@ object PriceRepository {
                 priceService.getPrices(cryptos, currencies)
                         .map {
                             val allPrices = mutableListOf<Prices>()
+                            val currency = PreferenceRepository.getCurrency().currencyCode.toUpperCase()
                             it.forEach { crypto, mapPrices ->
-                                val priceBtc = mapPrices
-                                    ?.get("BTC")
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val priceEth = mapPrices
-                                    ?.get("ETH")
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
-                                val priceCurrency = mapPrices
-                                    ?.get(PreferenceRepository.getCurrency().currencyCode.toUpperCase())
-                                    ?.toBigDecimal() ?: BigDecimal.ZERO
+                                val priceBtc = mapPrices["BTC"]?.toBigDecimal() ?: BigDecimal.ZERO
+                                val priceEth = mapPrices["ETH"]?.toBigDecimal() ?: BigDecimal.ZERO
+                                val priceCurrency = mapPrices[currency]?.toBigDecimal() ?: BigDecimal.ZERO
                                 val prices = Prices(crypto, priceBtc, priceEth, priceCurrency)
                                 allPrices.add(prices)
                                 addOrUpdate(prices)

@@ -19,7 +19,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/vToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:foreground="?selectableItemBackgroundBorderless"
+            android:foreground="?android:selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             app:cardCornerRadius="30dp"
@@ -156,7 +156,7 @@
                 android:id="@+id/vPublicKey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?actionBarSize"
+                android:minHeight="?android:actionBarSize"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -182,7 +182,7 @@
                 android:id="@+id/vName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?actionBarSize"
+                android:minHeight="?android:actionBarSize"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -208,7 +208,7 @@
                 android:id="@+id/vBalance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?actionBarSize"
+                android:minHeight="?android:actionBarSize"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -225,13 +225,13 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/vSaveWallet"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:actionBarSize"
             android:text="@string/save_wallet"
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             android:fontFamily="sans-serif-medium"
-            android:foreground="?selectableItemBackgroundBorderless"
+            android:foreground="?android:selectableItemBackgroundBorderless"
             android:background="@color/colorAccentDark"/>
 
     </android.support.v7.widget.LinearLayoutCompat>

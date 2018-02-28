@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.view_crypto_logo.view.*
 
 class CryptoLogoView(context: Context, attrs: AttributeSet? = null) : FrameLayout(context, attrs) {
 
-    var mBackgroundColor = Color.TRANSPARENT
-    var mTextColor = Color.WHITE
+    private var mBackgroundColor = Color.TRANSPARENT
+    private var mTextColor = Color.WHITE
 
     init {
         inflate(getContext(), R.layout.view_crypto_logo, this)

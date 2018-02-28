@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_scan_wallet.*
 
 class ScanWalletActivity : BaseActivity(), QRCodeReaderView.OnQRCodeReadListener {
 
-    var qrCodeRead = false
+    private var qrCodeRead = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
