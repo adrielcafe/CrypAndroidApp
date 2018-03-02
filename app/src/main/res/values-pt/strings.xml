@@ -1,4 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="total_balance">Balanço total</string>
+    <string name="save_wallet">Salvar carteira</string>
+    <string name="tap_to_scan">Toque para escanear</string>
+    <string name="copied">Copiado</string>
+    <string name="public_key">Chave Pública</string>
+    <string name="wallet_name">Nome da carteira</string>
+    <string name="balance">Balanço</string>
+    <string name="crypto_public_key">%s Chave Pública</string>
+    <string name="type_or_scan_public_key">Digite ou escaneie sua Chave Pública</string>
+    <string name="invalid_balance">Balanço inválido</string>
+    <string name="wallet_saved">Carteira salva</string>
+    <string name="invalid_public_key">Chave Pública %s inválida</string>
+    <string name="server_unavailable_try_later">Servidor indisponível, tente novamente mais tarde</string>
+    <string name="are_you_sure_remove_wallet">Tem certeza que quer remover esta carteira do Cryp?</string>
+    <string name="wallet_removed">Carteira removida</string>
+    <string name="wallet_not_found">Carteira não encontrada</string>
+    <string name="yes_please">Sim, por favor</string>
+    <string name="never_mind">Deixa pra lá</string>
+    <string name="connect_internet">Conecte-se à internet</string>
+    <string name="no_wallet_yet">Sem carteira, ainda</string>
+    <string name="no_crypto_found">Nenhuma criptomoeda encontrada</string>
+    <string name="tap_plus_to_add">Toque no \"+\" para adicionar uma!</string>
+    <string name="validating_public_key">Validando Chave Pública…</string>
+    <string name="settings">Configurações</string>
+    <string name="general">Geral</string>
+    <string name="about">Sobre</string>
+    <string name="language">Idioma</string>
+    <string name="currency">Moeda</string>
+    <string name="crypto_unit">Unidade da criptomoeda</string>
+    <string name="app_version">Versão do aplicativo</string>
+    <string name="share">Compartilhar</string>
+    <string name="search">Pesquisar</string>
+    <string name="you_should_try_crp">Dá uma olhada no Cryp para Android, o melhor app para monitorar seu portfolio de criptomoedas!</string>
+    <string name="help_sharing_app">Ajude compartilhando o app</string>
+    <string name="review">Avaliar</string>
+    <string name="give_5_stars">Dê 5 estrelas para o Cryp!</string>
+    <string name="contact">Contato</string>
+    <string name="send_me_email">Me envie um email</string>
+    <string name="donate">Doar</string>
+    <string name="auto_updated">Atualizado automaticamente</string>
+    <string name="choose_one">Escolha uma</string>
+    <string name="you_can_track_ten_wallets">Por enquanto você só pode adicionar até 10 carteiras</string>
+    <string name="press_back_exit">Pressione voltar novamente para fechar o Cryp</string>
+    <string name="wallet_has_no_public_key">Essa carteira não possui Chave Pública</string>
 </resources>

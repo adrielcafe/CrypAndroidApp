@@ -11,6 +11,15 @@
     <string name="ltc_donate_public_key" translatable="false">LYaCZujLf2Nnt4zQhUoXJfSAT2ffu8DiWA</string>
     <string name="eth_donate_public_key" translatable="false">0x922847B8781FfbeFbADcC4BE34475521b2990647</string>
 
+    <string-array name="language_titles">
+        <item>English</item>
+        <item>Português</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>en</item>
+        <item>pt</item>
+    </string-array>
+
     <string name="total_balance">Total balance</string>
     <string name="save_wallet">Save wallet</string>
     <string name="tap_to_scan">Tap to scan</string>
@@ -55,14 +64,4 @@
     <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>
     <string name="press_back_exit">Press back again to close Cryp</string>
     <string name="wallet_has_no_public_key">This wallet has no Public Key</string>
-
-    <string-array name="language_titles">
-        <item>English</item>
-        <item>Português</item>
-    </string-array>
-    <string-array name="language_values">
-        <item>en</item>
-        <item>pt</item>
-    </string-array>
-
 </resources>
