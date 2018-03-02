@@ -90,17 +90,17 @@ class SettingsFragment : PreferenceFragment(),
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when(preference?.key){
             Const.PREF_DONATE_BTC -> {
-                val wallet = Wallet(Const.CRYPTO_BTC, getString(R.string.btc_donate_public_key))
+                val wallet = Wallet("", Const.CRYPTO_BTC, getString(R.string.btc_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_LTC -> {
-                val wallet = Wallet(Const.CRYPTO_LTC, getString(R.string.ltc_donate_public_key))
+                val wallet = Wallet("", Const.CRYPTO_LTC, getString(R.string.ltc_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_ETH -> {
-                val wallet = Wallet(Const.CRYPTO_ETH, getString(R.string.eth_donate_public_key))
+                val wallet = Wallet("", Const.CRYPTO_ETH, getString(R.string.eth_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }

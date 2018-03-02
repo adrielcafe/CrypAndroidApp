@@ -194,7 +194,7 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textCursorDrawable="@null"
-                android:inputType="textNoSuggestions"
+                android:inputType="textCapSentences"
                 tools:text="My BTC Wallet"/>
 
         </android.support.design.widget.TextInputLayout>

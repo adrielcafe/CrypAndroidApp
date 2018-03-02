@@ -61,7 +61,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         adapter.withEventHook(object: ClickEventHook<WalletAdapterItem>(){
             override fun onBindMany(viewHolder: RecyclerView.ViewHolder) =
                     listOf<View>(
-                        viewHolder.itemView.vSeeAddress,
+                        viewHolder.itemView.vSeePublicKey,
                         viewHolder.itemView.vEdit,
                         viewHolder.itemView.vDelete
                     )
@@ -72,7 +72,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                         it.postDelayed({
                             item?.wallet?.let {
                                 when(v.id){
-                                    R.id.vSeeAddress -> showWalletActivity(it)
+                                    R.id.vSeePublicKey -> showWalletActivity(it)
                                     R.id.vEdit -> showEditActivity(it)
                                     R.id.vDelete -> showDeleteDialog(it)
                                 }
@@ -166,7 +166,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showWalletActivity(wallet: Wallet) {
-        if(wallet.address.isNotEmpty()) {
+        if(wallet.publicKey.isNotEmpty()) {
             start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
         } else {
             showMessage(R.string.wallet_has_no_public_key, MessageType.INFO)

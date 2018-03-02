@@ -92,7 +92,7 @@
             app:cardCornerRadius="10dp">
 
             <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/vSeeAddress"
+                android:id="@+id/vSeePublicKey"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

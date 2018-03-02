@@ -7,7 +7,6 @@ import cafe.adriel.cryp.model.repository.factory.ServiceFactory
 import cafe.adriel.cryp.now
 import io.paperdb.Paper
 import io.reactivex.Observable
-import khronos.Dates
 import khronos.days
 import khronos.minus
 import retrofit2.http.GET
@@ -25,7 +24,7 @@ object CryptoRepository {
         val symbols = cryptoDb.allKeys
         val lastModified = Date(cryptoDb.lastModified("BTC"))
         // Download list of supported cryptos every week
-        return if(symbols.isEmpty() || lastModified.before(Dates.now() - 7.days)){
+        return if(symbols.isEmpty() || lastModified.before(now() - 7.days)){
             cryptoService.getSupportedCryptos()
                 .map {
                     cryptoDb.destroy()

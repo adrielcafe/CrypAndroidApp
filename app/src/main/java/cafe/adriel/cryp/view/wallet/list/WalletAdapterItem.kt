@@ -5,7 +5,8 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TypefaceSpan
 import android.view.View
-import cafe.adriel.cryp.*
+import cafe.adriel.cryp.R
+import cafe.adriel.cryp.SwipeMenuOpenedEvent
 import cafe.adriel.cryp.model.entity.CryptoUnit
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
