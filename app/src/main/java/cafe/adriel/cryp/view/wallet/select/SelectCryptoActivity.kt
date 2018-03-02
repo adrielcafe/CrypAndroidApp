@@ -19,10 +19,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_select_crypto.*
+import java.util.concurrent.TimeUnit
 
 
 class SelectCryptoActivity : BaseActivity() {
 
+    private lateinit var searchMenuItem: MenuItem
     private val adapter = FastItemAdapter<CryptoAdapterItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +72,7 @@ class SelectCryptoActivity : BaseActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer {
                 adapter.add(it)
+                searchMenuItem?.isEnabled = true
                 updateState()
             })
     }
@@ -77,10 +80,12 @@ class SelectCryptoActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
 
-        val searchMenuItem = menu.findItem(R.id.action_search)
+        searchMenuItem = menu.findItem(R.id.action_search)
         val searchView = searchMenuItem.actionView as SearchView
         searchView.queryTextChanges()
             .skipInitialValue()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { adapter.filter(it) }
 
         return true

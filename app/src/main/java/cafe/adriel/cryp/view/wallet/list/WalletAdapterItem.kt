@@ -1,8 +1,12 @@
 package cafe.adriel.cryp.view.wallet.list
 
 import android.support.v7.widget.RecyclerView
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TypefaceSpan
 import android.view.View
-import cafe.adriel.cryp.*
+import cafe.adriel.cryp.R
+import cafe.adriel.cryp.SwipeMenuOpenedEvent
 import cafe.adriel.cryp.model.entity.CryptoUnit
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
@@ -31,13 +35,14 @@ class WalletAdapterItem(var wallet: Wallet) :
     override fun bindView(holder: ViewHolder, payloads: MutableList<Any>) {
         super.bindView(holder, payloads)
         holder.itemView?.apply {
-            val currencySymbol = PreferenceRepository.getCurrency().symbol
+            val currencyCode = PreferenceRepository.getCurrency().currencyCode.toUpperCase()
+            val convertedBalance = wallet.getFormattedBalanceCurrency()
             val balance: String
             val cryptoUnit: String
             when(PreferenceRepository.getCryptoUnit()){
                 CryptoUnit.M_BTC -> {
                     balance = wallet.getFormattedBalanceMBtc()
-                    cryptoUnit = "m${wallet.crypto.symbol}"
+                    cryptoUnit = "m${wallet.crypto.symbol.toUpperCase()}"
                 }
                 CryptoUnit.BITS -> {
                     balance = wallet.getFormattedBalanceBits()
@@ -49,18 +54,26 @@ class WalletAdapterItem(var wallet: Wallet) :
                 }
                 else -> {
                     balance = wallet.getFormattedBalanceBtc()
-                    cryptoUnit = wallet.crypto.symbol
+                    cryptoUnit = wallet.crypto.symbol.toUpperCase()
                 }
             }
 
             if(wallet.balance >= BigDecimal.ZERO){
-                vConvertedBalance.text = "$currencySymbol ${wallet.getFormattedBalanceCurrency()}"
-                vBalance.text = balance
-                vCryptoUnit.text = cryptoUnit
+                val balanceSpan = SpannableString("$balance $cryptoUnit")
+                val convertedBalanceSpan = SpannableString("$convertedBalance $currencyCode")
+                balanceSpan.setSpan(
+                    TypefaceSpan("sans-serif-medium"),
+                    0, balanceSpan.lastIndexOf(cryptoUnit),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                convertedBalanceSpan.setSpan(
+                    TypefaceSpan("sans-serif-medium"),
+                    0, convertedBalanceSpan.lastIndexOf(currencyCode),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                vBalance.text = balanceSpan
+                vConvertedBalance.text = convertedBalanceSpan
             } else {
-                vConvertedBalance.text = "-"
-                vBalance.text = "-"
-                vCryptoUnit.text = ""
+                vBalance.text = "- $cryptoUnit"
+                vConvertedBalance.text = "- $currencyCode"
             }
 
             vWalletName.text = if(wallet.name.isNotEmpty()) wallet.name
@@ -80,7 +93,6 @@ class WalletAdapterItem(var wallet: Wallet) :
             vWalletName.text = ""
             vConvertedBalance.text = "-"
             vBalance.text = "-"
-            vCryptoUnit.text = ""
             vCryptoLogo.clear()
             vSwipeMenu.smoothCloseMenu(0)
             vSwipeMenu.setSwipeListener(null)

@@ -32,17 +32,17 @@
         <Preference
             android:key="donateBtc"
             android:title="@string/bitcoin"
-            android:summary="@string/tap_to_see_address"/>
+            android:summary="@string/btc_donate_public_key"/>
 
         <Preference
             android:key="donateLtc"
             android:title="@string/litecoin"
-            android:summary="@string/tap_to_see_address"/>
+            android:summary="@string/ltc_donate_public_key"/>
 
         <Preference
             android:key="donateEth"
             android:title="@string/ethereum"
-            android:summary="@string/tap_to_see_address"/>
+            android:summary="@string/eth_donate_public_key"/>
 
     </PreferenceCategory>
 

@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cryp" translatable="false">Cryp</string>
     <string name="cryp_pro" translatable="false">Cryp PRO</string>
 
     <string name="bitcoin" translatable="false">Bitcoin</string>
     <string name="litecoin" translatable="false">Litecoin</string>
     <string name="ethereum" translatable="false">Ethereum</string>
 
+    <string name="btc_donate_public_key" translatable="false">15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS</string>
+    <string name="ltc_donate_public_key" translatable="false">LYaCZujLf2Nnt4zQhUoXJfSAT2ffu8DiWA</string>
+    <string name="eth_donate_public_key" translatable="false">0x922847B8781FfbeFbADcC4BE34475521b2990647</string>
+
+    <string-array name="language_titles">
+        <item>English</item>
+        <item>Português</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>en</item>
+        <item>pt</item>
+    </string-array>
+
     <string name="total_balance">Total balance</string>
     <string name="save_wallet">Save wallet</string>
     <string name="tap_to_scan">Tap to scan</string>
-    <string name="tap_to_see_address">Tap to see the address</string>
     <string name="copied">Copied</string>
     <string name="public_key">Public Key</string>
     <string name="wallet_name">Wallet name</string>
@@ -19,14 +30,13 @@
     <string name="type_or_scan_public_key">Type or scan your Public Key</string>
     <string name="invalid_balance">Invalid balance</string>
     <string name="wallet_saved">Wallet saved</string>
-    <string name="wallet_already_saved">Wallet already saved</string>
     <string name="invalid_public_key">Invalid %s Public Key</string>
     <string name="server_unavailable_try_later">Server unavailable, try again later</string>
     <string name="are_you_sure_remove_wallet">Are you sure you want to remove this wallet from Cryp?</string>
     <string name="wallet_removed">Wallet removed</string>
     <string name="wallet_not_found">Wallet not found</string>
     <string name="yes_please">Yes, please</string>
-    <string name="nevermind">Nevermind</string>
+    <string name="never_mind">Never mind</string>
     <string name="connect_internet">Connect to the internet</string>
     <string name="no_wallet_yet">No wallet, yet</string>
     <string name="no_crypto_found">No crypto found</string>
@@ -52,14 +62,5 @@
     <string name="choose_one">Choose one</string>
     <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>
     <string name="press_back_exit">Press back again to close Cryp</string>
-
-    <string-array name="language_titles">
-        <item>English</item>
-        <item>Português</item>
-    </string-array>
-    <string-array name="language_values">
-        <item>en</item>
-        <item>pt</item>
-    </string-array>
-
+    <string name="wallet_has_no_public_key">This wallet has no Public Key</string>
 </resources>

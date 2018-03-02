@@ -90,17 +90,17 @@ class SettingsFragment : PreferenceFragment(),
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when(preference?.key){
             Const.PREF_DONATE_BTC -> {
-                val wallet = Wallet(Const.CRYPTO_BTC, Const.DONATE_BTC_ADDRESS)
+                val wallet = Wallet("", Const.CRYPTO_BTC, getString(R.string.btc_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_LTC -> {
-                val wallet = Wallet(Const.CRYPTO_LTC, Const.DONATE_LTC_ADDRESS)
+                val wallet = Wallet("", Const.CRYPTO_LTC, getString(R.string.ltc_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }
             Const.PREF_DONATE_ETH -> {
-                val wallet = Wallet(Const.CRYPTO_ETH, Const.DONATE_ETH_ADDRESS)
+                val wallet = Wallet("", Const.CRYPTO_ETH, getString(R.string.eth_donate_public_key))
                 start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
                 Analytics.logDonate(wallet.crypto)
             }
@@ -150,7 +150,7 @@ class SettingsFragment : PreferenceFragment(),
     }
 
     private fun sendEmail(){
-        val subject = "${getString(R.string.cryp)} for Android | v${BuildConfig.VERSION_NAME}, SDK ${Build.VERSION.SDK_INT}"
+        val subject = "${getString(R.string.app_name)} for Android | v${BuildConfig.VERSION_NAME}, SDK ${Build.VERSION.SDK_INT}"
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:${Const.CONTACT_EMAIL}"))
         intent.putExtra(Intent.EXTRA_SUBJECT, subject)
         startActivity(intent)

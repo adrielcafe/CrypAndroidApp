@@ -48,7 +48,7 @@ object WalletRepository {
 //                // to avoid API rate limit and socket timeout
 //                val canUpdate = wallet.updatedAt == null || wallet.updatedAt?.before(Dates.now() - 1.minute) == true
 //                if(canUpdate){
-//                    walletService.getBalance(wallet.crypto.name.toLowerCase(), wallet.address)
+//                    walletService.getBalance(wallet.crypto.name.toLowerCase(), wallet.publicKey)
 //                        .map {
 //                            wallet.apply {
 //                                balance = it.balance

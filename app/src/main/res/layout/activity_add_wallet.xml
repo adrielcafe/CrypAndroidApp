@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_below="@id/vCryptosLayout"
-            android:layout_marginTop="-50dp"
+            android:layout_marginTop="-45dp"
             android:layout_marginStart="50dp"
             app:lottie_rawRes="@raw/anim_scan_qrcode"
             app:lottie_loop="true"
@@ -46,9 +46,9 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/vQrCode"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/vCryptosLayout"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
@@ -163,6 +163,7 @@
                 android:ellipsize="end"
                 android:background="@android:color/transparent"
                 android:hint="@string/public_key"
+                android:textColorHint="@color/grey"
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textCursorDrawable="@null"
@@ -189,10 +190,11 @@
                 android:ellipsize="end"
                 android:background="@android:color/transparent"
                 android:hint="@string/wallet_name"
+                android:textColorHint="@color/grey"
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textCursorDrawable="@null"
-                android:inputType="textNoSuggestions"
+                android:inputType="textCapSentences"
                 tools:text="My BTC Wallet"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -216,6 +218,7 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/balance"
                 android:textColor="@android:color/white"
+                android:textColorHint="@color/grey"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textCursorDrawable="@null"
                 android:inputType="numberDecimal"

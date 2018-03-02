@@ -19,7 +19,6 @@ import android.support.v4.content.ContextCompat
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import com.google.zxing.EncodeHintType
-import khronos.Dates
 import net.glxn.qrgen.android.QRCode
 import net.glxn.qrgen.core.image.ImageType
 import java.io.Serializable
@@ -101,7 +100,7 @@ val Int.darken: Int
     }
 
 // Date
-fun Dates.now() =
+fun now() =
         Calendar.getInstance().time
 
 // Wallet
@@ -116,6 +115,7 @@ fun getCryptoFormat() =
             decimalFormatSymbols = this
         }
     }
+
 fun getCurrencyFormat() =
     DecimalFormat().apply {
         minimumFractionDigits = 2
@@ -123,15 +123,4 @@ fun getCurrencyFormat() =
         currency = PreferenceRepository.getCurrency()
     }
 
-fun Wallet.getFormattedBalanceBtc() = getCryptoFormat().format(balance)
-
-fun Wallet.getFormattedBalanceMBtc() = getCryptoFormat().format(getBalanceMBtc())
-
-fun Wallet.getFormattedBalanceBits() = getCryptoFormat().format(getBalanceBits())
-
-fun Wallet.getFormattedBalanceSatoshi() = getCryptoFormat().format(getBalanceSatoshi())
-
-fun Wallet.getFormattedBalanceCurrency() = getCurrencyFormat().format(getBalanceCurrency())
-
-fun Wallet.share(activity: Activity) =
-        "$crypto\n$address".share(activity)
+fun Wallet.share(activity: Activity) = "${crypto.fullName}\n$publicKey".share(activity)

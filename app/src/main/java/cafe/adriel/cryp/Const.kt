@@ -12,11 +12,6 @@ object Const {
     const val WALLET_API_BASE_URL = "https://scryp.herokuapp.com/"
     const val CRYPTO_PRICE_API_BASE_URL = "https://min-api.cryptocompare.com/data/"
 
-    // Donate
-    const val DONATE_BTC_ADDRESS = "15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS"
-    const val DONATE_LTC_ADDRESS = "LYaCZujLf2Nnt4zQhUoXJfSAT2ffu8DiWA"
-    const val DONATE_ETH_ADDRESS = "0x922847B8781FfbeFbADcC4BE34475521b2990647"
-
     // Database
     const val DB_CRYPTOS = "cryptos"
     const val DB_PRICES = "prices"

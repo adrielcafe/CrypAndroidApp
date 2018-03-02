@@ -27,6 +27,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     lateinit var presenter: AddWalletPresenter
 
     private lateinit var selectedCrypto: Crypto
+    private var walletId = ""
     private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,10 +106,11 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
 
     private fun setEditMode(wallet: Wallet){
         isEditMode = true
+        walletId = wallet.id
 
         setCrypto(wallet.crypto)
-        setQrCode(wallet.address)
-        setPublicKey(wallet.address)
+        setQrCode(wallet.publicKey)
+        setPublicKey(wallet.publicKey)
 
         vName.setText(wallet.name)
 //        if(wallet.crypto.autoRefresh) vBalance.setText(R.string.auto_updated)
@@ -116,12 +118,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         vBalance.setText(wallet.balance.toPlainString())
 
         vCryptosLayout.isEnabled = false
-        vPublicKey.isEnabled = false
-        vScanQrCode.isEnabled = false
-        vQrCode.isEnabled = false
-
         vArrowRight.visibility = View.GONE
-        vTapToScan.visibility = View.GONE
     }
 
     private fun selectCrypto(){
@@ -178,18 +175,16 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         if(!presenter.hasWalletSlotRemaining() && !isEditMode){
             showMessage(R.string.you_can_track_ten_wallets, MessageType.INFO)
             return
-        } else if(publicKey.isEmpty()){
-            showMessage(R.string.type_or_scan_public_key, MessageType.INFO)
-            return
         } else if(balance == null /*&& !selectedCrypto.autoRefresh*/) {
             showMessage(R.string.invalid_balance, MessageType.WARN)
             return
-        } else if(!isConnected()) {
-            showMessage(R.string.connect_internet, MessageType.WARN)
-            return
         }
+//        else if(!isConnected()) {
+//            showMessage(R.string.connect_internet, MessageType.WARN)
+//            return
+//        }
 
-        presenter.saveWallet(selectedCrypto, publicKey, name, balance)
+        presenter.saveWallet(walletId, selectedCrypto, publicKey, name, balance)
     }
 
     private fun toggleBalanceMessage(){

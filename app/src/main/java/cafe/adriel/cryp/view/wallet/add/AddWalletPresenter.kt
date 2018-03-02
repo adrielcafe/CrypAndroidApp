@@ -9,13 +9,19 @@ import cafe.adriel.cryp.model.repository.WalletRepository
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import java.math.BigDecimal
+import java.util.*
 
 @InjectViewState
 class AddWalletPresenter : MvpPresenter<AddWalletView>() {
 
-    fun saveWallet(crypto: Crypto, publicKey: String, name: String, balance: BigDecimal?){
-        val wallet = Wallet(crypto, publicKey, name, balance ?: BigDecimal.ONE.negate())
-        val exists = WalletRepository.contains(wallet)
+    fun saveWallet(id: String, crypto: Crypto, publicKey: String, name: String, balance: BigDecimal?){
+        val walletId = if(id.isNotEmpty()) id else UUID.randomUUID().toString()
+        val wallet = Wallet(walletId, crypto, publicKey, name, balance ?: BigDecimal.ONE.negate())
+        WalletRepository.addOrUpdate(wallet)
+        viewState.showMessage(R.string.wallet_saved, MessageType.SUCCESS)
+        viewState.close()
+
+//        val exists = WalletRepository.contains(wallet)
 //        if(exists && crypto.autoRefresh) {
 //            wallet.balance = WalletRepository.getById(wallet.id).balance
 //        }
@@ -59,9 +65,6 @@ class AddWalletPresenter : MvpPresenter<AddWalletView>() {
 //                    }
 //                })
 //        } else {
-            WalletRepository.addOrUpdate(wallet)
-            viewState.showMessage(R.string.wallet_saved, MessageType.SUCCESS)
-            viewState.close()
 //        }
     }
 
