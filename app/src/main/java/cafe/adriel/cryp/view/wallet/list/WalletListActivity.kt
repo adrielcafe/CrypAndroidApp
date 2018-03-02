@@ -166,7 +166,11 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun showWalletActivity(wallet: Wallet) {
-        start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+        if(wallet.address.isNotEmpty()) {
+            start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
+        } else {
+            showMessage(R.string.wallet_has_no_public_key, MessageType.INFO)
+        }
     }
 
     private fun showAddWalletActivity() {
@@ -194,7 +198,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
                 .setColoredCircle(R.color.red)
                 .setDialogIconAndColor(R.drawable.ic_delete, R.color.white)
                 .setCancelable(true)
-                .setNegativeButtonText(getString(R.string.nevermind))
+                .setNegativeButtonText(getString(R.string.never_mind))
                 .setNegativeButtonTextColor(android.R.color.black)
                 .setNegativeButtonbackgroundColor(android.R.color.white)
                 .setNegativeButtonClick {  }

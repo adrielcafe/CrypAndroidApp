@@ -43,46 +43,34 @@
                 android:maxLines="1"
                 android:textColor="@android:color/black"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:fontFamily="sans-serif-light"
+                android:fontFamily="sans-serif-condensed"
                 app:textAllCaps="true"
                 tools:text="Bitcoin"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vConvertedBalance"
-                android:layout_width="wrap_content"
+                android:id="@+id/vBalance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/vWalletName"
                 android:layout_marginBottom="3dp"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                tools:text="$ 1.392,04"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:fontFamily="sans-serif-condensed"
+                app:autoSizeTextType="uniform"
+                tools:text="123456789.00000001 BTC"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vBalance"
-                android:layout_width="wrap_content"
+                android:id="@+id/vConvertedBalance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vConvertedBalance"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                tools:text="123456789.00000001"/>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/vCryptoUnit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/vBalance"
-                android:layout_alignBottom="@id/vBalance"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="1.5dp"
+                android:layout_below="@id/vBalance"
                 android:maxLines="1"
                 android:textColor="@color/grey_extra_dark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:fontFamily="sans-serif-condensed"
-                tools:text="BTC"/>
+                app:autoSizeTextType="uniform"
+                tools:text="1.234.567,89 USD"/>
 
         </RelativeLayout>
 
