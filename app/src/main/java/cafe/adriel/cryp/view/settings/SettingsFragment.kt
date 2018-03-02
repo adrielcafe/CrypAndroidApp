@@ -150,7 +150,7 @@ class SettingsFragment : PreferenceFragment(),
     }
 
     private fun sendEmail(){
-        val subject = "${getString(R.string.cryp)} for Android | v${BuildConfig.VERSION_NAME}, SDK ${Build.VERSION.SDK_INT}"
+        val subject = "${getString(R.string.app_name)} for Android | v${BuildConfig.VERSION_NAME}, SDK ${Build.VERSION.SDK_INT}"
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:${Const.CONTACT_EMAIL}"))
         intent.putExtra(Intent.EXTRA_SUBJECT, subject)
         startActivity(intent)

@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_below="@id/vCryptosLayout"
-            android:layout_marginTop="-50dp"
+            android:layout_marginTop="-45dp"
             android:layout_marginStart="50dp"
             app:lottie_rawRes="@raw/anim_scan_qrcode"
             app:lottie_loop="true"
@@ -46,9 +46,9 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/vQrCode"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/vCryptosLayout"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
