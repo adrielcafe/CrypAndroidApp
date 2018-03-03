@@ -12,7 +12,6 @@ object Analytics {
     private const val EVENT_CHANGE_LANGUAGE = "change_language"
     private const val EVENT_CHANGE_CURRENCY = "change_currency"
     private const val EVENT_CHANGE_CRYPTO_UNIT = "change_crypto_unit"
-    private const val EVENT_DONATE = "donate"
 
     private const val PARAM_CRYPTO = "crypto"
     private const val PARAM_LANGUAGE = "language"
@@ -65,12 +64,5 @@ object Analytics {
             putString(PARAM_UNIT, unit.toLowerCase())
         }
         fbAnalytics.logEvent(EVENT_CHANGE_CRYPTO_UNIT, params)
-    }
-
-    fun logDonate(crypto: Crypto){
-        val params = Bundle().apply {
-            putString(PARAM_CRYPTO, crypto.symbol.toLowerCase())
-        }
-        fbAnalytics.logEvent(EVENT_DONATE, params)
     }
 }

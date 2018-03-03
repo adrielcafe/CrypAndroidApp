@@ -2,14 +2,6 @@
 <resources>
     <string name="cryp_pro" translatable="false">Cryp PRO</string>
 
-    <string name="bitcoin" translatable="false">Bitcoin</string>
-    <string name="litecoin" translatable="false">Litecoin</string>
-    <string name="ethereum" translatable="false">Ethereum</string>
-
-    <string name="btc_donate_public_key" translatable="false">15BdmaT9PLzKZdEsirzJ954F3dkkSM6QcS</string>
-    <string name="ltc_donate_public_key" translatable="false">LYaCZujLf2Nnt4zQhUoXJfSAT2ffu8DiWA</string>
-    <string name="eth_donate_public_key" translatable="false">0x922847B8781FfbeFbADcC4BE34475521b2990647</string>
-
     <string-array name="language_titles">
         <item>English</item>
         <item>Português</item>
@@ -57,7 +49,6 @@
     <string name="give_5_stars">Give 5 stars to Cryp!</string>
     <string name="contact">Contact</string>
     <string name="send_me_email">Send me an email</string>
-    <string name="donate">Donate</string>
     <string name="auto_updated">Auto updated</string>
     <string name="choose_one">Choose one</string>
     <string name="you_can_track_ten_wallets">For now you can only track up to 10 wallets</string>

@@ -27,25 +27,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/donate">
-
-        <Preference
-            android:key="donateBtc"
-            android:title="@string/bitcoin"
-            android:summary="@string/btc_donate_public_key"/>
-
-        <Preference
-            android:key="donateLtc"
-            android:title="@string/litecoin"
-            android:summary="@string/ltc_donate_public_key"/>
-
-        <Preference
-            android:key="donateEth"
-            android:title="@string/ethereum"
-            android:summary="@string/eth_donate_public_key"/>
-
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/about">
 
         <Preference

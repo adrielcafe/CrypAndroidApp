@@ -10,8 +10,6 @@ import android.preference.PreferenceFragment
 import android.preference.PreferenceManager
 import cafe.adriel.cryp.*
 import cafe.adriel.cryp.model.entity.CryptoUnit
-import cafe.adriel.cryp.model.entity.Wallet
-import cafe.adriel.cryp.view.wallet.show.ShowWalletActivity
 import com.franmontiel.localechanger.LocaleChanger
 import java.util.*
 
@@ -21,9 +19,6 @@ class SettingsFragment : PreferenceFragment(),
     private val prefLanguage by lazy { findPreference(Const.PREF_LANGUAGE) as ListPreference}
     private val prefCurrency by lazy { findPreference(Const.PREF_CURRENCY) as ListPreference }
     private val prefCryptoUnit by lazy { findPreference(Const.PREF_CRYPTO_UNIT) as ListPreference}
-    private val prefDonateBtc by lazy { findPreference(Const.PREF_DONATE_BTC) }
-    private val prefDonateLtc by lazy { findPreference(Const.PREF_DONATE_LTC) }
-    private val prefDonateEth by lazy { findPreference(Const.PREF_DONATE_ETH) }
     private val prefShare by lazy { findPreference(Const.PREF_SHARE) }
     private val prefReview by lazy { findPreference(Const.PREF_REVIEW) }
     private val prefContact by lazy { findPreference(Const.PREF_CONTACT) }
@@ -39,9 +34,6 @@ class SettingsFragment : PreferenceFragment(),
         prefCurrency.onPreferenceChangeListener = this
         prefCryptoUnit.onPreferenceChangeListener = this
 
-        prefDonateBtc.onPreferenceClickListener = this
-        prefDonateLtc.onPreferenceClickListener = this
-        prefDonateEth.onPreferenceClickListener = this
         prefShare.onPreferenceClickListener = this
         prefReview.onPreferenceClickListener = this
         prefContact.onPreferenceClickListener = this
@@ -89,21 +81,6 @@ class SettingsFragment : PreferenceFragment(),
 
     override fun onPreferenceClick(preference: Preference?): Boolean {
         when(preference?.key){
-            Const.PREF_DONATE_BTC -> {
-                val wallet = Wallet("", Const.CRYPTO_BTC, getString(R.string.btc_donate_public_key))
-                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
-                Analytics.logDonate(wallet.crypto)
-            }
-            Const.PREF_DONATE_LTC -> {
-                val wallet = Wallet("", Const.CRYPTO_LTC, getString(R.string.ltc_donate_public_key))
-                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
-                Analytics.logDonate(wallet.crypto)
-            }
-            Const.PREF_DONATE_ETH -> {
-                val wallet = Wallet("", Const.CRYPTO_ETH, getString(R.string.eth_donate_public_key))
-                start<ShowWalletActivity>(Const.EXTRA_WALLET to wallet)
-                Analytics.logDonate(wallet.crypto)
-            }
             Const.PREF_SHARE -> shareApp()
             Const.PREF_REVIEW -> reviewApp()
             Const.PREF_CONTACT -> sendEmail()
