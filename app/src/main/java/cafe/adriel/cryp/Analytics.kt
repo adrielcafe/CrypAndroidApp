@@ -21,48 +21,48 @@ object Analytics {
     private val fbAnalytics = FirebaseAnalytics.getInstance(App.context)
 
     fun logScanWallet(){
-        fbAnalytics.logEvent(EVENT_SCAN_WALLET, null)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_SCAN_WALLET, null)
     }
 
     fun logAddWallet(crypto: Crypto){
         val params = Bundle().apply {
             putString(PARAM_CRYPTO, crypto.symbol.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_ADD_WALLET, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_ADD_WALLET, params)
     }
 
     fun logCopyWallet(crypto: Crypto){
         val params = Bundle().apply {
             putString(PARAM_CRYPTO, crypto.symbol.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_COPY_WALLET, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_COPY_WALLET, params)
     }
 
     fun logShareWallet(crypto: Crypto){
         val params = Bundle().apply {
             putString(PARAM_CRYPTO, crypto.symbol.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_SHARE_WALLET, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_SHARE_WALLET, params)
     }
 
     fun logChangeLanguage(language: String){
         val params = Bundle().apply {
             putString(PARAM_LANGUAGE, language.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_CHANGE_LANGUAGE, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_CHANGE_LANGUAGE, params)
     }
 
     fun logChangeCurrency(fiat: String){
         val params = Bundle().apply {
             putString(PARAM_FIAT, fiat.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_CHANGE_CURRENCY, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_CHANGE_CURRENCY, params)
     }
 
     fun logChangeCryptoUnit(unit: String){
         val params = Bundle().apply {
             putString(PARAM_UNIT, unit.toLowerCase())
         }
-        fbAnalytics.logEvent(EVENT_CHANGE_CRYPTO_UNIT, params)
+        if(BuildConfig.RELEASE) fbAnalytics.logEvent(EVENT_CHANGE_CRYPTO_UNIT, params)
     }
 }

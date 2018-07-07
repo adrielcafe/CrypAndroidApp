@@ -33,6 +33,7 @@ object Const {
 
     // Extra
     const val EXTRA_WALLET = "wallet"
+    const val EXTRA_REVEAL_SETTINGS = "revealSettings"
 
     // Currency
     val SUPPORTED_CURRENCIES = arrayOf(

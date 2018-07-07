@@ -1,18 +1,17 @@
 package cafe.adriel.cryp.view.wallet.add
 
 import android.Manifest
-import android.animation.Animator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.ViewTreeObserver
 import cafe.adriel.cryp.*
+import cafe.adriel.cryp.Const.EXTRA_REVEAL_SETTINGS
 import cafe.adriel.cryp.model.entity.Crypto
 import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.view.BaseActivity
+import cafe.adriel.cryp.view.custom.RevealAnimationHelper
 import cafe.adriel.cryp.view.wallet.scan.ScanWalletActivity
 import cafe.adriel.cryp.view.wallet.select.SelectCryptoActivity
 import cafe.adriel.kbus.KBus
@@ -27,6 +26,7 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     lateinit var presenter: AddWalletPresenter
 
     private lateinit var selectedCrypto: Crypto
+    private lateinit var revealSettings: RevealAnimationHelper.AnimationSettings
     private var walletId = ""
     private var isEditMode = false
 
@@ -48,18 +48,9 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             setCrypto(Const.DEFAULT_CRYPTO)
         }
 
-        if (savedInstanceState == null) {
-            vRoot.apply {
-                visibility = View.INVISIBLE
-                if (viewTreeObserver.isAlive) {
-                    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            viewTreeObserver.removeOnGlobalLayoutListener(this)
-                            startRevealTransition()
-                        }
-                    })
-                }
-            }
+        if(intent.hasExtra(Const.EXTRA_REVEAL_SETTINGS)){
+            revealSettings = intent.getParcelableExtra(EXTRA_REVEAL_SETTINGS)
+            RevealAnimationHelper.startEnterAnimation(vRoot, revealSettings)
         }
 
         vScanQrCode.enableMergePathsForKitKatAndAbove(true)
@@ -86,6 +77,12 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
         }
     }
 
+    override fun onBackPressed() {
+        RevealAnimationHelper.startExitAnimation(vRoot, revealSettings) {
+            super.onBackPressed()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         KBus.unsubscribe(this)
@@ -94,14 +91,16 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
     override fun onOptionsItemSelected(item: MenuItem?) =
             when (item?.itemId) {
                 android.R.id.home -> {
-                    finish()
+                    close()
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
             }
 
     override fun close() {
-        finish()
+        RevealAnimationHelper.startExitAnimation(vRoot, revealSettings) {
+            finishAfterTransition()
+        }
     }
 
     private fun setEditMode(wallet: Wallet){
@@ -197,27 +196,5 @@ class AddWalletActivity : BaseActivity(), AddWalletView {
             vBalance.setText("")
             vBalance.setTextColor(Color.WHITE)
 //        }
-    }
-
-    private fun startRevealTransition(){
-        val x = 9 * vRoot.width / 10
-        val y = 9 * vRoot.height / 10
-        val startRadius = 0F
-        val endRadius = Math.max(vRoot.width, vRoot.height).toFloat()
-        val duration = intFrom(android.R.integer.config_mediumAnimTime).toLong()
-
-        vRoot.visibility = View.VISIBLE
-        val animation = ViewAnimationUtils
-                .createCircularReveal(vRoot, x, y, startRadius, endRadius)
-                .setDuration(duration)
-        animation.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) { }
-            override fun onAnimationEnd(animation: Animator?) {
-                vScanQrCode.playAnimation()
-            }
-            override fun onAnimationCancel(animation: Animator?) { }
-            override fun onAnimationRepeat(animation: Animator?) { }
-        })
-        animation.start()
     }
 }

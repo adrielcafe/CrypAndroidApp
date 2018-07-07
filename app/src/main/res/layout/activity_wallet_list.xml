@@ -10,12 +10,12 @@
     tools:context="cafe.adriel.cryp.view.wallet.list.WalletListActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/vAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:titleEnabled="false"
@@ -88,6 +88,22 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/cryp"
                     app:tint="@android:color/white"/>
+
+                <cafe.adriel.cryp.view.custom.CounterTextView
+                    android:id="@+id/vTotalBalanceToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-medium"
+                    android:alpha="0"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeStepGranularity="1sp"
+                    tools:text="$ 0.00"/>
 
             </android.support.v7.widget.Toolbar>
 

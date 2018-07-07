@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="total_balance">Balanço total</string>
+    <string name="total_balance">Saldo total</string>
     <string name="save_wallet">Salvar carteira</string>
     <string name="tap_to_scan">Toque para escanear</string>
     <string name="copied">Copiado</string>
     <string name="public_key">Chave Pública</string>
     <string name="wallet_name">Nome da carteira</string>
-    <string name="balance">Balanço</string>
+    <string name="balance">Saldo</string>
     <string name="crypto_public_key">%s Chave Pública</string>
     <string name="type_or_scan_public_key">Digite ou escaneie sua Chave Pública</string>
-    <string name="invalid_balance">Balanço inválido</string>
+    <string name="invalid_balance">Saldo inválido</string>
     <string name="wallet_saved">Carteira salva</string>
     <string name="invalid_public_key">Chave Pública %s inválida</string>
     <string name="server_unavailable_try_later">Servidor indisponível, tente novamente mais tarde</string>

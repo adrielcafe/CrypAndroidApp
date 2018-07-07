@@ -13,6 +13,7 @@ import cafe.adriel.cryp.model.entity.MessageType
 import cafe.adriel.cryp.model.entity.Wallet
 import cafe.adriel.cryp.model.repository.PreferenceRepository
 import cafe.adriel.cryp.view.BaseActivity
+import cafe.adriel.cryp.view.custom.RevealAnimationHelper
 import cafe.adriel.cryp.view.custom.VerticalSeparatorDecoration
 import cafe.adriel.cryp.view.settings.SettingsActivity
 import cafe.adriel.cryp.view.wallet.add.AddWalletActivity
@@ -56,6 +57,7 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         vRefresh.setOnRefreshListener { refresh() }
         vAddWallet.setOnClickListener { showAddWalletActivity() }
         vTotalBalance.setOnClickListener { toggleTotalBalanceCurrency() }
+        vAppBarLayout.addOnOffsetChangedListener { _, offset -> toggleTotalBalanceToolbar(offset) }
 
         adapter.setHasStableIds(true)
         adapter.withEventHook(object: ClickEventHook<WalletAdapterItem>(){
@@ -177,7 +179,14 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
         if(presenter.hasWalletSlotRemaining()) {
             // Disable button to avoid be clicked multiple times
             vAddWallet.isEnabled = false
-            start<AddWalletActivity>()
+            val revealSettings = RevealAnimationHelper.AnimationSettings(
+                (vAddWallet.x + vAddWallet.width / 2).toInt(),
+                (vAddWallet.y + vAddWallet.height / 2).toInt(),
+                vCoordinator.width,
+                vCoordinator.height,
+                R.color.colorAccent
+            )
+            start<AddWalletActivity>(Const.EXTRA_REVEAL_SETTINGS to revealSettings)
         } else {
             showMessage(R.string.you_can_track_ten_wallets, MessageType.INFO)
         }
@@ -209,10 +218,10 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
     }
 
     private fun refresh() {
+        addAll(presenter.loadWallets())
         if(isConnected()) {
             setContentRefreshing(true)
             setTotalBalanceRefreshing(true)
-            addAll(presenter.loadWallets())
             presenter.updatePrices()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -301,10 +310,11 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             }
         }
         if(totalBalance < BigDecimal.ZERO) totalBalance = BigDecimal.ZERO
+        vTotalBalanceToolbar.text = "$currencySymbol ${decimalFormat.format(totalBalance)}"
         vTotalBalance
-                .setPrefix("$currencySymbol ")
-                .setDecimalFormat(decimalFormat)
-                .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
+            .setPrefix("$currencySymbol ")
+            .setDecimalFormat(decimalFormat)
+            .startAnimation(currentTotalBalance.toFloat(), totalBalance.toFloat())
         currentTotalBalance = totalBalance
     }
 
@@ -315,6 +325,14 @@ class WalletListActivity : BaseActivity(), WalletListView, ItemTouchCallback {
             else -> 1 // Fiat -> BTC
         }
         updateTotalBalance()
+    }
+
+    private fun toggleTotalBalanceToolbar(offset : Int){
+        val collapsed = Math.abs(offset) == vAppBarLayout.totalScrollRange
+        vTotalBalanceToolbar.animate()
+            .alpha(if(collapsed) 1F else 0F)
+            .setDuration(250)
+            .start()
     }
 
     private fun closeSwipeMenus(closeCurrentOpenedMenu: Boolean){
